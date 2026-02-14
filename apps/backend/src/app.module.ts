@@ -1,10 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './user/user.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UserModule } from './modules/user/user.module';
+import { SalonModule } from './modules/salon/salon.module';
+import { ServiceModule } from './modules/service/service.module';
+import { BookingModule } from './modules/booking/booking.module';
+import { EntitiesModule } from './entities/entities.module';
 
+/*
+modules/user - User entity management
+modules/salon - Salon + WorkingHours entities
+modules/service - Service entity
+modules/booking - Booking + BookingService entities
+*/
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,6 +38,9 @@ import { AppService } from './app.service';
       }),
     }),
     UserModule,
+    SalonModule,
+    ServiceModule,
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
