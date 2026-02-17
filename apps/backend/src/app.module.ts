@@ -8,6 +8,8 @@ import { SalonModule } from './modules/salon/salon.module';
 import { ServiceModule } from './modules/service/service.module';
 import { BookingModule } from './modules/booking/booking.module';
 import { EntitiesModule } from './entities/entities.module';
+import { AuthModule } from './modules/auth/auth.module';
+import jwtConfig from './config/jwt.config';
 
 /*
 modules/user - User entity management
@@ -20,6 +22,7 @@ modules/booking - Booking + BookingService entities
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+      load: [jwtConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -41,6 +44,7 @@ modules/booking - Booking + BookingService entities
     SalonModule,
     ServiceModule,
     BookingModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
