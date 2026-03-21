@@ -35,7 +35,7 @@ export class Salon extends BaseEntity {
   // Relations
   @ManyToOne(() => User, (user) => user.salons, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'ownerId' })
-  owner: User;
+  user: User;
 
   @OneToMany(() => Service, (service) => service.salon)
   services: Service[];

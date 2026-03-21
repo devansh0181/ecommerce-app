@@ -29,7 +29,7 @@ export class User extends BaseEntity {
   phone: string;
 
   // Relations
-  @OneToMany(() => Salon, (salon) => salon.owner)
+  @OneToMany(() => Salon, (salon) => salon.user)
   salons: Salon[];
 
   @OneToMany(() => Booking, (booking) => booking.customer)
