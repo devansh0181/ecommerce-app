@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    .content {
+      padding: 30px;
+    }
+    .section {
+      margin-bottom: 25px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #667eea;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 10px;
+    }
+    .service-item {
+      background-color: #f9f9f9;
+      border-left: 4px solid #667eea;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+    .service-name {
+      font-weight: 600;
+      color: #333;
+    }
+    .service-details {
+      color: #666;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      font-weight: 600;
+      color: #667eea;
+    }
+    .info-value {
+      color: #333;
+    }
+    .highlight {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .button {
+      display: inline-block;
+      background-color: #667eea;
+      color: #fff;
+      padding: 12px 30px;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 20px;
+      font-weight: 600;
+    }
+    .button:hover {
+      background-color: #764ba2;
+    }
+    .footer {
+      background-color: #f9f9f9;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      border-top: 1px solid #eee;
+    }
+    .footer-links {
+      margin-top: 10px;
+    }
+    .footer-links a {
+      color: #667eea;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎉 New Booking Request!</h1>
+    </div>
+    
+    <div class="content">
+      <p>Hi {{barberFirstName}},</p>
+      
+      <p>You have received a new booking request from <strong>{{customerName}}</strong>.</p>
+
+      <div class="section">
+        <div class="section-title">📋 Booking Details</div>
+        <div class="info-row">
+          <div class="info-label">Customer Name</div>
+          <div class="info-value">{{customerName}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Email</div>
+          <div class="info-value">{{customerEmail}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Phone</div>
+          <div class="info-value">{{customerPhone}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Preferred Time</div>
+          <div class="info-value">{{preferredTime}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Total Duration</div>
+          <div class="info-value">{{totalDuration}} minutes</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">✂️ Requested Services</div>
+        {{#each services}}
+        <div class="service-item">
+          <div class="service-name">{{this.name}}</div>
+          <div class="service-details">
+            Duration: {{this.duration}} min | Price: ${{this.price}}
+          </div>
+        </div>
+        {{/each}}
+      </div>
+
+      <div class="section">
+        <div class="section-title">💰 Total Cost</div>
+        <div style="font-size: 24px; font-weight: 700; color: #667eea;">
+          ${{totalPrice}}
+        </div>
+      </div>
+
+      <div class="highlight">
+        <strong>⚠️ Action Required:</strong> Please review this booking request and accept or reject it. The customer is waiting for confirmation.
+      </div>
+
+      <center>
+        <a href="{{dashboardUrl}}" class="button">View Dashboard</a>
+      </center>
+    </div>
+
+    <div class="footer">
+      <p>This is an automated email from QueueCut Salon Management System.</p>
+      <p>© 2024 QueueCut. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

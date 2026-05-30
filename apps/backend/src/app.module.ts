@@ -9,7 +9,12 @@ import { ServiceModule } from './modules/service/service.module';
 import { BookingModule } from './modules/booking/booking.module';
 import { EntitiesModule } from './entities/entities.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { NotificationModule } from './modules/notification/notification.module';
 import jwtConfig from './config/jwt.config';
+import emailConfig from './config/email.config';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/adapters/handlebars.adapter';
+
 
 /*
 modules/user - User entity management
@@ -22,7 +27,7 @@ modules/booking - Booking + BookingService entities
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      load: [jwtConfig],
+      load: [jwtConfig,emailConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -40,11 +45,40 @@ modules/booking - Booking + BookingService entities
         logging: false,
       }),
     }),
+    // Email configuration
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          host: configService.get('email.host'),
+          port: configService.get('email.port'),
+          secure: false, // true for 465, false for other ports
+          auth: {
+            user: configService.get('email.user'),
+            pass: configService.get('email.password'),
+          },
+        },
+        defaults: {
+          from: `"${configService.get('email.fromName')}" <${configService.get(
+            'email.from',
+          )}>`,
+        },
+        template: {
+          dir: __dirname + '/templates',
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
+    }),
     UserModule,
     SalonModule,
     ServiceModule,
     BookingModule,
     AuthModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

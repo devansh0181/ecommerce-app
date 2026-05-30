@@ -12,8 +12,8 @@ import { Salon } from '../../entities/salon.entity';
 import { ServiceService } from '../service/service.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { RejectBookingDto } from './dto/reject-booking.dto';
-
 import { BookingStatus } from '../../common/enums/booking-status.enum'
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class BookingService {
@@ -25,6 +25,7 @@ export class BookingService {
     @InjectRepository(Salon)
     private salonRepository: Repository<Salon>,
     private serviceService: ServiceService,
+    private notificationService: NotificationService, 
   ) {}
 
   /**
@@ -76,7 +77,18 @@ export class BookingService {
     await this.bookingServiceRepository.save(bookingServices);
 
     // 8. Return booking with relations
-    return await this.findOne(savedBooking.id);
+    const completeBooking = await this.findOne(savedBooking.id);
+    // Send notification to barber
+    try {
+      await this.notificationService.sendBookingCreatedNotification(
+        completeBooking,
+      );
+    } catch (error) {
+      // Log but don't fail - booking should be created even if email fails
+      console.error('Email notification failed:', error);
+    }
+
+    return completeBooking;
   }
 
   /**
@@ -88,6 +100,7 @@ export class BookingService {
       relations: [
         'customer',
         'salon',
+        'salon.user',
         'bookingServices',
         'bookingServices.service',
       ],
@@ -157,7 +170,17 @@ export class BookingService {
     booking.status = BookingStatus.ACCEPTED;
     booking.acceptedAt = new Date();
 
-    return await this.bookingRepository.save(booking);
+    const updatedBooking = await this.bookingRepository.save(booking);
+    // Send notification to customer
+    try {
+      await this.notificationService.sendBookingAcceptedNotification(
+        await this.findOne(updatedBooking.id),
+      );
+    } catch (error) {
+      console.error('Email notification failed:', error);
+    }
+
+    return await this.findOne(updatedBooking.id);
   }
 
   /**
@@ -185,7 +208,18 @@ export class BookingService {
     booking.status = BookingStatus.REJECTED;
     booking.rejectionReason = rejectDto.rejectionReason || 'No reason provided';
 
-    return await this.bookingRepository.save(booking);
+    const updatedBooking = await this.bookingRepository.save(booking);
+
+    // Send notification to customer
+    try {
+      await this.notificationService.sendBookingRejectedNotification(
+        await this.findOne(updatedBooking.id),
+      );
+    } catch (error) {
+      console.error('Email notification failed:', error);
+    }
+
+    return await this.findOne(updatedBooking.id);
   }
 
   /**
@@ -205,7 +239,18 @@ export class BookingService {
     // Start service
     booking.status = BookingStatus.IN_PROGRESS;
 
-    return await this.bookingRepository.save(booking);
+    const updatedBooking = await this.bookingRepository.save(booking);
+
+    // Send notification to customer
+    try {
+      await this.notificationService.sendBookingStartedNotification(
+        await this.findOne(updatedBooking.id),
+      );
+    } catch (error) {
+      console.error('Email notification failed:', error);
+    }
+
+    return await this.findOne(updatedBooking.id);
   }
 
   /**
@@ -226,7 +271,18 @@ export class BookingService {
     booking.status = BookingStatus.COMPLETED;
     booking.completedAt = new Date();
 
-    return await this.bookingRepository.save(booking);
+    const updatedBooking = await this.bookingRepository.save(booking);
+
+    // Send notification to customer
+    try {
+      await this.notificationService.sendBookingCompletedNotification(
+        await this.findOne(updatedBooking.id),
+      );
+    } catch (error) {
+      console.error('Email notification failed:', error);
+    }
+
+    return await this.findOne(updatedBooking.id);
   }
 
   /**

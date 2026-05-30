@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #eb5757 0%, #f09f4f 100%);
+      color: #fff;
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    .content {
+      padding: 30px;
+    }
+    .section {
+      margin-bottom: 25px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #eb5757;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #eb5757;
+      padding-bottom: 10px;
+    }
+    .info-box {
+      background-color: #ffe0e0;
+      border-left: 4px solid #eb5757;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+      color: #721c24;
+    }
+    .button {
+      display: inline-block;
+      background-color: #eb5757;
+      color: #fff;
+      padding: 12px 30px;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 20px;
+      font-weight: 600;
+    }
+    .button:hover {
+      background-color: #f09f4f;
+    }
+    .footer {
+      background-color: #f9f9f9;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>❌ Booking Request Declined</h1>
+    </div>
+    
+    <div class="content">
+      <p>Hi {{customerFirstName}},</p>
+      
+      <p>Unfortunately, your booking request for <strong>{{salonName}}</strong> has been <strong style="color: #eb5757;">declined</strong>.</p>
+
+      <div class="info-box">
+        <strong>Reason:</strong> {{rejectionReason}}
+      </div>
+
+      <div class="section">
+        <div class="section-title">📝 Original Request Details</div>
+        <div style="padding: 10px 0;">
+          <div><strong>Salon:</strong> {{salonName}}</div>
+          <div><strong>Preferred Date & Time:</strong> {{preferredTime}}</div>
+          <div><strong>Services:</strong> {{#each services}}{{this.name}}{{#unless @last}}, {{/unless}}{{/each}}</div>
+          <div><strong>Total Amount:</strong> ${{totalPrice}}</div>
+        </div>
+      </div>
+
+      <p>We recommend trying to book another time slot or contacting the salon directly to discuss options.</p>
+
+      <center>
+        <a href="{{bookingUrl}}" class="button">View Booking & Try Again</a>
+      </center>
+    </div>
+
+    <div class="footer">
+      <p>This is an automated email from QueueCut Salon Management System.</p>
+      <p>© 2024 QueueCut. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

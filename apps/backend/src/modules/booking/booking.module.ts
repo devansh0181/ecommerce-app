@@ -7,11 +7,13 @@ import { BookingService } from './booking.service';
 import { BookingController } from './booking.controller';
 import { QueueService } from './queue.service';
 import { ServiceModule } from '../service/service.module';
+import { NotificationModule } from '../notification/notification.module'; // Add this
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Booking, BookingServiceEntity, Salon]),
     ServiceModule, // Import to use ServiceService
+    NotificationModule
   ],
   controllers: [BookingController],
   providers: [BookingService, QueueService],

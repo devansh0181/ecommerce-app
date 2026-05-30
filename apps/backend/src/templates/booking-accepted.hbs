@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: #fff;
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    .content {
+      padding: 30px;
+    }
+    .section {
+      margin-bottom: 25px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #11998e;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #11998e;
+      padding-bottom: 10px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      font-weight: 600;
+      color: #11998e;
+    }
+    .info-value {
+      color: #333;
+    }
+    .success-box {
+      background-color: #d4edda;
+      border-left: 4px solid #28a745;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+      color: #155724;
+    }
+    .button {
+      display: inline-block;
+      background-color: #11998e;
+      color: #fff;
+      padding: 12px 30px;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 20px;
+      font-weight: 600;
+    }
+    .button:hover {
+      background-color: #38ef7d;
+    }
+    .footer {
+      background-color: #f9f9f9;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>✅ Booking Confirmed!</h1>
+    </div>
+    
+    <div class="content">
+      <p>Hi {{customerFirstName}},</p>
+      
+      <p>Great news! Your booking at <strong>{{salonName}}</strong> has been <strong style="color: #11998e;">accepted and confirmed</strong>.</p>
+
+      <div class="success-box">
+        Your appointment is scheduled for <strong>{{preferredTime}}</strong>. Please arrive a few minutes early.
+      </div>
+
+      <div class="section">
+        <div class="section-title">📅 Appointment Details</div>
+        <div class="info-row">
+          <div class="info-label">Salon</div>
+          <div class="info-value">{{salonName}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Address</div>
+          <div class="info-value">{{salonAddress}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Date & Time</div>
+          <div class="info-value">{{preferredTime}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Duration</div>
+          <div class="info-value">{{totalDuration}} minutes</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">✂️ Services</div>
+        {{#each services}}
+        <div style="padding: 10px 0; border-bottom: 1px solid #eee;">
+          <div style="font-weight: 600;">{{this.name}}</div>
+          <div style="color: #666; font-size: 14px;">{{this.price}}</div>
+        </div>
+        {{/each}}
+      </div>
+
+      <div class="section">
+        <div class="info-row">
+          <div class="info-label">Total Amount</div>
+          <div style="font-size: 20px; font-weight: 700; color: #11998e;">${{totalPrice}}</div>
+        </div>
+      </div>
+
+      <center>
+        <a href="{{bookingUrl}}" class="button">View Your Booking</a>
+      </center>
+
+      <p style="color: #666; font-size: 14px;">
+        <strong>Need to reschedule or cancel?</strong> Contact the salon directly or visit your account to make changes.
+      </p>
+    </div>
+
+    <div class="footer">
+      <p>This is an automated email from QueueCut Salon Management System.</p>
+      <p>© 2024 QueueCut. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; }
+    .container { max-width: 600px; margin: 20px auto; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 30px; text-align: center; }
+    .header h1 { margin: 0; font-size: 28px; }
+    .content { padding: 30px; }
+    .info-box { background-color: #e7f3ff; border-left: 4px solid #667eea; padding: 15px; margin: 20px 0; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>⏱️ Your Service has Started!</h1>
+    </div>
+    <div class="content">
+      <p>Hi {{customerFirstName}},</p>
+      <p>Great! Your appointment at <strong>{{salonName}}</strong> has started.</p>
+      <div class="info-box">
+        <strong>Estimated completion time:</strong> {{estimatedCompletionTime}}
+      </div>
+      <p>Thank you for choosing us!</p>
+    </div>
+  </div>
+</body>
+</html>
