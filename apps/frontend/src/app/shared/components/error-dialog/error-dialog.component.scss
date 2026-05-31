@@ -1,0 +1,68 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.dialog-header {
+  padding: $spacing-xl;
+  border-bottom: 1px solid $color-border;
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+
+  &.error-header {
+    background: rgba($danger-red, 0.08);
+  }
+
+  .error-icon {
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .dialog-title {
+    margin: 0;
+    color: $danger-red;
+    font-size: $font-size-xl;
+  }
+}
+
+.dialog-body {
+  padding: $spacing-xl;
+
+  .dialog-message {
+    margin: 0 0 $spacing-lg 0;
+    color: $color-text-secondary;
+  }
+
+  .details-toggle {
+    @include button-reset;
+    color: $primary-purple;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: $font-size-sm;
+    margin-bottom: $spacing-md;
+
+    &:hover {
+      color: $primary-purple-dark;
+    }
+  }
+
+  .error-details {
+    background: $bg-secondary;
+    padding: $spacing-lg;
+    border-radius: $border-radius-md;
+    font-size: $font-size-xs;
+    overflow-x: auto;
+    color: $color-text-secondary;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+.dialog-footer {
+  padding: $spacing-xl;
+  border-top: 1px solid $color-border;
+  display: flex;
+  gap: $spacing-md;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}

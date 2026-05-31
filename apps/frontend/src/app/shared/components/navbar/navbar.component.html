@@ -1,0 +1,54 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <a routerLink="/" class="logo">
+        <span class="logo-text">QueueCut</span>
+      </a>
+    </div>
+
+    <button class="navbar-toggle" type="button" (click)="toggleMenu()" [class.active]="isMenuOpen" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="navbar-menu" [class.open]="isMenuOpen">
+      <div class="navbar-items">
+        <ng-container *ngIf="isCustomer">
+          <a routerLink="/customer" class="nav-item" (click)="closeMenu()">Home</a>
+          <a routerLink="/customer/salons" class="nav-item" (click)="closeMenu()">Salons</a>
+          <a routerLink="/customer/bookings" class="nav-item" (click)="closeMenu()">My Bookings</a>
+        </ng-container>
+
+        <ng-container *ngIf="isBarber">
+          <a routerLink="/barber" class="nav-item" (click)="closeMenu()">Dashboard</a>
+          <a routerLink="/barber/bookings" class="nav-item" (click)="closeMenu()">Requests</a>
+          <a routerLink="/barber/queue" class="nav-item" (click)="closeMenu()">Queue</a>
+          <a routerLink="/barber/services" class="nav-item" (click)="closeMenu()">Services</a>
+        </ng-container>
+      </div>
+
+      <div class="navbar-right">
+        <ng-container *ngIf="currentUser; else notLoggedIn">
+          <div class="user-menu">
+            <button class="user-avatar" type="button" aria-label="User menu">
+              {{ currentUser.firstName[0] }}{{ currentUser.lastName[0] }}
+            </button>
+            <div class="user-dropdown">
+              <button type="button" class="dropdown-item" (click)="navigateTo('/profile')">Profile</button>
+              <button type="button" class="dropdown-item" (click)="navigateTo('/settings')">Settings</button>
+              <button type="button" class="dropdown-item logout-btn" (click)="logout()">Logout</button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #notLoggedIn>
+          <div class="auth-buttons">
+            <a routerLink="/auth/login" class="btn btn-secondary" (click)="closeMenu()">Login</a>
+            <a routerLink="/auth/register" class="btn btn-primary" (click)="closeMenu()">Register</a>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</nav>

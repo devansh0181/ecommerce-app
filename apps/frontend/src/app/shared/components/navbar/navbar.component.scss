@@ -1,0 +1,219 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.navbar {
+  background: $bg-primary;
+  border-bottom: 1px solid $color-border;
+  position: sticky;
+  top: 0;
+  z-index: $z-fixed;
+  box-shadow: $shadow-sm;
+
+  .navbar-container {
+    max-width: $container-2xl;
+    margin: 0 auto;
+    padding: 0 $spacing-lg;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 70px;
+    gap: $spacing-lg;
+  }
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+
+    .logo {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      background: $primary-gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+      cursor: pointer;
+      @include transition;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .navbar-toggle {
+    @include button-reset;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 44px;
+    height: 44px;
+    border-radius: $border-radius-md;
+
+    span {
+      width: 22px;
+      height: 2px;
+      background: $color-text;
+      border-radius: $border-radius-sm;
+      @include transition;
+    }
+
+    &.active span {
+      &:first-child {
+        transform: translateY(8px) rotate(45deg);
+      }
+      &:nth-child(2) {
+        opacity: 0;
+      }
+      &:last-child {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+    }
+  }
+
+  .navbar-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    margin-left: $spacing-2xl;
+    gap: $spacing-xl;
+
+    @media (max-width: #{$breakpoint-lg - 1px}) {
+      position: fixed;
+      inset: 70px 0 0;
+      background: $bg-primary;
+      flex-direction: column;
+      align-items: stretch;
+      padding: $spacing-lg;
+      gap: $spacing-lg;
+      transform: translateX(-100%);
+      @include transition(transform, $transition-base);
+      overflow-y: auto;
+
+      &.open {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  .navbar-items {
+    display: flex;
+    gap: $spacing-md;
+
+    @media (max-width: #{$breakpoint-lg - 1px}) {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .nav-item {
+      color: $color-text;
+      font-weight: $font-weight-medium;
+      @include transition;
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius-md;
+
+      &:hover,
+      &.router-link-active {
+        color: $primary-purple;
+        background: rgba($primary-purple, 0.1);
+      }
+
+      @media (max-width: #{$breakpoint-lg - 1px}) {
+        padding: $spacing-md;
+      }
+    }
+  }
+
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+
+    @media (max-width: #{$breakpoint-lg - 1px}) {
+      width: 100%;
+      flex-direction: column;
+      margin-top: $spacing-lg;
+      padding-top: $spacing-lg;
+      border-top: 1px solid $color-border;
+    }
+
+    .user-menu {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+
+      .user-avatar {
+        @include flex-center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: $primary-gradient;
+        color: #fff;
+        font-weight: $font-weight-bold;
+        cursor: pointer;
+        font-size: $font-size-sm;
+      }
+
+      .user-dropdown {
+        position: absolute;
+        top: calc(100% + #{$spacing-sm});
+        right: 0;
+        background: $bg-primary;
+        border: 1px solid $color-border;
+        border-radius: $border-radius-lg;
+        min-width: 180px;
+        box-shadow: $shadow-lg;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+        @include transition;
+        z-index: $z-dropdown;
+        overflow: hidden;
+
+        .dropdown-item {
+          display: block;
+          width: 100%;
+          padding: $spacing-md $spacing-lg;
+          border: none;
+          background: none;
+          text-align: left;
+          cursor: pointer;
+          color: $color-text;
+          font-size: $font-size-sm;
+          @include transition;
+
+          &:hover {
+            background: $bg-secondary;
+            color: $primary-purple;
+          }
+
+          &.logout-btn {
+            color: $danger-red;
+
+            &:hover {
+              background: rgba($danger-red, 0.08);
+            }
+          }
+        }
+      }
+
+      &:hover .user-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: $spacing-md;
+
+      @media (max-width: #{$breakpoint-lg - 1px}) {
+        width: 100%;
+        flex-direction: column;
+      }
+    }
+  }
+}

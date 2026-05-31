@@ -1,0 +1,52 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.footer {
+  background: $color-dark;
+  color: #fff;
+  padding: $spacing-3xl $spacing-lg;
+  margin-top: $spacing-3xl;
+
+  .footer-container {
+    max-width: $container-2xl;
+    margin: 0 auto;
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-2xl;
+    margin-bottom: $spacing-2xl;
+
+    @media (max-width: #{$breakpoint-md - 1px}) {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-section {
+      h4 {
+        font-size: $font-size-lg;
+        margin-bottom: $spacing-md;
+      }
+
+      a {
+        display: block;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        margin-bottom: $spacing-sm;
+        @include transition;
+
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    text-align: center;
+    padding-top: $spacing-lg;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: $font-size-sm;
+    color: rgba(255, 255, 255, 0.6);
+  }
+}

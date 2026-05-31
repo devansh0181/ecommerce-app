@@ -1,33 +1,79 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { ApiService } from './api.service';
+import { Service as SalonServiceModel } from '../models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ServiceService {
-  constructor() {}
+  private servicesSubject = new BehaviorSubject<SalonServiceModel[]>([]);
+  services$ = this.servicesSubject.asObservable();
 
-  getServices(salonId: string): Observable<any> {
-    return new Observable();
+  constructor(private api: ApiService) {}
+
+  getServices(salonId: string, params?: any) {
+    return this.api.get<SalonServiceModel[]>(`/salons/${salonId}/services`, params).pipe(
+      tap((services) => {
+        this.servicesSubject.next(services);
+      })
+    );
   }
 
-  getServiceById(salonId: string, serviceId: string): Observable<any> {
-    return new Observable();
+  getServiceById(salonId: string, serviceId: string) {
+    return this.api.get<SalonServiceModel>(`/salons/${salonId}/services/${serviceId}`);
   }
 
-  createService(salonId: string, data: any): Observable<any> {
-    return new Observable();
+  createService(salonId: string, data: any) {
+    return this.api.post<SalonServiceModel>(`/salons/${salonId}/services`, data).pipe(
+      tap((service) => {
+        const current = this.servicesSubject.value;
+        this.servicesSubject.next([...current, service]);
+      })
+    );
   }
 
-  updateService(salonId: string, serviceId: string, data: any): Observable<any> {
-    return new Observable();
+  updateService(salonId: string, serviceId: string, data: any) {
+    return this.api.put<SalonServiceModel>(`/salons/${salonId}/services/${serviceId}`, data).pipe(
+      tap((service) => {
+        const services = this.servicesSubject.value.map((s) => (s.id === serviceId ? service : s));
+        this.servicesSubject.next(services);
+      })
+    );
   }
 
-  deleteService(salonId: string, serviceId: string): Observable<any> {
-    return new Observable();
+  deleteService(salonId: string, serviceId: string) {
+    return this.api.delete<void>(`/salons/${salonId}/services/${serviceId}`).pipe(
+      tap(() => {
+        const services = this.servicesSubject.value.filter((s) => s.id !== serviceId);
+        this.servicesSubject.next(services);
+      })
+    );
   }
 
-  toggleService(salonId: string, serviceId: string): Observable<any> {
-    return new Observable();
+  hardDeleteService(salonId: string, serviceId: string) {
+    return this.api.delete<void>(`/salons/${salonId}/services/${serviceId}/hard`).pipe(
+      tap(() => {
+        const services = this.servicesSubject.value.filter((s) => s.id !== serviceId);
+        this.servicesSubject.next(services);
+      })
+    );
+  }
+
+  toggleServiceStatus(salonId: string, serviceId: string) {
+    return this.api.patch<SalonServiceModel>(`/salons/${salonId}/services/${serviceId}/toggle`, {});
+  }
+
+  getServicesByIds(services: SalonServiceModel[]): SalonServiceModel[] {
+    return this.servicesSubject.value.filter((s) => services.some((service) => service.id === s.id));
+  }
+
+  calculateTotalPrice(services: SalonServiceModel[]): number {
+    return services.reduce((total, service) => total + service.price, 0);
+  }
+
+  calculateTotalDuration(services: SalonServiceModel[]): number {
+    return services.reduce((total, service) => total + service.durationMinutes, 0);
   }
 }

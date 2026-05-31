@@ -1,0 +1,27 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.empty-state {
+  @include flex-column-center;
+  padding: $spacing-3xl $spacing-lg;
+  gap: $spacing-lg;
+  text-align: center;
+  border-radius: $border-radius-lg;
+  background: $bg-secondary;
+
+  .empty-icon {
+    font-size: 64px;
+    line-height: 1;
+  }
+
+  .empty-title {
+    margin: 0;
+    color: $color-text;
+  }
+
+  .empty-message {
+    color: $color-text-secondary;
+    margin: 0;
+    max-width: 32rem;
+  }
+}

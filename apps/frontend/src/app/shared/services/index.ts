@@ -1,2 +1,1 @@
-// Shared services exports
-// To be populated in later tasks
+export * from './toast.service';

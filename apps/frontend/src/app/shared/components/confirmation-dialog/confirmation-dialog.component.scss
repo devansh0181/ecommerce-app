@@ -1,0 +1,32 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.dialog-header {
+  padding: $spacing-xl;
+  border-bottom: 1px solid $color-border;
+
+  .dialog-title {
+    margin: 0;
+    font-size: $font-size-xl;
+    color: $color-text;
+  }
+}
+
+.dialog-body {
+  padding: $spacing-xl;
+
+  .dialog-message {
+    margin: 0;
+    color: $color-text-secondary;
+    line-height: $line-height-base;
+  }
+}
+
+.dialog-footer {
+  padding: $spacing-xl;
+  border-top: 1px solid $color-border;
+  display: flex;
+  gap: $spacing-md;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}

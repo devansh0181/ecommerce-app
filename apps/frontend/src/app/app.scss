@@ -1,0 +1,31 @@
+@use './styles/variables' as *;
+@use './styles/mixins' as *;
+
+.app-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	background: $bg-secondary;
+}
+
+.app-main {
+	flex: 1;
+	padding: $spacing-lg;
+
+	@media (min-width: $breakpoint-md) {
+		padding: $spacing-xl;
+	}
+
+	@media (min-width: $breakpoint-lg) {
+		padding: $spacing-2xl;
+	}
+}
+
+.app-loading,
+.app-error {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	color: $color-text;
+}

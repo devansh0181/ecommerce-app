@@ -1,0 +1,126 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.toast-container {
+  position: fixed;
+  top: $spacing-lg;
+  right: $spacing-lg;
+  z-index: $z-tooltip;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  pointer-events: none;
+
+  @media (max-width: #{$breakpoint-md - 1px}) {
+    left: $spacing-lg;
+    right: $spacing-lg;
+  }
+}
+
+.toast {
+  background: $bg-primary;
+  border: 1px solid $color-border;
+  box-shadow: $shadow-lg;
+  padding: $spacing-lg;
+  border-radius: $border-radius-lg;
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-md;
+  min-width: 300px;
+  animation: slideInRight $transition-base;
+  pointer-events: auto;
+
+  @media (max-width: #{$breakpoint-md - 1px}) {
+    min-width: 100%;
+  }
+
+  .toast-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  .toast-content {
+    flex: 1;
+
+    .toast-title {
+      font-weight: $font-weight-semibold;
+      margin-bottom: $spacing-xs;
+    }
+
+    .toast-message {
+      font-size: $font-size-sm;
+      line-height: $line-height-base;
+    }
+  }
+
+  .toast-close {
+    @include button-reset;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    font-size: 20px;
+    cursor: pointer;
+    @include transition;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &.toast-success {
+    background: rgba($success-green, 0.12);
+    border-left: 4px solid $success-green;
+    color: $success-green;
+
+    .toast-icon {
+      color: $success-green;
+    }
+  }
+
+  &.toast-error {
+    background: rgba($danger-red, 0.12);
+    border-left: 4px solid $danger-red;
+    color: $danger-red;
+
+    .toast-icon {
+      color: $danger-red;
+    }
+  }
+
+  &.toast-warning {
+    background: $warning-bg;
+    border-left: 4px solid $warning-yellow;
+    color: #8a6d00;
+
+    .toast-icon {
+      color: $warning-yellow;
+    }
+  }
+
+  &.toast-info {
+    background: rgba($info-blue, 0.12);
+    border-left: 4px solid $info-blue;
+    color: $info-blue;
+
+    .toast-icon {
+      color: $info-blue;
+    }
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
