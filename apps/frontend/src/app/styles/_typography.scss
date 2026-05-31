@@ -1,0 +1,99 @@
+// ============================================
+// Typography System
+// ============================================
+
+$font-family-base: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+$font-family-mono: 'Monaco', 'Courier New', monospace;
+
+// Font Weights
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Heading Sizes
+$h1-size: 32px;
+$h1-line-height: 40px;
+$h1-weight: $font-weight-bold;
+
+$h2-size: 28px;
+$h2-line-height: 36px;
+$h2-weight: $font-weight-semibold;
+
+$h3-size: 24px;
+$h3-line-height: 32px;
+$h3-weight: $font-weight-semibold;
+
+$h4-size: 20px;
+$h4-line-height: 28px;
+$h4-weight: $font-weight-medium;
+
+// Body Text
+$body-size: 16px;
+$body-line-height: 24px;
+$body-weight: $font-weight-normal;
+
+// Small Text
+$small-size: 14px;
+$small-line-height: 20px;
+$small-weight: $font-weight-normal;
+
+// Tiny Text
+$tiny-size: 12px;
+$tiny-line-height: 16px;
+$tiny-weight: $font-weight-normal;
+
+// Typography Mixins
+@mixin h1() {
+  font-size: $h1-size;
+  line-height: $h1-line-height;
+  font-weight: $h1-weight;
+  font-family: $font-family-base;
+  margin: 0;
+}
+
+@mixin h2() {
+  font-size: $h2-size;
+  line-height: $h2-line-height;
+  font-weight: $h2-weight;
+  font-family: $font-family-base;
+  margin: 0;
+}
+
+@mixin h3() {
+  font-size: $h3-size;
+  line-height: $h3-line-height;
+  font-weight: $h3-weight;
+  font-family: $font-family-base;
+  margin: 0;
+}
+
+@mixin h4() {
+  font-size: $h4-size;
+  line-height: $h4-line-height;
+  font-weight: $h4-weight;
+  font-family: $font-family-base;
+  margin: 0;
+}
+
+@mixin body() {
+  font-size: $body-size;
+  line-height: $body-line-height;
+  font-weight: $body-weight;
+  font-family: $font-family-base;
+}
+
+@mixin small() {
+  font-size: $small-size;
+  line-height: $small-line-height;
+  font-weight: $small-weight;
+  font-family: $font-family-base;
+}
+
+@mixin tiny() {
+  font-size: $tiny-size;
+  line-height: $tiny-line-height;
+  font-weight: $tiny-weight;
+  font-family: $font-family-base;
+}

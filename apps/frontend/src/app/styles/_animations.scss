@@ -1,0 +1,187 @@
+// ============================================
+// Animations & Keyframes
+// ============================================
+
+// Fade In/Out Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// Slide Animations
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+// Scale Animations
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+// Bounce Animation
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Pulse Animation (for loading indicators)
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Spin Animation (for spinners)
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Shimmer Animation (skeleton loading)
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+// Shake Animation (error shaking)
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+// Animation Duration Variables
+$animation-quick: 150ms;
+$animation-fast: 200ms;
+$animation-normal: 300ms;
+$animation-slow: 500ms;
+$animation-slower: 800ms;
+
+// Animation Utility Classes
+.animate-fade-in {
+  animation: fadeIn $animation-normal ease-in;
+}
+
+.animate-fade-out {
+  animation: fadeOut $animation-normal ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInFromLeft $animation-normal ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInFromRight $animation-normal ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn $animation-normal ease-out;
+}
+
+.animate-bounce {
+  animation: bounce $animation-normal infinite;
+}
+
+.animate-pulse {
+  animation: pulse $animation-normal infinite;
+}
+
+.animate-spin {
+  animation: spin $animation-normal linear infinite;
+}
+
+.animate-shake {
+  animation: shake $animation-fast;
+}

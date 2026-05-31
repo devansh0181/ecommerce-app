@@ -1,0 +1,54 @@
+// ============================================
+// Spacing System
+// ============================================
+
+// Spacing Scale (Base = 4px)
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$spacing-xl: 24px;
+$spacing-2xl: 32px;
+$spacing-3xl: 48px;
+$spacing-4xl: 64px;
+
+// Spacing Map for utilities
+$spacings: (
+  'xs': $spacing-xs,
+  'sm': $spacing-sm,
+  'md': $spacing-md,
+  'lg': $spacing-lg,
+  'xl': $spacing-xl,
+  '2xl': $spacing-2xl,
+  '3xl': $spacing-3xl,
+  '4xl': $spacing-4xl,
+);
+
+// Margin Utilities
+$margins: (
+  'mt': 'margin-top',
+  'mb': 'margin-bottom',
+  'ml': 'margin-left',
+  'mr': 'margin-right',
+  'mx': ('margin-left', 'margin-right'),
+  'my': ('margin-top', 'margin-bottom'),
+  'm': ('margin-top', 'margin-bottom', 'margin-left', 'margin-right'),
+);
+
+// Padding Utilities
+$paddings: (
+  'pt': 'padding-top',
+  'pb': 'padding-bottom',
+  'pl': 'padding-left',
+  'pr': 'padding-right',
+  'px': ('padding-left', 'padding-right'),
+  'py': ('padding-top', 'padding-bottom'),
+  'p': ('padding-top', 'padding-bottom', 'padding-left', 'padding-right'),
+);
+
+// Gap Utilities
+$gaps: (
+  'gap': 'gap',
+  'gap-x': 'column-gap',
+  'gap-y': 'row-gap',
+);

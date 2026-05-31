@@ -1,0 +1,175 @@
+// ============================================
+// Mixins - Reusable Style Patterns
+// ============================================
+
+// Flexbox Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+// Grid Mixins
+@mixin grid($columns: 2, $gap: 16px) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+// Box Shadow Mixins
+@mixin shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+@mixin shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@mixin shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+@mixin shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+@mixin shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+// Border Radius Mixins
+@mixin border-sm {
+  border-radius: 4px;
+}
+
+@mixin border-md {
+  border-radius: 6px;
+}
+
+@mixin border-lg {
+  border-radius: 8px;
+}
+
+@mixin border-xl {
+  border-radius: 12px;
+}
+
+@mixin border-full {
+  border-radius: 50%;
+}
+
+// Transition Mixin
+@mixin transition($property: all, $duration: 200ms, $easing: ease-in-out) {
+  transition: $property $duration $easing;
+}
+
+// Hover Effect Mixin
+@mixin hover-lift {
+  @include transition;
+  
+  &:hover {
+    transform: translateY(-4px);
+    @include shadow-lg;
+  }
+}
+
+// Truncate Text Mixin
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin line-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Responsive Visibility
+@mixin hide-mobile {
+  display: none;
+  
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+@mixin show-mobile {
+  display: block;
+  
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+// Absolute Center
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// Button Reset
+@mixin button-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+// Scrollbar Styling (Webkit)
+@mixin custom-scrollbar($width: 8px, $track: $color-light, $thumb: $primary-purple) {
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $track;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $thumb;
+    border-radius: 4px;
+    
+    &:hover {
+      background: darken($thumb, 10%);
+    }
+  }
+}
+
+// Gradient Text
+@mixin gradient-text($gradient: $primary-gradient) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

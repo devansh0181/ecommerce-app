@@ -1,0 +1,95 @@
+// ============================================
+// Responsive Design - Breakpoints
+// ============================================
+
+// Breakpoints
+$breakpoint-mobile: 320px;
+$breakpoint-mobile-md: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-tablet-lg: 1024px;
+$breakpoint-desktop: 1280px;
+$breakpoint-desktop-lg: 1440px;
+$breakpoint-desktop-xl: 1920px;
+
+// Media Query Mixins
+@mixin mobile {
+  @media (max-width: 479px) {
+    @content;
+  }
+}
+
+@mixin mobile-md {
+  @media (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 768px) and (max-width: 1023px) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin desktop-lg {
+  @media (min-width: 1280px) {
+    @content;
+  }
+}
+
+@mixin desktop-xl {
+  @media (min-width: 1440px) {
+    @content;
+  }
+}
+
+// Touch Device Detection
+@mixin touch-device {
+  @media (hover: none) and (pointer: coarse) {
+    @content;
+  }
+}
+
+@mixin hover-device {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+// Landscape/Portrait
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
+
+// Dark Mode (Future)
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+// Reduced Motion (Accessibility)
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
