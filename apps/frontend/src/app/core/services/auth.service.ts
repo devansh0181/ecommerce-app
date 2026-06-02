@@ -51,6 +51,12 @@ export class AuthService {
     );
   }
 
+  checkEmailAvailability(email: string) {
+    return this.http.get<{ available: boolean }>(`${this.apiUrl}/check-email`, {
+      params: { email },
+    });
+  }
+
   logout(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('currentUser');

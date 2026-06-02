@@ -1,0 +1,10 @@
+<article class="service-card">
+  <div class="body">
+    <h4 class="name">{{ service.name }}</h4>
+    <p class="desc">{{ service.description }}</p>
+    <div class="meta">{{ service.durationMinutes | formatDuration }} • {{ service.price | formatPrice }}</div>
+  </div>
+  <div class="actions">
+    <button (click)="onAdd()">Add</button>
+  </div>
+</article>

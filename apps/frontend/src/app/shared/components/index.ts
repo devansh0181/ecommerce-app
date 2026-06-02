@@ -1,3 +1,7 @@
+export * from './rating-display/rating-display.component';
+export * from './status-badge/status-badge.component';
+export * from './service-card/service-card.component';
+export * from './salon-card/salon-card.component';
 export * from './navbar/navbar.component';
 export * from './footer/footer.component';
 export * from './loading-spinner/loading-spinner.component';

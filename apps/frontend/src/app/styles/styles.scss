@@ -1,16 +1,16 @@
-// Import all SCSS modules
-@import 'variables';
-@import 'typography';
-@import 'spacing';
-@import 'mixins';
-@import 'animations';
-@import 'responsive';
-@import 'global';
+// Load all SCSS modules through the Sass module system
+@use 'variables' as *;
+@use 'typography' as *;
+@use 'spacing' as *;
+@use 'mixins' as *;
+@use 'animations' as *;
+@use 'responsive' as *;
+@use 'global' as *;
 
 // Import component styles
-@import 'components/buttons';
-@import 'components/cards';
-@import 'components/forms';
-@import 'components/modals';
-@import 'components/navigation';
-@import 'components/alerts';
+@use 'components/buttons' as *;
+@use 'components/cards' as *;
+@use 'components/forms' as *;
+@use 'components/modals' as *;
+@use 'components/navigation' as *;
+@use 'components/alerts' as *;

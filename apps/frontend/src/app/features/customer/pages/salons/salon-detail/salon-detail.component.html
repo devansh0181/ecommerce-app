@@ -1,0 +1,31 @@
+<section class="salon-detail">
+  <div *ngIf="loading" class="loading">Loading salon...</div>
+
+  <div *ngIf="!loading && salon">
+    <div class="hero">
+      <div class="banner">💈</div>
+      <div class="header">
+        <h1>{{ salon.name }}</h1>
+        <p class="address">{{ salon.address }}</p>
+        <div class="actions">
+          <button (click)="openBookingDialog()">Book Now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="info">
+      <h2>About</h2>
+      <p>{{ salon.description }}</p>
+
+      <h3>Services</h3>
+      <div class="services">
+        <div class="service" *ngFor="let s of services">
+          <div class="name">{{ s.name }}</div>
+          <div class="meta">{{ s.durationMinutes }} min • ${{ s.price }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-booking-dialog *ngIf="showBooking" [salon]="salon" [services]="services" (close)="closeBookingDialog()"></app-booking-dialog>
+</section>

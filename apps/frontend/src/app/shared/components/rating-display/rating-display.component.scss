@@ -1,0 +1,5 @@
+.rating-display { display:flex; align-items:center; gap:6px; }
+.star { color:#ddd; }
+.star.filled { color:#ffc107; }
+.value { font-weight:600; color:#333; }
+.count { color:#666; font-size:0.9rem; }

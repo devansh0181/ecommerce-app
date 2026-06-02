@@ -1,0 +1,93 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="auth-header">
+      <h1>Welcome Back</h1>
+      <p>Sign in to your QueueCut account</p>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="form-alert alert-danger">
+        <span>⚠️</span>
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          class="form-input"
+          [class.form-error]="email?.invalid && email?.touched"
+        />
+        <span *ngIf="email?.invalid && email?.touched" class="form-error-text">
+          {{ getEmailError() }}
+        </span>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <div class="password-header">
+          <label for="password" class="form-label">Password</label>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+        <div class="password-input-wrapper">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+            class="form-input"
+            [class.form-error]="password?.invalid && password?.touched"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+          >
+            {{ showPassword ? '👁️‍🗨️' : '👁️' }}
+          </button>
+        </div>
+        <span *ngIf="password?.invalid && password?.touched" class="form-error-text">
+          {{ getPasswordError() }}
+        </span>
+      </div>
+
+      <!-- Remember Me -->
+      <div class="form-checkbox">
+        <input
+          id="rememberMe"
+          type="checkbox"
+          formControlName="rememberMe"
+        />
+        <label for="rememberMe">Remember me</label>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn btn-primary btn-full"
+        [disabled]="loading || loginForm.invalid"
+      >
+        <span *ngIf="!loading">Sign In</span>
+        <span *ngIf="loading" class="loading-spinner">⌛</span>
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      <p>Don't have an account?
+        <a routerLink="/auth/register" class="link">Sign up here</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Background Decoration -->
+  <div class="auth-decoration"></div>
+</div>

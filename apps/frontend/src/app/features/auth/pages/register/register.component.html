@@ -1,0 +1,197 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="auth-header">
+      <h1>Create Account</h1>
+      <p>Join QueueCut as a customer</p>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="form-alert alert-danger">
+        <span>⚠️</span>
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <!-- Name Fields -->
+      <div class="form-row-2">
+        <div class="form-group">
+          <label for="firstName" class="form-label">First Name</label>
+          <input
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            placeholder="John"
+            class="form-input"
+            [class.form-error]="firstName?.invalid && firstName?.touched"
+          />
+          <span *ngIf="firstName?.invalid && firstName?.touched" class="form-error-text">
+            {{ getFirstNameError() }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            placeholder="Doe"
+            class="form-input"
+            [class.form-error]="lastName?.invalid && lastName?.touched"
+          />
+          <span *ngIf="lastName?.invalid && lastName?.touched" class="form-error-text">
+            {{ getLastNameError() }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          class="form-input"
+          [class.form-error]="email?.invalid && email?.touched"
+        />
+        <span *ngIf="email?.invalid && email?.touched" class="form-error-text">
+          {{ getEmailError() }}
+        </span>
+        <div class="email-status" *ngIf="email?.value && email?.valid">
+          <span *ngIf="emailChecking" class="status-text status-checking">{{ getEmailAvailabilityMessage() }}</span>
+          <span *ngIf="!emailChecking && emailAvailable === true" class="status-text status-available">{{ getEmailAvailabilityMessage() }}</span>
+          <span *ngIf="!emailChecking && emailAvailable === false" class="status-text status-unavailable">{{ getEmailAvailabilityMessage() }}</span>
+          <span *ngIf="!emailChecking && emailAvailable === null && emailAvailabilityMessage" class="status-text status-neutral">{{ getEmailAvailabilityMessage() }}</span>
+        </div>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="form-group">
+        <label class="form-label">Account Type</label>
+        <div class="role-selector">
+          <label *ngFor="let option of roleOptions" class="role-option">
+            <input type="radio" formControlName="role" [value]="option.value" />
+            <span>{{ option.label }}</span>
+          </label>
+        </div>
+        <span class="form-help">Choose whether you want a customer account or a barber account.</span>
+      </div>
+
+      <!-- Phone Field -->
+      <div class="form-group">
+        <label for="phone" class="form-label">Phone Number (Optional)</label>
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          placeholder="(555) 123-4567"
+          class="form-input"
+        />
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+            class="form-input"
+            [class.form-error]="password?.invalid && password?.touched"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+          >
+            {{ showPassword ? '👁️‍🗨️' : '👁️' }}
+          </button>
+        </div>
+
+        <!-- Password Strength -->
+        <div *ngIf="password?.value" class="password-strength">
+          <div class="strength-bar">
+            <div
+              class="strength-fill"
+              [style.width.%]="getPasswordStrength() === 'weak' ? 33 : getPasswordStrength() === 'medium' ? 66 : 100"
+              [style.background-color]="getPasswordStrengthColor()"
+            ></div>
+          </div>
+          <span class="strength-text" [style.color]="getPasswordStrengthColor()">
+            {{ getPasswordStrength() }}
+          </span>
+        </div>
+
+        <span *ngIf="password?.invalid && password?.touched" class="form-error-text">
+          {{ getPasswordError() }}
+        </span>
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <div class="password-input-wrapper">
+          <input
+            id="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="••••••••"
+            class="form-input"
+            [class.form-error]="confirmPassword?.invalid && confirmPassword?.touched"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="toggleConfirmPasswordVisibility()"
+          >
+            {{ showConfirmPassword ? '👁️‍🗨️' : '👁️' }}
+          </button>
+        </div>
+        <span *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="form-error-text">
+          {{ getConfirmPasswordError() }}
+        </span>
+      </div>
+
+      <!-- Terms Checkbox -->
+      <div class="form-checkbox">
+        <input
+          id="terms"
+          type="checkbox"
+          formControlName="terms"
+        />
+        <label for="terms">
+          I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+        </label>
+      </div>
+      <span *ngIf="terms?.invalid && terms?.touched" class="form-error-text">
+        You must agree to the terms to continue
+      </span>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn btn-primary btn-full"
+        [disabled]="isFormDisabled()"
+      >
+        <span *ngIf="!loading">Create Account</span>
+        <span *ngIf="loading" class="loading-spinner">⌛</span>
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      <p>Already have an account?
+        <a routerLink="/auth/login" class="link">Sign in here</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Background Decoration -->
+  <div class="auth-decoration"></div>
+</div>

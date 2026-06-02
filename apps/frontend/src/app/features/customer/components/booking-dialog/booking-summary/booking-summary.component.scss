@@ -1,0 +1,148 @@
+.booking-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header h3 {
+  margin: 0;
+}
+
+.subtitle {
+  margin: 4px 0 0 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.section {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+
+  h4 {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .link-btn {
+    background: none;
+    border: none;
+    color: #0a84ff;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+    padding: 0;
+    font-size: 0.9rem;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.service-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.service-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background: #f9fafb;
+  border-radius: 6px;
+
+  .details {
+    flex: 1;
+
+    .name {
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .meta {
+      font-size: 0.85rem;
+      color: #666;
+      margin: 4px 0 0 0;
+    }
+  }
+
+  .price {
+    font-weight: 600;
+    color: #333;
+  }
+}
+
+.datetime-display {
+  padding: 10px 12px;
+  background: #f9fafb;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.summary-total {
+  padding: 12px;
+  background: #f0f8ff;
+  border-radius: 8px;
+  border-left: 3px solid #0a84ff;
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+
+    &:first-child {
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(10, 132, 255, 0.2);
+    }
+
+    .price {
+      color: #0a8a4f;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+
+  button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.2s;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      opacity: 0.9;
+    }
+  }
+
+  .btn-cancel {
+    background: #e5e7eb;
+    color: #333;
+  }
+
+  .btn-confirm {
+    background: #0a84ff;
+    color: white;
+  }
+}

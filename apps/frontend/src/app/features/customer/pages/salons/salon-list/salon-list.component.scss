@@ -1,0 +1,21 @@
+.salon-list { padding: 16px; display:flex; flex-direction:column; gap:12px; }
+.controls { display:flex; flex-direction:column; gap:12px; }
+.search { display:flex; align-items:center; gap:8px; }
+.search input { flex:1; padding:8px 12px; border-radius:6px; border:1px solid #ddd; }
+.search .clear { background:transparent; border:0; cursor:pointer; }
+.filters { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+.filter-item { display:flex; gap:6px; align-items:center; }
+.clear-filters { margin-left:8px; }
+
+.active-state { display:flex; gap:8px; }
+.badge { background:#eef; padding:6px 8px; border-radius:999px; font-weight:600; }
+
+.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
+.skeleton { height:200px; background:linear-gradient(90deg,#f4f4f4,#ececec,#f4f4f4); border-radius:8px; }
+.empty { text-align:center; padding:24px; color:#666; }
+
+.pagination { text-align:center; margin-top:12px; }
+
+@media (min-width: 768px) {
+  .controls { flex-direction:row; justify-content:space-between; align-items:center; }
+}

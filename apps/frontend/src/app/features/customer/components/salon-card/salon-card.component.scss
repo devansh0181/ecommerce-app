@@ -1,0 +1,24 @@
+.salon-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease;
+  &:hover { transform: translateY(-4px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+
+  .image { height: 140px; background: #f6f6f8; display:flex; align-items:center; justify-content:center; }
+  .placeholder { font-size: 48px; }
+
+  .content { padding: 12px; display:flex; flex-direction:column; gap:8px; }
+  .name { margin:0; font-size:1rem; }
+  .address { margin:0; color: #666; font-size:0.875rem; }
+  .meta { display:flex; justify-content:space-between; align-items:center; margin-top:6px; }
+  .rating { display:flex; align-items:center; gap:6px; color:#f5a623; }
+  .rating-number { color:#333; font-size:0.9rem; }
+  .status { padding:4px 8px; border-radius:999px; font-weight:600; font-size:0.8rem; }
+  .status.open { background:#e6fff0; color:#0a8a4f; }
+  .status.closed { background:#fff0f0; color:#b50000; }
+}

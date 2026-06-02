@@ -2,6 +2,11 @@
 // Mixins - Reusable Style Patterns
 // ============================================
 
+@use 'variables' as *;
+
+
+@use 'sass:color';
+
 // Flexbox Mixins
 @mixin flex-center {
   display: flex;
@@ -111,6 +116,19 @@
   overflow: hidden;
 }
 
+// Input base styles
+@mixin input-base {
+  display: block;
+  width: 100%;
+  padding: $spacing-md $spacing-lg;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  color: $color-text;
+  @include transition;
+}
+
 // Responsive Visibility
 @mixin hide-mobile {
   display: none;
@@ -161,7 +179,7 @@
     border-radius: 4px;
     
     &:hover {
-      background: darken($thumb, 10%);
+      background: color.adjust($thumb, $lightness: -10%);
     }
   }
 }

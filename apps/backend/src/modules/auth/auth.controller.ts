@@ -3,6 +3,7 @@ import {
   Post,
   Get,
   Body,
+  Query,
   UseGuards,
   HttpCode,
   HttpStatus,
@@ -37,6 +38,15 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
     return this.authService.login(loginDto);
+  }
+
+  /**
+   * GET /api/auth/check-email?email=
+   * Check whether an email is available for registration
+   */
+  @Get('check-email')
+  async checkEmailAvailability(@Query('email') email: string): Promise<{ available: boolean }> {
+    return this.authService.isEmailAvailable(email);
   }
 
   /**

@@ -1,0 +1,45 @@
+<div class="booking-confirmation">
+  <div class="checkmark-animation">
+    <div class="checkmark">✓</div>
+  </div>
+
+  <div class="header">
+    <h2>Booking Confirmed!</h2>
+    <p class="subtitle">Your booking has been successfully confirmed</p>
+  </div>
+
+  <div class="booking-id">
+    <div class="label">Booking ID</div>
+    <div class="id-box">
+      <span class="id">{{ bookingId }}</span>
+      <button class="copy-btn" (click)="copyBookingId()">
+        <span *ngIf="!copied">Copy</span>
+        <span *ngIf="copied">Copied!</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="details">
+    <div class="detail-row">
+      <span class="label">Salon</span>
+      <span class="value">{{ salonName }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Date & Time</span>
+      <span class="value">{{ formatDateTime() }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Services</span>
+      <span class="value">{{ selected.length }} service(s)</span>
+    </div>
+    <div class="detail-row total">
+      <span class="label">Total Amount</span>
+      <span class="value">{{ getTotalPrice() | formatPrice }}</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-secondary" (click)="onContinueShopping()">Continue Shopping</button>
+    <button class="btn-primary" (click)="onViewDetails()">View Booking Details</button>
+  </div>
+</div>

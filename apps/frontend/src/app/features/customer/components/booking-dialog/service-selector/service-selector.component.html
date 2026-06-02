@@ -1,0 +1,40 @@
+<div class="service-selector">
+  <div class="header">
+    <h3>Select Services</h3>
+    <p class="subtitle">Choose one or more services</p>
+  </div>
+
+  <div class="services-list">
+    <label *ngFor="let service of services" class="service-item" [class.selected]="isSelected(service)">
+      <input type="checkbox" [checked]="isSelected(service)" (change)="toggleService(service)" />
+      <div class="info">
+        <div class="name">{{ service.name }}</div>
+        <div class="meta">{{ service.durationMinutes | formatDuration }} • {{ service.price | formatPrice }}</div>
+        <p *ngIf="service.description" class="desc">{{ service.description }}</p>
+      </div>
+      <div *ngIf="isSelected(service)" class="qty-control">
+        <label>Qty:</label>
+        <select [value]="getQuantityForService(service)" 
+                (change)="setQuantity(service, +$any($event.target).value)">
+          <option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">{{ i }}</option>
+        </select>
+      </div>
+    </label>
+  </div>
+
+  <div class="summary">
+    <div class="row">
+      <span>Total Duration:</span>
+      <strong>{{ getTotalDuration() | formatDuration }}</strong>
+    </div>
+    <div class="row">
+      <span>Total Price:</span>
+      <strong>{{ getTotalPrice() | formatPrice }}</strong>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-cancel" (click)="onCancel()">Cancel</button>
+    <button class="btn-next" (click)="onNext()" [disabled]="selected.length === 0">Next</button>
+  </div>
+</div>

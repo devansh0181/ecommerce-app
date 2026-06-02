@@ -105,6 +105,19 @@ export class AuthService {
   }
 
   /**
+   * Check whether an email is available for registration
+   */
+  async isEmailAvailable(email: string): Promise<{ available: boolean }> {
+    const existingUser = await this.userRepository.findOne({
+      where: { email },
+    });
+
+    return {
+      available: !existingUser,
+    };
+  }
+
+  /**
    * Get current user profile
    */
   async getProfile(userId: string): Promise<Partial<User>> {

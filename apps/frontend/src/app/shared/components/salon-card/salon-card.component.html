@@ -1,0 +1,13 @@
+<article class="salon-card" role="button" tabindex="0" (click)="onSelect()">
+  <div class="image">💈</div>
+  <div class="body">
+    <div class="row">
+      <h3 class="name">{{ salon.name }}</h3>
+      <app-status-badge [isOpen]="salon.isOpen"></app-status-badge>
+    </div>
+    <div class="address">{{ salon.address }}</div>
+    <div class="meta">
+      <app-rating-display [rating]="salon.rating"></app-rating-display>
+    </div>
+  </div>
+</article>

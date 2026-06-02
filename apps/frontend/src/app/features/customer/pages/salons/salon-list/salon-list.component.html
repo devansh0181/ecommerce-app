@@ -1,0 +1,58 @@
+<section class="salon-list">
+  <div class="controls">
+    <div class="search">
+      <input type="search" [formControl]="search" placeholder="Search by name or address" aria-label="Search salons" />
+      <button *ngIf="search.value" (click)="search.setValue('')" class="clear">✕</button>
+    </div>
+
+    <div class="filters">
+      <label class="filter-item">
+        <input type="checkbox" [checked]="openOnly" (change)="onToggleOpen()" /> Only open
+      </label>
+      <label class="filter-item">
+        Min rating:
+        <select [value]="minRating" (change)="onMinRatingChange($any($event.target).value)">
+          <option value="0">All</option>
+          <option value="3.5">3.5+</option>
+          <option value="4">4+</option>
+          <option value="4.5">4.5+</option>
+        </select>
+      </label>
+      <label class="filter-item">
+        Distance: <input type="range" min="1" max="200" [value]="distance" (input)="onDistanceChange($any($event.target).value)" /> {{ distance }}km
+      </label>
+      <button class="clear-filters" (click)="clearFilters()">Clear</button>
+    </div>
+  </div>
+
+  <div class="active-state">
+    <span *ngIf="openOnly" class="badge">Open only</span>
+    <span *ngIf="minRating" class="badge">Rating ≥ {{ minRating }}</span>
+  </div>
+
+  <div *ngIf="loading && salons.length === 0" class="grid">
+    <div class="skeleton" *ngFor="let n of [].constructor(6); let i = index" [attr.data-i]="i">&nbsp;</div>
+  </div>
+
+  <div *ngIf="error && !loading" class="empty">
+    <p>{{ error }}</p>
+    <button (click)="loadSalons(true)">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && salons.length === 0 && !error" class="empty">
+    <p>No salons found.</p>
+  </div>
+
+  <!-- DEBUG: Remove after fixing -->
+  <div style="padding: 10px; background: #f0f0f0; margin: 10px; border: 2px solid red;">
+    DEBUG - salons.length: {{salons.length}} | loading: {{loading}} | total: {{total}}
+  </div>
+
+  <div class="grid" *ngIf="salons.length">
+    <app-salon-card *ngFor="let salon of salons; trackBy: trackBySalon" [salon]="salon" (select)="selectSalon($event)"></app-salon-card>
+  </div>
+
+  <div class="pagination" *ngIf="salons.length && salons.length < total">
+    <button (click)="loadMore()" [disabled]="loading">Load more</button>
+  </div>
+</section>

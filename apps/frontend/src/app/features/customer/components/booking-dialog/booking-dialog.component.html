@@ -1,0 +1,62 @@
+<div class="dialog-backdrop" (click)="closeDialog()">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <button class="close" (click)="closeDialog()">✕</button>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progressPercent"></div>
+    </div>
+
+    <!-- Step 1: Service Selection -->
+    <div *ngIf="step === 1" class="step-content">
+      <app-service-selector
+        [services]="services"
+        [selected]="selectedServices"
+        (selectionChange)="onServiceSelectionChange($event)"
+        (next)="onServiceSelectionNext($event)"
+        (cancel)="onServiceSelectionCancel()"
+      ></app-service-selector>
+    </div>
+
+    <!-- Step 2: Time Picker -->
+    <div *ngIf="step === 2" class="step-content">
+      <app-time-picker
+        [salon]="salon"
+        [selectedDateTime]="selectedDateTime"
+        (dateTimeChange)="onDateTimeChange($event)"
+        (next)="onTimePickerNext($event)"
+        (back)="onTimePickerBack()"
+        (cancel)="onTimePickerCancel()"
+      ></app-time-picker>
+    </div>
+
+    <!-- Step 3: Review & Confirmation -->
+    <div *ngIf="step === 3" class="step-content">
+      <app-booking-summary
+        [selected]="selectedServices"
+        [selectedDateTime]="selectedDateTime"
+        (editServices)="onEditServices()"
+        (editTime)="onEditTime()"
+        (confirm)="onConfirmBooking()"
+        (cancel)="onSummaryCancel()"
+      ></app-booking-summary>
+    </div>
+
+    <!-- Step 4: Confirmation Success -->
+    <div *ngIf="step === 4" class="step-content">
+      <app-booking-confirmation
+        [bookingId]="bookingId"
+        [selected]="selectedServices"
+        [selectedDateTime]="selectedDateTime"
+        [salonName]="salon?.name || ''"
+        (viewDetails)="onViewDetails()"
+        (continueShopping)="onContinueShopping()"
+      ></app-booking-confirmation>
+    </div>
+
+    <!-- Error Display -->
+    <div *ngIf="error && step < 4" class="error-banner">
+      {{ error }}
+    </div>
+  </div>
+</div>

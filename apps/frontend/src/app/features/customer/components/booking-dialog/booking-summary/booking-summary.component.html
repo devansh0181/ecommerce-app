@@ -1,0 +1,51 @@
+<div class="booking-summary">
+  <div class="header">
+    <h3>Review Your Booking</h3>
+    <p class="subtitle">Confirm the details below</p>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <h4>Services</h4>
+      <button class="link-btn" (click)="onEditServices()">Edit</button>
+    </div>
+    <div class="service-list">
+      <div *ngFor="let item of selected" class="service-row">
+        <div class="details">
+          <div class="name">{{ item.service.name }}</div>
+          <div class="meta">{{ item.service.durationMinutes | formatDuration }} × {{ item.quantity }}</div>
+        </div>
+        <div class="price">{{ item.service.price * item.quantity | formatPrice }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <h4>Date & Time</h4>
+      <button class="link-btn" (click)="onEditTime()">Edit</button>
+    </div>
+    <div class="datetime-display">
+      {{ formatDateTime() }}
+    </div>
+  </div>
+
+  <div class="summary-total">
+    <div class="row">
+      <span>Total Duration:</span>
+      <strong>{{ getTotalDuration() | formatDuration }}</strong>
+    </div>
+    <div class="row">
+      <span>Total Amount:</span>
+      <strong class="price">{{ getTotalPrice() | formatPrice }}</strong>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-cancel" (click)="onCancel()" [disabled]="loading">Cancel</button>
+    <button class="btn-confirm" (click)="onConfirm()" [disabled]="loading">
+      <span *ngIf="!loading">Confirm Booking</span>
+      <span *ngIf="loading">Processing...</span>
+    </button>
+  </div>
+</div>

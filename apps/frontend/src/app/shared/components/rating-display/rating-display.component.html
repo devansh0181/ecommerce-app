@@ -1,0 +1,7 @@
+<div class="rating-display" aria-label="Rating">
+  <ng-container *ngFor="let _ of starsArray(); let i = index">
+    <span class="star" [class.filled]="filled(i)">★</span>
+  </ng-container>
+  <span class="value">{{ rating | number:'1.1-1' }}</span>
+  <span *ngIf="count" class="count">({{ count }})</span>
+</div>
