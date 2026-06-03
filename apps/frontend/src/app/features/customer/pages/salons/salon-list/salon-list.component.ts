@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
@@ -34,6 +34,7 @@ export class SalonListComponent implements OnInit, OnDestroy {
     private salonService: SalonService,
     private router: Router,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -79,6 +80,7 @@ export class SalonListComponent implements OnInit, OnDestroy {
         }),
         finalize(() => {
           this.loading = false;
+          this.cdr.markForCheck();
         })
       )
       .subscribe((res: any) => {
@@ -88,6 +90,7 @@ export class SalonListComponent implements OnInit, OnDestroy {
         if (reset) this.salons = items;
         else this.salons = [...this.salons, ...items];
         this.total = total;
+        this.cdr.markForCheck();
       });
   }
 

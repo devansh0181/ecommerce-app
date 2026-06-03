@@ -43,10 +43,6 @@
     <p>No salons found.</p>
   </div>
 
-  <!-- DEBUG: Remove after fixing -->
-  <div style="padding: 10px; background: #f0f0f0; margin: 10px; border: 2px solid red;">
-    DEBUG - salons.length: {{salons.length}} | loading: {{loading}} | total: {{total}}
-  </div>
 
   <div class="grid" *ngIf="salons.length">
     <app-salon-card *ngFor="let salon of salons; trackBy: trackBySalon" [salon]="salon" (select)="selectSalon($event)"></app-salon-card>
