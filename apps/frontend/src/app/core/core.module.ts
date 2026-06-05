@@ -11,8 +11,8 @@ import { BookingService } from './services/booking.service';
 import { QueueService } from './services/queue.service';
 
 // Interceptors
-import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { authInterceptor } from './interceptors/auth.interceptor';
+import { errorInterceptor } from './interceptors/error.interceptor';
 
 @NgModule({
   imports: [
@@ -28,12 +28,12 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     QueueService,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      useValue: authInterceptor,
       multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
+      useValue: errorInterceptor,
       multi: true,
     },
   ],

@@ -72,5 +72,13 @@ export class SalonDetailComponent implements OnInit {
   closeBookingDialog() {
     this.showBooking = false;
   }
+
+  formatDayOfWeek(day: string): string {
+    return day.charAt(0) + day.slice(1).toLowerCase();
+  }
+
+  formatTime(time: string): string {
+    return time.slice(0, 5);
+  }
 }
 

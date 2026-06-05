@@ -17,6 +17,16 @@
       <h2>About</h2>
       <p>{{ salon.description }}</p>
 
+      <h3>Working Hours</h3>
+      <div class="working-hours">
+        <div class="hour-row" *ngFor="let hour of salon.workingHours">
+          <span class="day">{{ formatDayOfWeek(hour.dayOfWeek) }}:</span>
+          <span class="time">
+            {{ hour.isClosed ? 'Closed' : formatTime(hour.openTime) + ' - ' + formatTime(hour.closeTime) }}
+          </span>
+        </div>
+      </div>
+
       <h3>Services</h3>
       <div class="services">
         <div class="service" *ngFor="let s of services">

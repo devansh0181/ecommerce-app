@@ -1,11 +1,14 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { Salon, Service as ServiceModel } from '../../../../core/models';
 import { BookingService } from '../../../../core/services/booking.service';
 import { ServiceSelectorComponent, SelectedService } from './service-selector/service-selector.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { BookingSummaryComponent } from './booking-summary/booking-summary.component';
 import { BookingConfirmationComponent } from './booking-confirmation/booking-confirmation.component';
+import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-booking-dialog',
@@ -27,7 +30,13 @@ export class BookingDialogComponent {
   bookingId = '';
   error: string | null = null;
 
-  constructor(private bookingService: BookingService) {}
+  constructor(
+    private bookingService: BookingService,
+    private toastService: ToastService,
+    private router: Router
+  ) {}
+
+  bookingTimer: any;
 
   // Step 1: Service Selection
   onServiceSelectionChange(items: SelectedService[]) {
@@ -75,12 +84,8 @@ export class BookingDialogComponent {
     this.summaryCmp?.setLoading(true);
     const payload = {
       salonId: this.salon.id,
-      services: this.selectedServices.map((s) => ({
-        id: s.service.id,
-        quantity: s.quantity,
-        price: s.service.price,
-      })),
-      bookingDateTime: this.selectedDateTime,
+      serviceIds: this.selectedServices.map((s) => s.service.id),
+      preferredTime: this.selectedDateTime,
     };
 
     this.bookingService.createBooking(payload).subscribe({
@@ -88,20 +93,35 @@ export class BookingDialogComponent {
         this.bookingId = booking.id || '';
         this.step = 4;
         this.error = null;
+
+        // Automatically redirect to my bookings after 4 seconds
+        this.bookingTimer = setTimeout(() => {
+          this.closeDialog();
+          this.router.navigate(['/customer/bookings']);
+        }, 4000);
       },
       error: (err: any) => {
         this.summaryCmp?.setLoading(false);
-        this.error = err?.error?.message || 'Failed to create booking. Please try again.';
+        const errorMessage = err?.error?.message || 'Failed to create booking. Please try again.';
+        this.error = errorMessage;
+        this.toastService.error(errorMessage);
       },
     });
   }
 
   // Step 4: Success
   onViewDetails() {
+    if (this.bookingTimer) clearTimeout(this.bookingTimer);
     this.closeDialog();
+    if (this.bookingId) {
+      this.router.navigate(['/customer/bookings', this.bookingId]);
+    } else {
+      this.router.navigate(['/customer/bookings']);
+    }
   }
 
   onContinueShopping() {
+    if (this.bookingTimer) clearTimeout(this.bookingTimer);
     this.closeDialog();
   }
 

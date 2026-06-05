@@ -37,6 +37,9 @@ export class BookingService {
     // 1. Verify salon exists and is open
     const salon = await this.verifySalonOpen(salonId);
 
+    // 1b. Verify requested time falls within working hours
+    await this.verifyWorkingHours(salon, preferredTime);
+
     // 2. Check for existing active booking
     await this.checkNoActiveBooking(customerId, salonId);
 
@@ -291,17 +294,40 @@ export class BookingService {
   private async verifySalonOpen(salonId: string): Promise<Salon> {
     const salon = await this.salonRepository.findOne({
       where: { id: salonId },
+      relations: ['workingHours'],
     });
 
     if (!salon) {
       throw new NotFoundException('Salon not found');
     }
 
-    if (!salon.isOpen) {
-      throw new BadRequestException('Salon is currently closed');
+    return salon;
+  }
+
+  /**
+   * Helper: Verify requested time falls within working hours
+   */
+  private async verifyWorkingHours(salon: Salon, preferredTime: string): Promise<void> {
+    const date = new Date(preferredTime);
+    const dayIndex = date.getDay(); // 0 = Sunday, 1 = Monday...
+    const dayMap = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+    const dayName = dayMap[dayIndex];
+
+    const workingHour = salon.workingHours?.find(h => h.dayOfWeek === dayName);
+
+    if (!workingHour || workingHour.isClosed) {
+      throw new BadRequestException(`Salon is closed on ${dayName.charAt(0) + dayName.slice(1).toLowerCase()}`);
     }
 
-    return salon;
+    const requestedTime = date.toTimeString().slice(0, 5); // "HH:mm"
+    const openTime = workingHour.openTime.slice(0, 5);
+    const closeTime = workingHour.closeTime.slice(0, 5);
+
+    if (requestedTime < openTime || requestedTime > closeTime) {
+      throw new BadRequestException(
+        `Salon is only open from ${openTime} to ${closeTime} on ${dayName.charAt(0) + dayName.slice(1).toLowerCase()}`,
+      );
+    }
   }
 
   /**

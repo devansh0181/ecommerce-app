@@ -32,6 +32,29 @@ export class TimePickerComponent {
       this.error = 'Please select a future date and time';
       return;
     }
+
+    if (this.salon && this.salon.workingHours) {
+      const dayIndex = selected.getDay(); // 0 = Sunday, 1 = Monday...
+      const dayMap = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+      const dayName = dayMap[dayIndex];
+
+      const workingHour = this.salon.workingHours.find(h => h.dayOfWeek === dayName);
+
+      if (!workingHour || workingHour.isClosed) {
+        this.error = `Salon is closed on ${dayName.charAt(0) + dayName.slice(1).toLowerCase()}`;
+        return;
+      }
+
+      const timeStr = selected.toTimeString().slice(0, 5); // "HH:mm"
+      const openTime = workingHour.openTime.slice(0, 5);
+      const closeTime = workingHour.closeTime.slice(0, 5);
+
+      if (timeStr < openTime || timeStr > closeTime) {
+        this.error = `Salon is open from ${openTime} to ${closeTime} on ${dayName.charAt(0) + dayName.slice(1).toLowerCase()}`;
+        return;
+      }
+    }
+
     this.selectedDateTime = value;
     this.dateTimeChange.emit(value);
   }
