@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Salon } from '../../../../../core/models';
@@ -16,10 +16,15 @@ import { BookingDialogComponent } from '../../../components/booking-dialog/booki
 export class SalonDetailComponent implements OnInit {
   salon: Salon | null = null;
   services: any[] = [];
-  loading = false;
+  loading = true;
   showBooking = false;
 
-  constructor(private route: ActivatedRoute, private salonService: SalonService, private serviceService: ServiceService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private salonService: SalonService,
+    private serviceService: ServiceService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -31,8 +36,20 @@ export class SalonDetailComponent implements OnInit {
     this.salonService.getSalonById(id).subscribe({
       next: (s) => {
         this.salon = s;
-        this.loadServices(id);
-        this.loading = false;
+        // Fetch services and clear loading only after services arrive
+        this.serviceService.getServices(id).subscribe({
+          next: (services: any) => {
+            this.services = services;
+            // Clear loading then force change detection so template updates
+            this.loading = false;
+            try { this.cdr.detectChanges(); } catch (e) { /* ignore */ }
+          },
+          error: (err) => {
+            this.loading = false;
+            try { this.cdr.detectChanges(); } catch (e) { /* ignore */ }
+            console.error('[SALON_DETAIL] load services error', err);
+          },
+        });
       },
       error: () => {
         this.loading = false;
@@ -40,8 +57,12 @@ export class SalonDetailComponent implements OnInit {
     });
   }
 
+  // kept for compatibility (not used by loadSalon)
   loadServices(salonId: string) {
-    this.serviceService.getServices(salonId).subscribe({ next: (services: any) => (this.services = services) });
+    this.serviceService.getServices(salonId).subscribe({ next: (services: any) => {
+      this.services = services;
+      console.log('Services loaded (helper):', this.services);
+    }});
   }
 
   openBookingDialog() {
