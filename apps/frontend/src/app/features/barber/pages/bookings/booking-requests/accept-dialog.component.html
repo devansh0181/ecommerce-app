@@ -1,0 +1,30 @@
+<div class="dialog-shell">
+  <h2>Confirm booking acceptance</h2>
+  <p class="dialog-copy">
+    Accepting this request will move the customer into the active salon queue.
+  </p>
+
+  <div class="details-grid">
+    <div>
+      <span>Customer</span>
+      <p>{{ booking.customer?.firstName }} {{ booking.customer?.lastName }}</p>
+    </div>
+    <div>
+      <span>Preferred time</span>
+      <p>{{ booking.preferredTime | date:'medium' }}</p>
+    </div>
+    <div>
+      <span>Price</span>
+      <p>{{ booking.totalPrice | currency:'USD':'symbol':'1.0-0' }}</p>
+    </div>
+    <div>
+      <span>Services</span>
+      <p>{{ serviceNames }}</p>
+    </div>
+  </div>
+
+  <div class="dialog-actions">
+    <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
+    <button class="btn btn-primary" type="button" (click)="onConfirm()">Confirm accept</button>
+  </div>
+</div>

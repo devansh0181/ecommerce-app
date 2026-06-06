@@ -1,0 +1,157 @@
+.queue-item-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.queue-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
+}
+
+.queue-item-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.position-badge {
+  min-width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-content: center;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #4338ca 0%, #8b5cf6 100%);
+  color: white;
+  font-weight: 800;
+}
+
+.customer-block {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.customer-block strong {
+  display: block;
+  font-size: 1rem;
+  color: #111827;
+}
+
+.customer-block span {
+  font-size: 0.92rem;
+  color: #6b7280;
+}
+
+.status-tag {
+  margin-left: auto;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-tag--pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-tag--accepted {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-tag--active {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-tag--completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-tag--rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-tag--default {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.queue-item-body {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.queue-item-body div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.queue-item-body span {
+  color: #6b7280;
+  font-size: 0.77rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.queue-item-body p {
+  margin: 0;
+  color: #111827;
+  font-size: 0.96rem;
+}
+
+.queue-item-actions {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.btn {
+  border: none;
+  border-radius: 0.85rem;
+  padding: 0.95rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-success {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btn-outline {
+  background: #f8fafc;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: #ffffff;
+}

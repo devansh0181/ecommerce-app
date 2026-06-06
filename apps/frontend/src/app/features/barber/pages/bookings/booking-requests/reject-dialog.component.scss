@@ -1,0 +1,80 @@
+.dialog-shell {
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.dialog-copy {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.details-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.details-grid div {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.details-grid span {
+  color: #6b7280;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.details-grid p {
+  margin: 0;
+  color: #111827;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.reason-label {
+  font-weight: 700;
+  color: #111827;
+}
+
+.reason-input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 0.85rem;
+  padding: 1rem;
+  min-height: 140px;
+  resize: vertical;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: none;
+  border-radius: 0.85rem;
+  padding: 0.9rem 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

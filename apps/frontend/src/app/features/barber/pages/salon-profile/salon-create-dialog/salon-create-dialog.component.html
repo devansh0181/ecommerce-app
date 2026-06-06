@@ -1,0 +1,50 @@
+<div class="salon-create-dialog">
+  <div class="dialog-header">
+    <div class="header-text">
+      <p class="eyebrow">New Salon</p>
+      <h2>Create Your Salon</h2>
+    </div>
+    <button type="button" class="close-button" (click)="close()" aria-label="Close dialog">
+      ✕
+    </button>
+  </div>
+
+  <form [formGroup]="salonForm" (ngSubmit)="submit()" class="salon-form">
+    <div class="field-group">
+      <label for="salon-name">Salon Name</label>
+      <input id="salon-name" type="text" formControlName="name" placeholder="e.g. Luxury Cuts Salon" />
+      <p class="field-error" *ngIf="name?.invalid && name?.touched">
+        {{ name?.hasError('required') ? 'Salon name is required.' : 'Minimum 3 characters required.' }}
+      </p>
+    </div>
+
+    <div class="field-group">
+      <label for="salon-phone">Phone Number</label>
+      <input id="salon-phone" type="tel" formControlName="phone" placeholder="+1 234 567 890" />
+      <p class="field-error" *ngIf="phone?.invalid && phone?.touched">
+        Phone number is required.
+      </p>
+    </div>
+
+    <div class="field-group">
+      <label for="salon-description">Description</label>
+      <textarea id="salon-description" rows="3" formControlName="description" placeholder="Describe your salon's vibe and services..."></textarea>
+      <p class="field-hint">Up to 500 characters.</p>
+    </div>
+
+    <div class="field-group">
+      <label for="salon-address">Address</label>
+      <input id="salon-address" type="text" formControlName="address" placeholder="Street, City, Zip Code" />
+      <p class="field-error" *ngIf="address?.invalid && address?.touched">
+        {{ address?.hasError('required') ? 'Address is required.' : 'Minimum 5 characters required.' }}
+      </p>
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="salonForm.invalid || saving">
+        {{ saving ? 'Creating...' : 'Create Salon' }}
+      </button>
+    </div>
+  </form>
+</div>

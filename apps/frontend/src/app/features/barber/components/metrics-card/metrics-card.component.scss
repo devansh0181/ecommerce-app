@@ -1,0 +1,8 @@
+.metrics-card { display:flex; align-items:center; gap:1rem; padding:1rem; background:#fff; border-radius:0.75rem; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+.card-icon { font-size:1.6rem; width:40px; height:40px; display:grid; place-items:center; border-radius:999px; background:linear-gradient(90deg,#7c3aed,#a78bfa); color:white; }
+.card-body { flex:1 }
+.label { margin:0; color:#6b7280; font-weight:600 }
+.value { margin:0; font-weight:800; font-size:1.4rem }
+.trend { font-weight:700 }
+.trend.up { color: #16a34a }
+.trend.down { color: #dc2626 }

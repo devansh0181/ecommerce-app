@@ -1,0 +1,68 @@
+<section class="info-section">
+  <div class="section-header">
+    <h2 class="section-title">Salon Information</h2>
+    <button class="btn btn-secondary" type="button" (click)="toggleEdit()" [disabled]="saving">
+      {{ isEditing ? 'Cancel' : 'Edit Profile' }}
+    </button>
+  </div>
+
+  <div *ngIf="!isEditing" class="info-display">
+    <div class="info-grid">
+      <div class="info-group">
+        <label>Salon Name</label>
+        <p class="info-value">{{ salon.name }}</p>
+      </div>
+      <div class="info-group">
+        <label>Phone Number</label>
+        <p class="info-value">{{ salon.phone || 'Not provided' }}</p>
+      </div>
+      <div class="info-group full-width">
+        <label>Description</label>
+        <p class="info-value">{{ salon.description || 'No description provided.' }}</p>
+      </div>
+      <div class="info-group full-width">
+        <label>Address</label>
+        <p class="info-value">{{ salon.address }}</p>
+      </div>
+    </div>
+  </div>
+
+  <form *ngIf="isEditing" [formGroup]="infoForm" (ngSubmit)="saveChanges()" class="info-form">
+    <div class="form-group">
+      <label for="salon-name">Salon Name</label>
+      <input id="salon-name" type="text" formControlName="name" placeholder="Enter salon name" />
+      <p class="error" *ngIf="name?.invalid && name?.touched">
+        {{ name?.hasError('required') ? 'Salon name is required.' : name?.hasError('minlength') ? 'Minimum 3 characters.' : 'Maximum 100 characters.' }}
+      </p>
+    </div>
+
+    <div class="form-group">
+      <label for="salon-phone">Phone Number</label>
+      <input id="salon-phone" type="tel" formControlName="phone" placeholder="+1 234 567 890" />
+      <p class="error" *ngIf="infoForm.get('phone')?.invalid && infoForm.get('phone')?.touched">
+        Phone number is required.
+      </p>
+    </div>
+
+    <div class="form-group">
+      <label for="salon-description">Description</label>
+      <textarea id="salon-description" rows="3" formControlName="description" placeholder="Describe your salon"></textarea>
+      <p class="hint">Maximum 500 characters.</p>
+    </div>
+
+    <div class="form-group">
+      <label for="salon-address">Address</label>
+      <input id="salon-address" type="text" formControlName="address" placeholder="Enter salon address" />
+      <p class="error" *ngIf="address?.invalid && address?.touched">
+        {{ address?.hasError('required') ? 'Address is required.' : address?.hasError('minlength') ? 'Minimum 5 characters.' : 'Maximum 200 characters.' }}
+      </p>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="toggleEdit()" [disabled]="saving">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="infoForm.invalid || saving">
+        {{ saving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,30 @@
+.queue-summary-card {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.05);
+}
+
+.summary-title {
+  margin: 0;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+}
+
+.queue-summary-card h2 {
+  margin: 0.5rem 0 0;
+  font-size: 1.8rem;
+  color: #111827;
+}
+
+@media (max-width: 800px) {
+  .queue-summary-card {
+    grid-template-columns: 1fr;
+  }
+}

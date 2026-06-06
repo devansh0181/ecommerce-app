@@ -1,0 +1,70 @@
+<section class="queue-view-page">
+  <header class="queue-header">
+    <div>
+      <h1>Queue Management</h1>
+      <p class="subtitle">Keep the barbershop flow moving with real-time queue control.</p>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-secondary" type="button" (click)="refresh()" [disabled]="loading">
+        Refresh
+      </button>
+      <button class="btn btn-outline" type="button" (click)="toggleAutoRefresh()">
+        Auto-refresh: {{ autoRefresh ? 'On' : 'Off' }}
+      </button>
+    </div>
+  </header>
+
+  <app-queue-summary
+    [total]="bookings.length"
+    [estimatedMinutes]="queueEstimatedMinutes"
+    [averageMinutes]="averageDurationMinutes"
+  ></app-queue-summary>
+
+  <div *ngIf="loading" class="loading-state">
+    <p>Loading queue...</p>
+  </div>
+
+  <div *ngIf="!loading && error" class="alert alert-error">
+    <p>{{ error }}</p>
+    <button class="btn btn-retry" type="button" (click)="refresh()">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <section *ngIf="currentService" class="current-service-card">
+      <div>
+        <span class="current-label">Now serving</span>
+        <h2>{{ currentService.customer?.firstName }} {{ currentService.customer?.lastName }}</h2>
+        <p>{{ currentServiceServiceNames }}</p>
+      </div>
+      <div class="current-actions">
+        <button
+          class="btn btn-primary"
+          type="button"
+          [disabled]="actionPendingId === currentService.id"
+          (click)="handleCompleteService(currentService)"
+        >
+          Complete Service
+        </button>
+      </div>
+    </section>
+
+    <div *ngIf="!upcomingQueue.length && !currentService" class="empty-state">
+      <h2>No customers in queue</h2>
+      <p>Once customers start requesting service, they will appear here for management.</p>
+    </div>
+
+    <div *ngIf="upcomingQueue.length" class="queue-list">
+      <app-queue-item
+        *ngFor="let booking of upcomingQueue; let i = index"
+        [booking]="booking"
+        [position]="i + 1"
+        [disabled]="actionPendingId === booking.id"
+        (startService)="handleStartService($event)"
+        (completeService)="handleCompleteService($event)"
+        (reschedule)="handleReschedule($event)"
+        (cancel)="handleCancel($event)"
+      ></app-queue-item>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,11 @@
+<div class="salon-status">
+  <div class="status-row">
+    <div class="status-label">
+      Status: <strong>{{ isOpen ? 'Open' : 'Closed' }}</strong>
+    </div>
+    <button class="toggle-button" [disabled]="disabled" (click)="toggle.emit()">
+      {{ isOpen ? 'Close' : 'Open' }}
+    </button>
+  </div>
+  <div *ngIf="lastUpdated" class="last-updated">Last updated: {{ lastUpdated }}</div>
+</div>

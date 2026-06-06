@@ -1,0 +1,50 @@
+<article class="queue-item-card">
+  <div class="queue-item-header">
+    <div class="position-badge">#{{ position }}</div>
+    <div class="customer-block">
+      <strong>{{ customerName }}</strong>
+      <span>{{ booking?.customer?.email || 'No email provided' }}</span>
+    </div>
+    <span class="status-tag" [ngClass]="statusClass">{{ booking?.status }}</span>
+  </div>
+
+  <div class="queue-item-body">
+    <div>
+      <span>Services</span>
+      <p>{{ serviceNames }}</p>
+    </div>
+    <div>
+      <span>Duration</span>
+      <p>{{ durationLabel }}</p>
+    </div>
+    <div>
+      <span>Preferred time</span>
+      <p>{{ booking?.preferredTime | date:'short' }}</p>
+    </div>
+  </div>
+
+  <div class="queue-item-actions">
+    <button
+      class="btn btn-success"
+      type="button"
+      [disabled]="disabled || booking?.status !== 'ACCEPTED'"
+      (click)="onStart()"
+    >
+      Start Service
+    </button>
+    <button
+      class="btn btn-primary"
+      type="button"
+      [disabled]="disabled || booking?.status !== 'IN_PROGRESS'"
+      (click)="onComplete()"
+    >
+      Complete
+    </button>
+    <button class="btn btn-outline" type="button" [disabled]="disabled" (click)="onReschedule()">
+      Reschedule
+    </button>
+    <button class="btn btn-danger" type="button" [disabled]="disabled" (click)="onCancel()">
+      Cancel
+    </button>
+  </div>
+</article>

@@ -1,0 +1,42 @@
+<section class="barber-dashboard">
+  <header class="dashboard-header">
+    <div>
+      <h1>Good day — Barber</h1>
+      <p class="muted">Overview of today's salon activity</p>
+      <p class="salon-summary">Salon status is currently <strong>{{ salon?.isOpen ? 'Open' : 'Closed' }}</strong>.</p>
+    </div>
+
+    <app-salon-status-toggle
+      [isOpen]="salon?.isOpen ?? false"
+      [lastUpdated]="salonLastUpdated"
+      [disabled]="statusTogglePending"
+      (toggle)="handleStatusToggle()"
+    ></app-salon-status-toggle>
+  </header>
+
+  <nav class="dashboard-actions" *ngIf="!loading">
+    <a class="action-button" *ngFor="let action of actionItems" [routerLink]="action.route">
+      <span class="action-icon">{{ action.icon }}</span>
+      <div>
+        <strong>{{ action.label }}</strong>
+        <p class="action-description">{{ action.description }}</p>
+      </div>
+    </a>
+  </nav>
+
+  <div class="metrics-grid">
+    <app-metrics-card label="Today's Bookings" [value]="todaysBookings" trend="up" icon="📅"></app-metrics-card>
+    <app-metrics-card label="Queue Length" [value]="queueLength" icon="🧾"></app-metrics-card>
+    <app-metrics-card label="Completed Today" [value]="completedToday" icon="✅"></app-metrics-card>
+    <app-metrics-card label="Average Rating" [value]="averageRating ?? '—'" icon="★"></app-metrics-card>
+  </div>
+
+  <div class="content-grid">
+    <div class="left">
+      <app-schedule-timeline [items]="scheduleItems"></app-schedule-timeline>
+    </div>
+    <aside class="right">
+      <app-activity-feed [activities]="activities"></app-activity-feed>
+    </aside>
+  </div>
+</section>

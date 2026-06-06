@@ -1,0 +1,37 @@
+<div class="dialog-shell">
+  <h2>Reject booking request</h2>
+  <p class="dialog-copy">
+    Provide a reason for rejection so the customer understands why the request could not be accepted.
+  </p>
+
+  <div class="details-grid">
+    <div>
+      <span>Customer</span>
+      <p>{{ booking.customer?.firstName }} {{ booking.customer?.lastName }}</p>
+    </div>
+    <div>
+      <span>Preferred time</span>
+      <p>{{ booking.preferredTime | date:'medium' }}</p>
+    </div>
+    <div>
+      <span>Services</span>
+      <p>{{ serviceNames }}</p>
+    </div>
+  </div>
+
+  <label class="reason-label" for="rejectReason">Rejection reason</label>
+  <textarea
+    id="rejectReason"
+    rows="5"
+    class="reason-input"
+    [(ngModel)]="reason"
+    placeholder="Enter the reason for rejecting this request"
+  ></textarea>
+
+  <div class="dialog-actions">
+    <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
+    <button class="btn btn-danger" type="button" [disabled]="!reason.trim()" (click)="onConfirm()">
+      Send rejection
+    </button>
+  </div>
+</div>

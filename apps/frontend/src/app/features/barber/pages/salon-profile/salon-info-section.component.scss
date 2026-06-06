@@ -1,0 +1,181 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.info-section {
+  display: grid;
+  gap: 24px;
+  padding: 32px;
+  border-radius: $border-radius-2xl;
+  background: $bg-primary;
+  border: 1px solid $color-border;
+  box-shadow: $shadow-sm;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-dark;
+}
+
+.info-display {
+  display: grid;
+  gap: 24px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.info-group {
+  display: grid;
+  gap: 6px;
+}
+
+.info-group.full-width {
+  grid-column: span 2;
+}
+
+.info-group label {
+  font-weight: $font-weight-medium;
+  color: $color-text-muted;
+  font-size: $font-size-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.info-value {
+  margin: 0;
+  color: $color-text;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  line-height: 1.5;
+}
+
+.info-form {
+  display: grid;
+  gap: 20px;
+}
+
+.form-group {
+  display: grid;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: $font-weight-semibold;
+  color: $color-dark;
+  font-size: $font-size-sm;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-xl;
+  padding: 12px 14px;
+  background: $bg-primary;
+  color: $color-text;
+  font-size: $font-size-base;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-purple;
+    box-shadow: 0 0 0 3px rgba($primary-purple, 0.15);
+  }
+}
+
+.error,
+.hint {
+  margin: 0;
+  font-size: $font-size-xs;
+}
+
+.error {
+  color: $danger-red;
+  font-weight: $font-weight-medium;
+}
+
+.hint {
+  color: $color-text-muted;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 20px;
+  margin-top: 8px;
+  border-top: 1px solid $color-border;
+}
+
+.btn {
+  border: none;
+  border-radius: $border-radius-full;
+  padding: 12px 24px;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  transition: all $transition-fast;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: $primary-gradient;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba($primary-purple-dark, 0.2);
+
+  &:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+
+  &:disabled {
+    background: $color-border;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+
+.btn-secondary {
+  background: $bg-secondary;
+  color: $color-text;
+  border: 1px solid $color-border;
+
+  &:hover {
+    background: $bg-tertiary;
+    border-color: $color-text-secondary;
+  }
+}
+
+@media (max-width: 680px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  .info-group.full-width {
+    grid-column: span 1;
+  }
+  .info-section {
+    padding: 20px;
+  }
+  .form-actions {
+    justify-content: stretch;
+    .btn {
+      width: 100%;
+    }
+  }
+}

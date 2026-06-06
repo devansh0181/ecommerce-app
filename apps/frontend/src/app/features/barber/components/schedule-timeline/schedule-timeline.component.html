@@ -1,0 +1,14 @@
+<article class="timeline">
+  <div class="timeline-heading">
+    <h2>Today's schedule</h2>
+  </div>
+  <div class="timeline-list">
+    <div *ngFor="let it of items" class="timeline-item">
+      <div class="time">{{ it.time }}</div>
+      <div class="details">
+        <div class="customer">{{ it.customer }}</div>
+        <div class="service">{{ it.service }}</div>
+      </div>
+    </div>
+  </div>
+</article>

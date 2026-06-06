@@ -1,0 +1,8 @@
+<article class="metrics-card">
+  <div class="card-icon">{{ icon }}</div>
+  <div class="card-body">
+    <p class="label">{{ label }}</p>
+    <p class="value">{{ value }}</p>
+  </div>
+  <div *ngIf="trend" class="trend" [class.up]="trend==='up'" [class.down]="trend==='down'">{{ trend === 'up' ? '↑' : '↓' }}</div>
+</article>

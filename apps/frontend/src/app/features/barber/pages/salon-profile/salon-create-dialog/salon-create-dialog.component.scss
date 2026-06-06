@@ -1,0 +1,159 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+.salon-create-dialog {
+  display: grid;
+  gap: 24px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid $color-border;
+  padding: 24px 24px 20px;
+}
+
+.header-text {
+  display: grid;
+  gap: 4px;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: $font-size-xs;
+  letter-spacing: 0.14em;
+  color: $color-text-muted;
+  font-weight: $font-weight-medium;
+}
+
+h2 {
+  margin: 0;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $color-dark;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: $color-text-muted;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-radius-sm;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $bg-secondary;
+    color: $color-text;
+  }
+}
+
+.salon-form {
+  display: grid;
+  gap: 20px;
+  padding: 0 24px 24px;
+}
+
+.field-group {
+  display: grid;
+  gap: 8px;
+}
+
+.field-group label {
+  font-weight: $font-weight-semibold;
+  color: $color-dark;
+  font-size: $font-size-sm;
+}
+
+.field-group input,
+.field-group textarea {
+  width: 100%;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-xl;
+  padding: 12px 14px;
+  background: $bg-primary;
+  color: $color-text;
+  font-size: $font-size-base;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-purple;
+    box-shadow: 0 0 0 3px rgba($primary-purple, 0.15);
+  }
+}
+
+.field-error {
+  margin: 0;
+  font-size: $font-size-xs;
+  color: $danger-red;
+  font-weight: $font-weight-medium;
+}
+
+.field-hint {
+  margin: 0;
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+}
+
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 12px;
+  padding-top: 24px;
+  border-top: 1px solid $color-border;
+}
+
+.btn {
+  border: none;
+  border-radius: $border-radius-md;
+  padding: 12px 24px;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  transition: all $transition-fast;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: $primary-gradient;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba($primary-purple-dark, 0.2);
+
+  &:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+
+  &:disabled {
+    background: $color-border;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+
+.btn-secondary {
+  background: $bg-secondary;
+  color: $color-text;
+  border: 1px solid $color-border;
+
+  &:hover {
+    background: $bg-tertiary;
+    border-color: $color-text-secondary;
+  }
+}

@@ -1,0 +1,202 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.hours-section {
+  display: grid;
+  gap: 24px;
+  padding: 32px;
+  border-radius: $border-radius-2xl;
+  background: $bg-primary;
+  border: 1px solid $color-border;
+  box-shadow: $shadow-sm;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-dark;
+}
+
+.hours-loading,
+.hours-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  border-radius: $border-radius-xl;
+  background: $bg-secondary;
+  color: $color-text-secondary;
+  border: 2px dashed $color-border;
+  gap: 16px;
+  text-align: center;
+}
+
+.hours-form {
+  display: grid;
+  gap: 24px;
+}
+
+.hours-table-wrapper {
+  overflow-x: auto;
+  border-radius: $border-radius-xl;
+  border: 1px solid $color-border;
+  background: $bg-primary;
+}
+
+.hours-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: $bg-primary;
+}
+
+.hours-table thead {
+  background: $bg-secondary;
+  border-bottom: 1px solid $color-border;
+}
+
+.hours-table th {
+  padding: 16px;
+  text-align: left;
+  font-weight: $font-weight-semibold;
+  color: $color-text-secondary;
+  font-size: $font-size-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hours-table td {
+  padding: 16px;
+  border-bottom: 1px solid $color-border;
+}
+
+.hours-table tbody tr:hover {
+  background: rgba($primary-purple, 0.03);
+}
+
+.day-cell {
+  font-weight: $font-weight-semibold;
+  color: $color-dark;
+  min-width: 120px;
+}
+
+.time-input {
+  width: 100%;
+  max-width: 140px;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  padding: 8px 12px;
+  background: $bg-primary;
+  color: $color-text;
+  font-size: $font-size-sm;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-purple;
+    box-shadow: 0 0 0 3px rgba($primary-purple, 0.15);
+  }
+}
+
+.time-input:disabled {
+  background: $bg-secondary;
+  color: $color-text-muted;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.closed-cell {
+  text-align: center;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: $font-weight-medium;
+  color: $color-text;
+  font-size: $font-size-sm;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $primary-purple;
+  }
+
+  input[type='checkbox'] {
+    width: 18px;
+    height: 18px;
+    accent-color: $primary-purple;
+    cursor: pointer;
+  }
+}
+
+.btn {
+  border: none;
+  border-radius: $border-radius-full;
+  padding: 12px 24px;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  transition: all $transition-fast;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: $primary-gradient;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba($primary-purple-dark, 0.2);
+
+  &:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+
+  &:disabled {
+    background: $color-border;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+
+.btn-secondary {
+  background: $bg-secondary;
+  color: $color-text;
+  border: 1px solid $color-border;
+
+  &:hover {
+    background: $bg-tertiary;
+    border-color: $color-text-secondary;
+  }
+}
+
+@media (max-width: 850px) {
+  .hours-section {
+    padding: 20px;
+  }
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hours-table-wrapper {
+    font-size: $font-size-xs;
+  }
+  .hours-table th,
+  .hours-table td {
+    padding: 12px;
+  }
+  .time-input {
+    max-width: 100%;
+  }
+}

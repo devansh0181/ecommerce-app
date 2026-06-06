@@ -1,0 +1,62 @@
+<div class="service-dialog">
+  <div class="dialog-header">
+    <div class="header-text">
+      <p class="eyebrow">{{ isEditMode ? 'Edit service' : 'Add new service' }}</p>
+      <h2>{{ isEditMode ? data.service?.name : 'Create a new service' }}</h2>
+    </div>
+    <button type="button" class="close-button" (click)="close()" aria-label="Close dialog">
+      ✕
+    </button>
+  </div>
+
+  <form [formGroup]="serviceForm" (ngSubmit)="submit()" class="service-form">
+    <div class="field-group">
+      <label for="service-name">Service name</label>
+      <input id="service-name" type="text" formControlName="name" placeholder="Enter service name" />
+      <p class="field-error" *ngIf="name?.invalid && name?.touched">
+        {{ name?.hasError('required') ? 'Service name is required.' : 'Maximum 80 characters allowed.' }}
+      </p>
+    </div>
+
+    <div class="field-group">
+      <label for="service-description">Description</label>
+      <textarea id="service-description" rows="3" formControlName="description" placeholder="Describe this service"></textarea>
+      <p class="field-hint">Optional, up to 240 characters.</p>
+    </div>
+
+    <div class="field-grid">
+      <div class="field-group">
+        <label for="service-price">Price</label>
+        <input id="service-price" type="number" formControlName="price" min="0.5" step="0.5" placeholder="0.00" />
+        <p class="field-error" *ngIf="price?.invalid && price?.touched">
+          {{ price?.hasError('required') ? 'Price is required.' : 'Enter a price of at least 0.50.' }}
+        </p>
+      </div>
+
+      <div class="field-group">
+        <label for="service-duration">Duration (minutes)</label>
+        <input id="service-duration" type="number" formControlName="durationMinutes" min="5" step="5" placeholder="30" />
+        <p class="field-error" *ngIf="durationMinutes?.invalid && durationMinutes?.touched">
+          {{ durationMinutes?.hasError('required') ? 'Duration is required.' : 'Enter a duration of 5 minutes or more.' }}
+        </p>
+      </div>
+    </div>
+
+    <div class="field-group checkbox-group">
+      <label>
+        <input type="checkbox" formControlName="isActive" />
+        <span>Active service</span>
+      </label>
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="serviceForm.invalid || saving">
+        {{ isEditMode ? 'Save changes' : 'Create service' }}
+      </button>
+      <button *ngIf="isEditMode" type="button" class="btn btn-danger" (click)="confirmDelete()" [disabled]="saving">
+        Delete service
+      </button>
+    </div>
+  </form>
+</div>

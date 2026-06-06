@@ -1,0 +1,46 @@
+<article class="request-card">
+  <div class="request-card__header">
+    <div class="avatar">{{ initials }}</div>
+    <div class="customer-info">
+      <div class="customer-name">{{ customerName }}</div>
+      <div class="customer-phone">{{ customerPhone }}</div>
+    </div>
+    <span class="status-pill" [ngClass]="'status-pill--' + (booking?.status?.toLowerCase() || 'default')">
+      {{ booking?.status || 'Unknown' }}
+    </span>
+  </div>
+
+  <div class="request-card__body">
+    <div class="request-meta">
+      <span class="meta-label">Services</span>
+      <p>{{ serviceNames }}</p>
+    </div>
+    <div class="request-meta">
+      <span class="meta-label">Preferred time</span>
+      <p>{{ preferredTime }}</p>
+    </div>
+    <div class="request-meta">
+      <span class="meta-label">Price</span>
+      <p>{{ booking?.totalPrice | currency:'USD':'symbol':'1.0-0' }}</p>
+    </div>
+  </div>
+
+  <div class="request-card__footer">
+    <button
+      type="button"
+      class="btn btn-accept"
+      [disabled]="disabled || booking?.status !== 'PENDING'"
+      (click)="onAccept()"
+    >
+      Accept
+    </button>
+    <button
+      type="button"
+      class="btn btn-reject"
+      [disabled]="disabled || booking?.status !== 'PENDING'"
+      (click)="onReject()"
+    >
+      Reject
+    </button>
+  </div>
+</article>

@@ -1,0 +1,9 @@
+<article class="activity-feed">
+  <div class="feed-heading"><h2>Recent activity</h2></div>
+  <ul>
+    <li *ngFor="let a of activities">
+      <div class="message">{{ a.message }}</div>
+      <div class="time">{{ a.time }}</div>
+    </li>
+  </ul>
+</article>
