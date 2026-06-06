@@ -1,0 +1,27 @@
+<article class="queue-card">
+  <div class="queue-card__header">
+    <div>
+      <p class="label">Queue position</p>
+      <p class="position-number" [class.completed]="completionState">{{ queuePosition?.position ?? '-' }}</p>
+    </div>
+    <button type="button" class="refresh-button" (click)="onRefresh()" [disabled]="loading">
+      {{ loading ? 'Refreshing...' : 'Refresh' }}
+    </button>
+  </div>
+
+  <div *ngIf="error && !loading" class="queue-error">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!error" class="queue-body">
+      <p class="queue-status">{{ queuePosition | queueMessage }}</p>
+    <p class="queue-ahead" *ngIf="queuePosition">{{ queuePosition.bookingsAhead }} {{ queuePosition.bookingsAhead === 1 ? 'customer ahead' : 'customers ahead' }}</p>
+
+    <div class="queue-footer">
+      <button type="button" class="toggle-button" (click)="onToggleAutoRefresh()">
+        {{ autoRefresh ? 'Pause auto-refresh' : 'Enable auto-refresh' }}
+      </button>
+      <span class="last-updated">Last updated {{ lastUpdatedLabel }}</span>
+    </div>
+  </div>
+</article>

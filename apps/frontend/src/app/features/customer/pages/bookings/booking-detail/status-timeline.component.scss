@@ -1,0 +1,76 @@
+.timeline-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+}
+
+.timeline-list {
+  position: relative;
+  display: grid;
+  gap: 1.3rem;
+  margin-top: 1rem;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 14px;
+  top: 1.5rem;
+  bottom: 0;
+  width: 2px;
+  background: #e5e7eb;
+}
+
+.timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  padding-left: 2rem;
+}
+
+.timeline-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #d1d5db;
+  background: white;
+  color: transparent;
+  font-weight: 700;
+}
+
+.timeline-marker.completed {
+  background: #d1fae5;
+  border-color: #22c55e;
+  color: #166534;
+}
+
+.timeline-marker.current {
+  background: #e0f2fe;
+  border-color: #0284c7;
+  color: #0284c7;
+}
+
+.timeline-marker.pending {
+  background: white;
+  border-color: #d1d5db;
+}
+
+.timeline-content {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.timeline-label {
+  margin: 0;
+  font-weight: 700;
+  color: #111827;
+}
+
+.timeline-time {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.95rem;
+}

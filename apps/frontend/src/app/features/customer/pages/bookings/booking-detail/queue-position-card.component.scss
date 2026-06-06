@@ -1,0 +1,86 @@
+.queue-card {
+  background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid #dbeafe;
+}
+
+.queue-loading,
+.queue-error,
+.queue-content {
+  display: grid;
+  gap: 1rem;
+}
+
+.card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.queue-number {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #1d4ed8;
+}
+
+.queue-status {
+  margin: 0;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.queue-wait,
+.queue-ahead {
+  margin: 0;
+  color: #475569;
+}
+
+.queue-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.toggle-button,
+.secondary-button,
+.refresh-icon {
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  padding: 0.8rem 1rem;
+  font-weight: 700;
+}
+
+.toggle-button {
+  background: #1d4ed8;
+  color: white;
+}
+
+.last-updated {
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.refresh-icon {
+  background: #ffffff;
+  color: #1d4ed8;
+  width: 2.8rem;
+  height: 2.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+@media (max-width: 640px) {
+  .queue-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

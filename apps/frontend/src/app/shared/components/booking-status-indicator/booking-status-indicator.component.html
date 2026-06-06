@@ -1,0 +1,4 @@
+<div class="booking-status-indicator" [class.compact]="compact">
+  <span class="status-pill" [ngClass]="statusClass">{{ status | bookingStatus }}</span>
+  <p *ngIf="!compact" class="status-description">{{ statusDescription }}</p>
+</div>

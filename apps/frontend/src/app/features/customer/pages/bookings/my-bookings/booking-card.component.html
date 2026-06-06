@@ -1,0 +1,28 @@
+<article
+  class="booking-card"
+  role="button"
+  tabindex="0"
+  aria-label="View booking details"
+  (click)="onOpen()"
+>
+  <div class="booking-card__header">
+    <div>
+      <p class="booking-card__salon">{{ booking.salon?.name || 'Salon unavailable' }}</p>
+      <p class="booking-card__address">{{ booking.salon?.address || 'Address unavailable' }}</p>
+    </div>
+    <app-booking-status-indicator [status]="booking.status" [compact]="true"></app-booking-status-indicator>
+  </div>
+
+  <div class="booking-card__meta">
+    <p class="booking-card__services">{{ serviceNames }}</p>
+    <div class="booking-card__details">
+      <span>{{ booking.preferredTime | date: 'MMM d, y' }}</span>
+      <span>{{ booking.preferredTime | date: 'h:mm a' }}</span>
+    </div>
+  </div>
+
+  <div class="booking-card__footer">
+    <span class="price">{{ booking.totalPrice | formatPrice }}</span>
+    <span class="duration">{{ booking.totalDurationMinutes | formatDuration }}</span>
+  </div>
+</article>

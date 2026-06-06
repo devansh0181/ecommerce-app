@@ -1,0 +1,62 @@
+<section class="my-bookings-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Your bookings</p>
+      <h1>My Bookings</h1>
+      <p class="subtitle">{{ filteredBookings.length }} {{ filteredBookings.length === 1 ? 'booking' : 'bookings' }} found</p>
+    </div>
+
+    <button
+      type="button"
+      class="refresh-button"
+      (click)="reloadBookings()"
+      [disabled]="loading"
+    >
+      {{ loading ? 'Refreshing...' : 'Refresh' }}
+    </button>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Booking filters">
+    <button
+      *ngFor="let tab of tabs"
+      type="button"
+      class="tab-button"
+      [class.active]="selectedTab === tab.value"
+      (click)="onSelectTab(tab.value)"
+      [attr.aria-selected]="selectedTab === tab.value"
+      role="tab"
+    >
+      {{ tab.label }}
+    </button>
+  </nav>
+
+  <div class="content">
+    <div *ngIf="error && !loading" class="message-box message-box--error">
+      <p>Unable to load bookings. {{ error }}</p>
+      <button type="button" class="secondary-button" (click)="reloadBookings()">Try again</button>
+    </div>
+
+    <div *ngIf="loading" class="skeleton-grid">
+      <article class="skeleton-card" *ngFor="let item of skeletonItems">
+        <div class="skeleton-line skeleton-line--header"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line skeleton-line--footer"></div>
+      </article>
+    </div>
+
+    <div *ngIf="!loading && !error && filteredBookings.length > 0" class="bookings-grid">
+      <app-booking-card
+        *ngFor="let booking of filteredBookings; trackBy: trackByBooking"
+        [booking]="booking"
+        (viewBooking)="openBooking($event)"
+      ></app-booking-card>
+    </div>
+
+    <div *ngIf="!loading && !error && filteredBookings.length === 0" class="empty-state">
+      <div class="empty-icon">📭</div>
+      <h2>No bookings found</h2>
+      <p>Any confirmed bookings will appear here. Use the salon discovery flow to create a new booking.</p>
+    </div>
+  </div>
+</section>

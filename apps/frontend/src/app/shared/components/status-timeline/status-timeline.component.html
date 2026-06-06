@@ -1,0 +1,18 @@
+<article class="timeline-card">
+  <div class="card-heading">
+    <h2>Booking timeline</h2>
+  </div>
+
+  <div class="timeline-list">
+    <div class="timeline-line"></div>
+    <div *ngFor="let step of steps; let idx = index" class="timeline-item">
+      <div class="timeline-marker" [ngClass]="step.state">
+        <span *ngIf="step.state === 'completed'">✓</span>
+      </div>
+      <div class="timeline-content">
+        <p class="timeline-label">{{ step.label }}</p>
+        <p class="timeline-time">{{ step.timestamp ? (step.timestamp | date: 'medium') : 'Pending' }}</p>
+      </div>
+    </div>
+  </div>
+</article>

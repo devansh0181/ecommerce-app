@@ -1,0 +1,111 @@
+<section class="booking-detail-page">
+  <div *ngIf="loading" class="loading-shell">
+    <div class="loading-card"></div>
+    <div class="loading-card"></div>
+  </div>
+
+  <div *ngIf="bookingError && !loading" class="error-block">
+    <p>Unable to load booking details.</p>
+    <p class="error-message">{{ bookingError }}</p>
+    <button type="button" class="secondary-button" (click)="loadBooking()">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && booking" class="booking-detail-wrapper">
+    <header class="detail-header">
+      <button type="button" class="back-button" (click)="goBack()">← Back</button>
+      <div>
+        <p class="booking-id">Booking ID: <span>{{ booking.id }}</span></p>
+        <h1>{{ booking.salon?.name || 'Salon Booking' }}</h1>
+      </div>
+      <app-booking-status-indicator [status]="booking.status" [compact]="true"></app-booking-status-indicator>
+    </header>
+
+    <div class="grid-layout">
+      <section class="main-column">
+        <article class="card booking-summary-card">
+          <div class="card-heading">
+            <h2>Booking overview</h2>
+            <p>{{ booking.createdAt | date: 'medium' }}</p>
+          </div>
+          <div class="booking-meta-grid">
+            <div>
+              <h3>Preferred time</h3>
+              <p>{{ booking.preferredTime | date: 'fullDate' }} · {{ booking.preferredTime | date: 'h:mm a' }}</p>
+            </div>
+            <div>
+              <h3>Total duration</h3>
+              <p>{{ booking.totalDurationMinutes | formatDuration }}</p>
+            </div>
+            <div>
+              <h3>Total price</h3>
+              <p>{{ booking.totalPrice | formatPrice }}</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card salon-card">
+          <div class="card-heading">
+            <h2>Salon details</h2>
+          </div>
+          <div class="salon-info">
+            <p class="salon-name">{{ booking.salon?.name || 'Salon unavailable' }}</p>
+            <p class="salon-address">{{ booking.salon?.address || 'Address unavailable' }}</p>
+            <p class="salon-contact">Phone: Not available</p>
+            <p class="salon-map">Map link coming soon</p>
+          </div>
+        </article>
+
+        <article class="card services-card">
+          <div class="card-heading">
+            <h2>Services booked</h2>
+          </div>
+          <div class="services-list">
+            <div class="service-row" *ngFor="let service of booking.bookingServices || []; trackBy: trackByService">
+              <div>
+                <p class="service-name">{{ service.service?.name || 'Service' }}</p>
+                <p class="service-meta">{{ service.durationAtBooking | formatDuration }}</p>
+              </div>
+              <p class="service-price">{{ service.priceAtBooking | formatPrice }}</p>
+            </div>
+          </div>
+          <div class="service-total">
+            <span>Total</span>
+            <span>{{ booking.totalPrice | formatPrice }}</span>
+          </div>
+        </article>
+
+        <app-status-timeline [steps]="timelineSteps"></app-status-timeline>
+      </section>
+
+      <aside class="side-column">
+        <article class="card status-card">
+          <div class="card-heading">
+            <h2>Current status</h2>
+          </div>
+          <app-booking-status-indicator [status]="booking.status"></app-booking-status-indicator>
+          <button
+            *ngIf="booking.status === 'PENDING'"
+            type="button"
+            class="danger-button"
+            (click)="confirmCancel()"
+          >
+            Cancel booking
+          </button>
+        </article>
+
+        <app-queue-position-card
+          *ngIf="booking.status === 'ACCEPTED' || booking.status === 'IN_PROGRESS'"
+          [bookingId]="booking.id"
+          [autoRefreshInterval]="30000"
+        ></app-queue-position-card>
+
+        <article *ngIf="booking.status === 'PENDING'" class="card queue-placeholder-card">
+          <div class="card-heading">
+            <h2>Queue information</h2>
+          </div>
+          <p>Your salon has not accepted this booking yet. Once the booking is accepted, your queue position and estimated wait time will appear here.</p>
+        </article>
+      </aside>
+    </div>
+  </div>
+</section>
