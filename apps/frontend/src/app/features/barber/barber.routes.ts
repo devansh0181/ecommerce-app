@@ -37,6 +37,10 @@ export const BARBER_ROUTES: Routes = [
         children: [
           {
             path: '',
+            loadComponent: () => import('./pages/services/salon-selector/salon-selector.component').then((m) => m.SalonSelectorComponent),
+          },
+          {
+            path: ':salonId',
             loadComponent: () => import('./pages/services/service-list/service-list.component').then((m) => m.ServiceListComponent),
           },
         ],

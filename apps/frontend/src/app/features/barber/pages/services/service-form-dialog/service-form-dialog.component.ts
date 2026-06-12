@@ -39,7 +39,6 @@ export class ServiceFormDialogComponent {
       description: [data.service?.description || '', [Validators.maxLength(240)]],
       price: [data.service?.price ?? 0, [Validators.required, Validators.min(0.5)]],
       durationMinutes: [data.service?.durationMinutes ?? 30, [Validators.required, Validators.min(5)]],
-      isActive: [data.service?.isActive ?? true],
     });
   }
 
@@ -72,7 +71,6 @@ export class ServiceFormDialogComponent {
       description: this.serviceForm.value.description?.trim() || undefined,
       price: Number(this.serviceForm.value.price),
       durationMinutes: Number(this.serviceForm.value.durationMinutes),
-      isActive: this.serviceForm.value.isActive,
     };
 
     const action$ = this.isEditMode && this.data.service

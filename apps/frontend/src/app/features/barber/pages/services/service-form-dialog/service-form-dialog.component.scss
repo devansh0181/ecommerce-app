@@ -65,6 +65,7 @@ h2 {
   gap: 20px;
   padding: 0 24px 24px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .field-group {
@@ -168,6 +169,7 @@ h2 {
   background: $primary-gradient;
   color: #fff;
   box-shadow: 0 4px 12px rgba($primary-purple-dark, 0.2);
+  order: 2;
 
   &:hover {
     opacity: 0.9;
@@ -185,6 +187,7 @@ h2 {
   background: $bg-secondary;
   color: $color-text;
   border: 1px solid $color-border;
+  order: 1;
 
   &:hover {
     background: $bg-tertiary;
@@ -196,6 +199,8 @@ h2 {
   background: rgba($danger-red, 0.1);
   color: $danger-red;
   font-weight: $font-weight-medium;
+  order: -1;
+  margin-right: auto;
 
   &:hover {
     background: $danger-red;
@@ -215,5 +220,18 @@ h2 {
     .btn {
       width: 100%;
     }
+  }
+
+  .btn-primary {
+    order: 1;
+  }
+
+  .btn-secondary {
+    order: 2;
+  }
+
+  .btn-danger {
+    order: 3;
+    margin-right: 0;
   }
 }

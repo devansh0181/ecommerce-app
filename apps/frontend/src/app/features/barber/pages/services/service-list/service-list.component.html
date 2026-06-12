@@ -1,8 +1,14 @@
 <div class="service-page">
+  <div class="navigation-bar">
+    <a routerLink="/barber/services" class="back-link">
+      <span class="arrow">←</span> Back to Salons
+    </a>
+  </div>
+
   <div class="service-page__hero">
     <div>
       <p class="eyebrow">Salon services</p>
-      <h1>Services</h1>
+      <h1>Services Menu</h1>
       <p class="subtitle">Manage your salon service catalog, pricing, duration, and availability in one place.</p>
     </div>
 
@@ -18,45 +24,58 @@
   </section>
 
   <section class="service-content">
+    <!-- Loading State -->
     <div *ngIf="loading" class="service-loading">
       <p>Loading services...</p>
     </div>
 
+    <!-- Error State -->
     <div *ngIf="!loading && error" class="service-error">
       <p>{{ error }}</p>
     </div>
 
+    <!-- Empty State -->
     <div *ngIf="!loading && !error && filteredServices.length === 0" class="service-empty">
-      <p>No services found yet.</p>
-      <p>Start by adding a new service to your salon catalog.</p>
+      <span class="empty-icon">✂️</span>
+      <p>No services found for this salon catalog.</p>
+      <p>Start by adding your first service (e.g. Haircut, Shave) to this location.</p>
       <button class="btn btn-primary" type="button" (click)="openServiceDialog()">Add New Service</button>
     </div>
 
-    <div *ngIf="!loading && !error && filteredServices.length > 0" class="service-grid">
-      <article *ngFor="let service of filteredServices" class="service-card">
-        <div class="service-card__header">
-          <div>
-            <h2>{{ service.name }}</h2>
-            <span class="service-status" [class.active]="service.isActive">{{ service.isActive ? 'Active' : 'Inactive' }}</span>
+    <!-- Services Grid and Bottom Actions -->
+    <div *ngIf="!loading && !error && filteredServices.length > 0">
+      <div class="service-grid">
+        <article *ngFor="let service of filteredServices" class="service-card">
+          <div class="service-card__header">
+            <div>
+              <h2>{{ service.name }}</h2>
+              <span class="service-status" [class.active]="service.isActive">{{ service.isActive ? 'Active' : 'Inactive' }}</span>
+            </div>
+            <div class="service-price">{{ service.price | currency }}</div>
           </div>
-          <div class="service-price">${{ service.price.toFixed(2) }}</div>
-        </div>
 
-        <p class="service-description">{{ service.description || 'No description provided.' }}</p>
+          <p class="service-description">{{ service.description || 'No description provided.' }}</p>
 
-        <div class="service-meta">
-          <span><strong>Duration</strong> {{ service.durationMinutes }} min</span>
-          <span><strong>Created</strong> {{ service.createdAt | date:'mediumDate' }}</span>
-        </div>
+          <div class="service-meta">
+            <span><strong>Duration</strong> {{ service.durationMinutes }} min</span>
+            <span><strong>Created</strong> {{ service.createdAt | date:'mediumDate' }}</span>
+          </div>
 
-        <div class="service-actions">
-          <button class="btn btn-ghost" (click)="toggleServiceStatus(service)" [disabled]="actionPendingId === service.id" type="button">
-            {{ service.isActive ? 'Disable' : 'Enable' }}
-          </button>
-          <button class="btn btn-secondary" (click)="openServiceDialog(service)" type="button">Edit</button>
-          <button class="btn btn-danger" (click)="confirmDeleteService(service)" [disabled]="deletingServiceId === service.id" type="button">Delete</button>
-        </div>
-      </article>
+          <div class="service-actions">
+            <button class="btn btn-ghost" (click)="toggleServiceStatus(service)" [disabled]="actionPendingId === service.id" type="button">
+              {{ service.isActive ? 'Disable' : 'Enable' }}
+            </button>
+            <button class="btn btn-secondary" (click)="openServiceDialog(service)" type="button">Edit</button>
+            <button class="btn btn-danger" (click)="confirmDeleteService(service)" [disabled]="deletingServiceId === service.id" type="button">Delete</button>
+          </div>
+        </article>
+      </div>
+
+      <div class="service-actions-bottom">
+        <button class="btn btn-primary" type="button" (click)="openServiceDialog()">
+          + Add Another Service
+        </button>
+      </div>
     </div>
   </section>
 </div>

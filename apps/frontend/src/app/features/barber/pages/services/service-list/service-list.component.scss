@@ -7,6 +7,41 @@
   padding: 24px;
 }
 
+.navigation-bar {
+  padding-bottom: 8px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: $color-text-secondary;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  .arrow {
+    transition: transform $transition-fast;
+  }
+
+  &:hover {
+    color: $primary-purple;
+
+    .arrow {
+      transform: translateX(-4px);
+    }
+  }
+}
+
+.service-actions-bottom {
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+  border-top: 1px dashed $color-border;
+  margin-top: 16px;
+}
+
 .service-page__hero {
   display: flex;
   align-items: center;

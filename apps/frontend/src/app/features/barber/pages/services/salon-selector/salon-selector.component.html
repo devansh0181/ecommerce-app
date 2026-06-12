@@ -1,0 +1,64 @@
+<div class="selector-page">
+  <div class="selector-header">
+    <div class="header-text">
+      <p class="eyebrow">Services Catalog</p>
+      <h1>Select a Salon</h1>
+      <p class="subtitle">Please select one of your salons below to view, manage, or add services.</p>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="selector-loading">
+    <div class="loading-spinner"></div>
+    <p>Loading your salons...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && error" class="selector-error">
+    <div class="error-content">
+      <p>{{ error }}</p>
+      <div class="error-actions">
+        <button class="btn btn-secondary" (click)="loadSalons()" type="button">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && salons.length === 0" class="empty-state-card">
+    <div class="empty-state-content">
+      <span class="empty-icon">🏪</span>
+      <h2>No Salons Registered</h2>
+      <p>Before adding services, you must first register at least one salon location.</p>
+      <a routerLink="/barber/profile" class="btn btn-primary">Go to Salon Profile</a>
+    </div>
+  </div>
+
+  <!-- Salons Grid -->
+  <div *ngIf="!loading && !error && salons.length > 0" class="salons-grid">
+    <div *ngFor="let salon of salons" class="salon-card" (click)="selectSalon(salon.id)">
+      <div class="salon-card__header">
+        <h3 class="salon-title">{{ salon.name }}</h3>
+        <span class="rating-badge">★ {{ salon.rating | number:'1.1-1' }}</span>
+      </div>
+      
+      <p class="salon-desc">{{ salon.description || 'No description provided.' }}</p>
+      
+      <div class="salon-detail-row">
+        <span class="detail-icon">📍</span>
+        <span class="detail-text">{{ salon.address }}</span>
+      </div>
+
+      <div class="salon-status-badges">
+        <span class="badge" [class.badge-success]="salon.isOpen" [class.badge-secondary]="!salon.isOpen">
+          {{ salon.isOpen ? 'Open' : 'Closed' }}
+        </span>
+      </div>
+
+      <div class="salon-card__actions">
+        <button class="btn btn-manage" type="button">
+          Manage Services <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Service as SalonService } from '../../../../../core/models';
-import { SalonService as SalonApiService } from '../../../../../core/services/salon.service';
 import { ServiceService } from '../../../../../core/services/service.service';
 import { ToastService } from '../../../../../shared/services/toast.service';
 import { ConfirmationDialogComponent } from '../../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -12,9 +12,10 @@ import { ServiceFormDialogComponent } from '../service-form-dialog/service-form-
 @Component({
   selector: 'app-barber-service-list',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule],
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, RouterModule],
   templateUrl: './service-list.component.html',
   styleUrls: ['./service-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServiceListComponent implements OnInit {
   loading = false;
@@ -26,14 +27,27 @@ export class ServiceListComponent implements OnInit {
   search = new FormControl('');
 
   constructor(
-    private salonService: SalonApiService,
+    private route: ActivatedRoute,
     private serviceService: ServiceService,
     private dialog: MatDialog,
-    private toast: ToastService
+    private toast: ToastService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.loadServices();
+    this.route.paramMap.subscribe((params) => {
+      this.salonId = params.get('salonId');
+      if (this.salonId) {
+        this.loadServices(this.salonId);
+      } else {
+        this.error = 'No salon location resolved from route params.';
+        this.cdr.markForCheck();
+      }
+    });
+
+    this.search.valueChanges.subscribe(() => {
+      this.cdr.markForCheck();
+    });
   }
 
   get filteredServices(): SalonService[] {
@@ -50,42 +64,37 @@ export class ServiceListComponent implements OnInit {
   }
 
   refresh(): void {
-    this.loadServices();
+    if (this.salonId) {
+      this.loadServices(this.salonId);
+    }
   }
 
-  loadServices(): void {
+  loadServices(salonId: string): void {
     this.loading = true;
     this.error = null;
+    this.cdr.markForCheck();
 
-    this.salonService.getMySalons().subscribe(
-      (salons) => {
-        const salon = salons?.[0] ?? null;
-        if (!salon) {
-          this.error = 'No salon found for this account.';
-          this.loading = false;
-          return;
-        }
-
-        this.salonId = salon.id;
-        this.serviceService.getServices(salon.id).subscribe(
-          (services) => {
-            this.services = services || [];
-            this.loading = false;
-          },
-          () => {
-            this.error = 'Unable to load services right now. Please try again.';
-            this.loading = false;
-          }
-        );
-      },
-      () => {
-        this.error = 'Unable to resolve your salon. Please check your connection and try again.';
+    this.serviceService.getServices(salonId).subscribe({
+      next: (services) => {
+        this.services = services || [];
         this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error('ServiceListComponent: Error loading services:', err);
+        this.error = 'Unable to load services right now. Please try again.';
+        this.loading = false;
+        this.cdr.markForCheck();
       }
-    );
+    });
   }
 
   openServiceDialog(service?: SalonService): void {
+    if (!this.salonId) {
+      this.toast.error('Salon not available. Please try again.');
+      return;
+    }
+
     const dialogRef = this.dialog.open(ServiceFormDialogComponent, {
       width: '520px',
       data: { salonId: this.salonId, service },
@@ -93,8 +102,9 @@ export class ServiceListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.loadServices();
+        this.loadServices(this.salonId!);
       }
+      this.cdr.markForCheck();
     });
   }
 
@@ -112,6 +122,7 @@ export class ServiceListComponent implements OnInit {
       if (confirmed) {
         this.deleteService(service);
       }
+      this.cdr.markForCheck();
     });
   }
 
@@ -122,17 +133,21 @@ export class ServiceListComponent implements OnInit {
     }
 
     this.deletingServiceId = service.id;
-    this.serviceService.deleteService(this.salonId, service.id).subscribe(
-      () => {
+    this.cdr.markForCheck();
+
+    this.serviceService.deleteService(this.salonId, service.id).subscribe({
+      next: () => {
         this.toast.success('Service deleted successfully.');
         this.services = this.services.filter((item) => item.id !== service.id);
         this.deletingServiceId = null;
+        this.cdr.markForCheck();
       },
-      () => {
+      error: () => {
         this.toast.error('Unable to delete the service. Please try again.');
         this.deletingServiceId = null;
+        this.cdr.markForCheck();
       }
-    );
+    });
   }
 
   toggleServiceStatus(service: SalonService): void {
@@ -142,16 +157,20 @@ export class ServiceListComponent implements OnInit {
     }
 
     this.actionPendingId = service.id;
-    this.serviceService.toggleServiceStatus(this.salonId, service.id).subscribe(
-      (updated) => {
+    this.cdr.markForCheck();
+
+    this.serviceService.toggleServiceStatus(this.salonId, service.id).subscribe({
+      next: (updated) => {
         this.toast.success(`${updated.name} is now ${updated.isActive ? 'active' : 'inactive'}.`);
         this.services = this.services.map((item) => (item.id === service.id ? updated : item));
         this.actionPendingId = null;
+        this.cdr.markForCheck();
       },
-      () => {
+      error: () => {
         this.toast.error('Unable to update service status. Please try again.');
         this.actionPendingId = null;
+        this.cdr.markForCheck();
       }
-    );
+    });
   }
 }
