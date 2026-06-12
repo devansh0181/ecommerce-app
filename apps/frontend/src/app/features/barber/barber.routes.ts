@@ -20,10 +20,14 @@ export const BARBER_ROUTES: Routes = [
         children: [
           {
             path: '',
+            loadComponent: () => import('./pages/services/salon-selector/salon-selector.component').then((m) => m.SalonSelectorComponent),
+          },
+          {
+            path: ':salonId',
             loadComponent: () => import('./pages/bookings/booking-requests/booking-requests.component').then((m) => m.BookingRequestsComponent),
           },
           {
-            path: ':id',
+            path: 'detail/:id',
             loadComponent: () => import('./pages/bookings/booking-detail/booking-detail.component').then((m) => m.BookingDetailComponent),
           },
         ],

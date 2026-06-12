@@ -10,7 +10,11 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client,
   },
   {
-    path: 'barber/bookings/:id',
+    path: 'barber/bookings/detail/:id',
+    renderMode: RenderMode.Client,
+  },
+  {
+    path: 'barber/bookings/:salonId',
     renderMode: RenderMode.Client,
   },
   {

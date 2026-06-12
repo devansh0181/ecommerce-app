@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Booking } from '../../../../../core/models';
 import { BookingService } from '../../../../../core/services/booking.service';
-import { SalonService } from '../../../../../core/services/salon.service';
 import { ToastService } from '../../../../../shared/services/toast.service';
 import { BookingRequestCardComponent } from './request-card.component';
 import { AcceptDialogComponent } from './accept-dialog.component';
@@ -12,9 +12,10 @@ import { RejectDialogComponent } from './reject-dialog.component';
 @Component({
   selector: 'app-booking-requests',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, BookingRequestCardComponent],
+  imports: [CommonModule, MatDialogModule, BookingRequestCardComponent, RouterModule],
   templateUrl: './booking-requests.component.html',
   styleUrls: ['./booking-requests.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookingRequestsComponent implements OnInit {
   loading = false;
@@ -32,14 +33,24 @@ export class BookingRequestsComponent implements OnInit {
   ] as const;
 
   constructor(
+    private route: ActivatedRoute,
     private bookingService: BookingService,
-    private salonService: SalonService,
     private dialog: MatDialog,
-    private toast: ToastService
+    private toast: ToastService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.loadRequests();
+    this.route.paramMap.subscribe((params) => {
+      this.salonId = params.get('salonId');
+      if (this.salonId) {
+        this.loadRequests(this.salonId);
+      } else {
+        this.error = 'No salon location resolved from route params.';
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   get filteredBookings(): Booking[] {
@@ -48,45 +59,47 @@ export class BookingRequestsComponent implements OnInit {
 
   switchTab(status: 'ALL' | 'PENDING' | 'ACCEPTED' | 'REJECTED'): void {
     this.selectedStatus = status;
-    this.loadRequests();
+    if (this.salonId) {
+      this.loadRequests(this.salonId);
+    }
   }
 
   refresh(): void {
-    this.loadRequests();
+    if (this.salonId) {
+      this.loadRequests(this.salonId);
+    }
   }
 
-  loadRequests(): void {
+  loadRequests(salonId?: string): void {
+    if (salonId) {
+      this.salonId = salonId;
+    }
+
+    if (!this.salonId) {
+      this.error = 'No salon location resolved.';
+      this.loading = false;
+      this.cdr.markForCheck();
+      return;
+    }
+
     this.loading = true;
     this.error = null;
+    this.cdr.markForCheck();
 
-    this.salonService.getMySalons().subscribe(
-      (salons) => {
-        const salon = salons?.[0] ?? null;
-        if (!salon) {
-          this.error = 'No salon found for this account.';
-          this.loading = false;
-          return;
-        }
+    const statusParam = this.selectedStatus === 'ALL' ? undefined : this.selectedStatus;
 
-        this.salonId = salon.id;
-        const statusParam = this.selectedStatus === 'ALL' ? undefined : this.selectedStatus;
-
-        this.bookingService.getSalonBookings(salon.id, statusParam ? { status: statusParam } : undefined).subscribe(
-          (bookings) => {
-            this.bookings = bookings || [];
-            this.loading = false;
-          },
-          () => {
-            this.error = 'Unable to load booking requests right now. Please try again.';
-            this.loading = false;
-          }
-        );
-      },
-      () => {
-        this.error = 'Unable to resolve your salon. Please check your connection and try again.';
+    this.bookingService.getSalonBookings(this.salonId, statusParam ? { status: statusParam } : undefined).subscribe({
+      next: (bookings) => {
+        this.bookings = bookings || [];
         this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.error = 'Unable to load booking requests right now. Please try again.';
+        this.loading = false;
+        this.cdr.markForCheck();
       }
-    );
+    });
   }
 
   openAcceptDialog(booking: Booking): void {
@@ -99,6 +112,7 @@ export class BookingRequestsComponent implements OnInit {
       if (confirmed) {
         this.acceptBooking(booking.id);
       }
+      this.cdr.markForCheck();
     });
   }
 
@@ -112,36 +126,49 @@ export class BookingRequestsComponent implements OnInit {
       if (reason) {
         this.rejectBooking(booking.id, reason);
       }
+      this.cdr.markForCheck();
     });
   }
 
   private acceptBooking(bookingId: string): void {
     this.actionPendingId = bookingId;
-    this.bookingService.acceptBooking(bookingId).subscribe(
-      () => {
+    this.cdr.markForCheck();
+
+    this.bookingService.acceptBooking(bookingId).subscribe({
+      next: () => {
         this.toast.success('Booking request accepted successfully.');
         this.actionPendingId = null;
-        this.loadRequests();
+        this.cdr.markForCheck();
+        if (this.salonId) {
+          this.loadRequests(this.salonId);
+        }
       },
-      () => {
+      error: () => {
         this.toast.error('Could not accept this request. Please try again.');
         this.actionPendingId = null;
+        this.cdr.markForCheck();
       }
-    );
+    });
   }
 
   private rejectBooking(bookingId: string, reason: string): void {
     this.actionPendingId = bookingId;
-    this.bookingService.rejectBooking(bookingId, reason).subscribe(
-      () => {
+    this.cdr.markForCheck();
+
+    this.bookingService.rejectBooking(bookingId, reason).subscribe({
+      next: () => {
         this.toast.success('Booking request rejected. Customer has been notified.');
         this.actionPendingId = null;
-        this.loadRequests();
+        this.cdr.markForCheck();
+        if (this.salonId) {
+          this.loadRequests(this.salonId);
+        }
       },
-      () => {
+      error: () => {
         this.toast.error('Failed to reject the booking request. Please try again.');
         this.actionPendingId = null;
+        this.cdr.markForCheck();
       }
-    );
+    });
   }
 }
