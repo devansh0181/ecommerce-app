@@ -1,0 +1,358 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+.profile-page {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.navigation-bar {
+  padding-bottom: 8px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: $color-text-secondary;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  .arrow {
+    transition: transform $transition-fast;
+  }
+
+  &:hover {
+    color: $primary-purple;
+
+    .arrow {
+      transform: translateX(-4px);
+    }
+  }
+}
+
+.profile-header {
+  display: grid;
+  gap: 8px;
+  padding-bottom: 16px;
+}
+
+.header-text {
+  display: grid;
+  gap: 4px;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+  font-weight: $font-weight-medium;
+}
+
+h1 {
+  margin: 0;
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: $color-dark;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: $color-text-secondary;
+  max-width: 600px;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+}
+
+/* Setup Progress Alerts */
+.setup-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  border-radius: $border-radius-xl;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.setup-complete {
+  background: rgba($success-green, 0.05);
+  border-color: rgba($success-green, 0.3);
+  color: darken($success-green, 15%);
+  border-left: 5px solid $success-green;
+
+  .setup-alert__title {
+    color: darken($success-green, 20%);
+  }
+}
+
+.setup-incomplete {
+  background: rgba($danger-orange, 0.05);
+  border-color: rgba($danger-orange, 0.3);
+  color: darken($danger-orange, 20%);
+  border-left: 5px solid $danger-orange;
+
+  .setup-alert__title {
+    color: darken($danger-orange, 25%);
+  }
+}
+
+.setup-alert__icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.setup-alert__content {
+  display: grid;
+  gap: 4px;
+}
+
+.setup-alert__title {
+  margin: 0;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+}
+
+.setup-alert__desc {
+  margin: 0;
+  font-size: $font-size-sm;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+/* Page Grid Layout */
+.profile-grid {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr 320px;
+}
+
+.main-content {
+  display: grid;
+  gap: 32px;
+}
+
+.side-content {
+  display: grid;
+  gap: 24px;
+  align-content: start;
+}
+
+.status-card {
+  background: $bg-primary;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-2xl;
+  padding: 24px;
+  box-shadow: $shadow-sm;
+  display: grid;
+  gap: 20px;
+}
+
+.status-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.status-card__header h3 {
+  margin: 0;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-dark;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  background: rgba($danger-red, 0.1);
+  color: $danger-red;
+}
+
+.status-badge.open {
+  background: rgba($success-green, 0.1);
+  color: $success-green;
+}
+
+.status-card__body {
+  display: grid;
+  gap: 12px;
+}
+
+.status-desc {
+  margin: 0;
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+  line-height: 1.5;
+}
+
+.update-time {
+  display: flex;
+  justify-content: space-between;
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+}
+
+.update-time .label {
+  font-weight: $font-weight-medium;
+}
+
+.status-card__actions {
+  padding-top: 16px;
+  border-top: 1px solid $color-border;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.toggle-label-text {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-secondary;
+  transition: color $transition-fast;
+
+  &.open-text {
+    color: $success-green;
+  }
+}
+
+/* Switch Toggle Styling */
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  cursor: pointer;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+}
+
+.switch-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $color-text-muted;
+  transition: $transition-fast;
+  border-radius: 26px;
+
+  &:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: $transition-fast;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+}
+
+input:checked + .switch-slider {
+  background-color: $success-green;
+}
+
+input:checked + .switch-slider:before {
+  transform: translateX(22px);
+}
+
+input:disabled + .switch-slider {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.profile-tip {
+  padding: 20px;
+  border-radius: $border-radius-xl;
+  background: rgba($primary-purple, 0.05);
+  border-left: 4px solid $primary-purple;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+  line-height: 1.6;
+}
+
+/* Loading & Error Overlays */
+.profile-loading-overlay,
+.profile-error-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  text-align: center;
+  border-radius: $border-radius-2xl;
+  background: $bg-secondary;
+  color: $color-text-secondary;
+  border: 2px dashed $color-border;
+  gap: 16px;
+  margin: 24px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid $color-border;
+  border-top: 4px solid $primary-purple;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-content {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 24px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.btn-secondary {
+  background: $bg-secondary;
+  color: $color-text;
+  border: 1px solid $color-border;
+
+  &:hover {
+    background: $bg-tertiary;
+  }
+}
+
+@media (max-width: 992px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .side-content {
+    order: -1;
+  }
+}

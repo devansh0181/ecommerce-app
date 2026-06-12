@@ -1,0 +1,92 @@
+<div class="profile-page" *ngIf="!loading && salon">
+  <div class="navigation-bar">
+    <a routerLink="/barber/profile" class="back-link">
+      <span class="arrow">←</span> Back to Salons
+    </a>
+  </div>
+
+  <div class="profile-header">
+    <div class="header-text">
+      <p class="eyebrow">Salon Settings</p>
+      <h1>{{ salon.name }}</h1>
+      <p class="subtitle">Customize details, working hours, and operational status for this salon location.</p>
+    </div>
+  </div>
+
+  <!-- Setup Completion Banners -->
+  <div class="setup-alert" [class.setup-complete]="isSetupCompleted()" [class.setup-incomplete]="!isSetupCompleted()">
+    <div class="setup-alert__icon">{{ isSetupCompleted() ? '🎉' : '⚠️' }}</div>
+    <div class="setup-alert__content">
+      <h4 class="setup-alert__title">
+        {{ isSetupCompleted() ? 'Salon Setup Completed!' : 'Setup Incomplete: Working Hours Needed' }}
+      </h4>
+      <p class="setup-alert__desc">
+        {{ isSetupCompleted() 
+          ? 'Your working hours are configured. You are ready to accept client bookings.' 
+          : 'Please review and save the working hours table below to activate online scheduling for this salon.' }}
+      </p>
+    </div>
+  </div>
+
+  <div class="profile-grid">
+    <div class="main-content">
+      <app-salon-info-section [salon]="salon" (updated)="onSalonInfoUpdated($event)"></app-salon-info-section>
+      <app-working-hours-section [salonId]="salon.id" (updated)="onWorkingHoursUpdated()"></app-working-hours-section>
+    </div>
+
+    <aside class="side-content">
+      <!-- Operational Status -->
+      <div class="status-card">
+        <div class="status-card__header">
+          <h3>Operational Status</h3>
+          <div class="status-badge" [class.open]="salon.isOpen">
+            {{ salon.isOpen ? 'OPEN' : 'CLOSED' }}
+          </div>
+        </div>
+
+        <div class="status-card__body">
+          <p class="status-desc">
+            Your salon is currently <strong>{{ salon.isOpen ? 'accepting' : 'not accepting' }}</strong> new bookings.
+          </p>
+          <div class="update-time">
+            <span class="label">Last Updated:</span>
+            <span class="value">{{ salon.updatedAt | date:'medium' }}</span>
+          </div>
+        </div>
+
+        <div class="status-card__actions">
+          <div class="toggle-container">
+            <label class="switch-toggle">
+              <input
+                type="checkbox"
+                [checked]="salon.isOpen"
+                (change)="toggleSalonStatus()"
+                [disabled]="statusTogglePending"
+              />
+              <span class="switch-slider"></span>
+            </label>
+            <span class="toggle-label-text" [class.open-text]="salon.isOpen">
+              {{ salon.isOpen ? 'Salon is Open' : 'Salon is Closed' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-tip">
+        <p><strong>Tip:</strong> Keep your working hours updated so clients can book appointments accurately according to your schedule.</p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div *ngIf="loading" class="profile-loading-overlay">
+  <div class="loading-spinner"></div>
+  <p>Loading salon details...</p>
+</div>
+
+<div *ngIf="!loading && error" class="profile-error-overlay">
+  <div class="error-content">
+    <p>{{ error }}</p>
+    <a routerLink="/barber/profile" class="btn btn-secondary">Back to Salons</a>
+  </div>
+</div>

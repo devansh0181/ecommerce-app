@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Salon } from '../../../../core/models';
@@ -23,7 +23,8 @@ export class SalonInfoSectionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private salonService: SalonService,
-    private toast: ToastService
+    private toast: ToastService,
+    private cdr: ChangeDetectorRef
   ) {
     this.infoForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
@@ -41,6 +42,7 @@ export class SalonInfoSectionComponent implements OnInit {
         address: this.salon.address,
         phone: this.salon.phone || '',
       });
+      this.cdr.markForCheck();
     }
   }
 
@@ -61,6 +63,7 @@ export class SalonInfoSectionComponent implements OnInit {
         address: this.salon.address,
       });
     }
+    this.cdr.markForCheck();
   }
 
   saveChanges(): void {
@@ -70,6 +73,8 @@ export class SalonInfoSectionComponent implements OnInit {
     }
 
     this.saving = true;
+    this.cdr.markForCheck();
+
     const payload = {
       name: this.infoForm.value.name.trim(),
       description: this.infoForm.value.description?.trim() || undefined,
@@ -82,10 +87,12 @@ export class SalonInfoSectionComponent implements OnInit {
         this.updated.emit(updatedSalon);
         this.isEditing = false;
         this.saving = false;
+        this.cdr.markForCheck();
       },
       () => {
         this.toast.error('Failed to update salon information. Please try again.');
         this.saving = false;
+        this.cdr.markForCheck();
       }
     );
   }

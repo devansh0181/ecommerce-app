@@ -43,7 +43,16 @@ export const BARBER_ROUTES: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () => import('./pages/salon-profile/salon-profile.component').then((m) => m.SalonProfileComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./pages/salon-profile/salon-profile.component').then((m) => m.SalonProfileComponent),
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('./pages/salon-profile/salon-detail/salon-detail.component').then((m) => m.SalonDetailComponent),
+          },
+        ],
       },
       {
         path: 'settings',

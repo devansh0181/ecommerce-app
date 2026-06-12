@@ -2,66 +2,68 @@
   <div class="profile-header">
     <div class="header-text">
       <p class="eyebrow">Salon management</p>
-      <h1>Salon Profile</h1>
-      <p class="subtitle">Manage your salon identity, working hours, and operational status.</p>
+      <h1>My Salons</h1>
+      <p class="subtitle">View and manage all your salons, configure schedules, and toggle operational status.</p>
+    </div>
+    <div class="header-actions" *ngIf="!loading && salons.length > 0">
+      <button class="btn btn-primary" (click)="openCreateSalonDialog()" type="button">+ Add New Salon</button>
     </div>
   </div>
 
   <div *ngIf="loading" class="profile-loading">
     <div class="loading-spinner"></div>
-    <p>Loading your salon profile...</p>
+    <p>Loading your salons...</p>
   </div>
 
   <div *ngIf="!loading && error" class="profile-error">
     <div class="error-content">
       <p>{{ error }}</p>
       <div class="error-actions">
-        <button class="btn btn-secondary" (click)="loadSalonProfile()" type="button">Try Again</button>
-        <button *ngIf="error === 'No salon found for this account.'" class="btn btn-primary" (click)="openCreateSalonDialog()" type="button">Create Your Salon</button>
+        <button class="btn btn-secondary" (click)="loadSalons()" type="button">Try Again</button>
       </div>
     </div>
   </div>
 
-  <div *ngIf="!loading && !error && salon" class="profile-grid">
-    <div class="main-content">
-      <app-salon-info-section [salon]="salon" (updated)="onSalonInfoUpdated($event)"></app-salon-info-section>
-      <app-working-hours-section [salonId]="salon.id" (updated)="onWorkingHoursUpdated()"></app-working-hours-section>
+  <div *ngIf="!loading && !error && salons.length === 0" class="empty-state-card">
+    <div class="empty-state-content">
+      <span class="empty-icon">🏪</span>
+      <h2>No Salons Found</h2>
+      <p>Register your first salon to set up your menu, working hours, and begin accepting client bookings.</p>
+      <button class="btn btn-primary btn-lg" (click)="openCreateSalonDialog()" type="button">Register Your Salon</button>
     </div>
+  </div>
 
-    <aside class="side-content">
-      <div class="status-card">
-        <div class="status-card__header">
-          <h3>Operational Status</h3>
-          <div class="status-badge" [class.open]="salon.isOpen">
-            {{ salon.isOpen ? 'OPEN' : 'CLOSED' }}
-          </div>
-        </div>
-
-        <div class="status-card__body">
-          <p class="status-desc">
-            Your salon is currently <strong>{{ salon.isOpen ? 'accepting' : 'not accepting' }}</strong> new bookings.
-          </p>
-          <div class="update-time">
-            <span class="label">Last Updated:</span>
-            <span class="value">{{ salon.updatedAt | date:'medium' }}</span>
-          </div>
-        </div>
-
-        <div class="status-card__actions">
-          <button
-            class="btn btn-status"
-            [class.btn-open]="!salon.isOpen"
-            (click)="toggleSalonStatus()"
-            [disabled]="statusPending"
-            type="button">
-            {{ statusPending ? 'Updating...' : (salon.isOpen ? 'Close Salon' : 'Open Salon') }}
-          </button>
-        </div>
+  <div *ngIf="!loading && !error && salons.length > 0" class="salons-grid">
+    <div *ngFor="let salon of salons" class="salon-card" (click)="navigateToSalon(salon.id)">
+      <div class="salon-card__header">
+        <h3 class="salon-title">{{ salon.name }}</h3>
+        <span class="rating-badge">★ {{ salon.rating | number:'1.1-1' }}</span>
+      </div>
+      
+      <p class="salon-desc">{{ salon.description || 'No description provided.' }}</p>
+      
+      <div class="salon-detail-row">
+        <span class="detail-icon">📍</span>
+        <span class="detail-text">{{ salon.address }}</span>
       </div>
 
-      <div class="profile-tip">
-        <p><strong>Tip:</strong> Keeping your working hours up to date helps customers find the best time to book your services.</p>
+      <div class="salon-status-badges">
+        <!-- Operational Status -->
+        <span class="badge" [class.badge-success]="salon.isOpen" [class.badge-secondary]="!salon.isOpen">
+          {{ salon.isOpen ? 'Open' : 'Closed' }}
+        </span>
+
+        <!-- Setup Status -->
+        <span class="badge" [class.badge-info]="isSetupCompleted(salon)" [class.badge-warning]="!isSetupCompleted(salon)">
+          {{ isSetupCompleted(salon) ? 'Setup Completed' : 'Setup Pending' }}
+        </span>
       </div>
-    </aside>
+
+      <div class="salon-card__actions">
+        <button class="btn btn-manage" type="button">
+          Manage Salon <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>
   </div>
 </div>

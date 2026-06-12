@@ -11,27 +11,14 @@
   box-shadow: $shadow-sm;
 }
 
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.section-header h2 {
-  margin: 0;
-  font-size: $font-size-xl;
-  font-weight: $font-weight-bold;
-  color: $color-dark;
-}
-
+/* Loading & Error States */
 .hours-loading,
 .hours-error {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px;
+  padding: 48px;
   border-radius: $border-radius-xl;
   background: $bg-secondary;
   color: $color-text-secondary;
@@ -40,63 +27,237 @@
   text-align: center;
 }
 
-.hours-form {
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba($primary-purple, 0.1);
+  border-top-color: $primary-purple;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* State 1: Unconfigured Box */
+.unconfigured-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  border-radius: $border-radius-xl;
+  background: $bg-secondary;
+  border: 2px dashed $primary-purple;
+  cursor: pointer;
+  text-align: center;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba($primary-purple, 0.03);
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  .box-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 0 0 8px;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $primary-purple-dark;
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+/* State 2: Read-Only Card Summary */
+.readonly-card {
   display: grid;
   gap: 24px;
 }
 
-.hours-table-wrapper {
-  overflow-x: auto;
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid $color-border;
+  padding-bottom: 16px;
+
+  h3 {
+    margin: 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-dark;
+  }
+
+  p.muted {
+    margin: 4px 0 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+.summary-list {
+  display: flex;
+  flex-direction: column;
+  background: $bg-secondary;
   border-radius: $border-radius-xl;
   border: 1px solid $color-border;
-  background: $bg-primary;
+  overflow: hidden;
 }
 
-.hours-table {
-  width: 100%;
-  border-collapse: collapse;
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid $color-border;
   background: $bg-primary;
+  transition: background-color 0.2s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: $bg-secondary;
+  }
+
+  .day-label {
+    font-weight: $font-weight-bold;
+    color: $color-dark;
+    font-size: $font-size-base;
+  }
+
+  &.row-closed {
+    background: rgba($bg-secondary, 0.7);
+
+    .day-label {
+      color: $color-text-muted;
+    }
+  }
 }
 
-.hours-table thead {
+.time-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba($primary-purple, 0.08);
+  color: $primary-purple-dark;
+  border: 1px solid rgba($primary-purple, 0.15);
+  padding: 6px 16px;
+  border-radius: $border-radius-full;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  min-width: 160px;
+  justify-content: center;
+
+  &.badge-closed {
+    background: rgba($danger-red, 0.05);
+    color: $danger-red;
+    border-color: rgba($danger-red, 0.15);
+  }
+}
+
+/* State 3: Edit Box Container */
+.edit-box-container {
+  display: grid;
+  gap: 24px;
+}
+
+.edit-header {
+  h3 {
+    margin: 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-dark;
+  }
+
+  p.muted {
+    margin: 4px 0 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+.edit-table {
+  background: $bg-primary;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-xl;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 160px 1fr 100px;
+  gap: 16px;
+  padding: 14px 24px;
   background: $bg-secondary;
   border-bottom: 1px solid $color-border;
-}
-
-.hours-table th {
-  padding: 16px;
-  text-align: left;
-  font-weight: $font-weight-semibold;
-  color: $color-text-secondary;
-  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+  font-size: $font-size-sm;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.hours-table td {
-  padding: 16px;
+.table-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 100px;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 24px;
   border-bottom: 1px solid $color-border;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.is-closed {
+    background: rgba($bg-secondary, 0.4);
+
+    .day-name {
+      color: $color-text-muted;
+    }
+
+    .time-separator {
+      color: $color-text-muted;
+    }
+  }
 }
 
-.hours-table tbody tr:hover {
-  background: rgba($primary-purple, 0.03);
-}
-
-.day-cell {
-  font-weight: $font-weight-semibold;
+.day-name {
+  font-weight: $font-weight-bold;
   color: $color-dark;
-  min-width: 120px;
+  font-size: $font-size-base;
 }
 
-.time-input {
-  width: 100%;
-  max-width: 140px;
+.time-inputs-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.time-input-field {
   border: 1px solid $color-border;
   border-radius: $border-radius-md;
   padding: 8px 12px;
   background: $bg-primary;
   color: $color-text;
   font-size: $font-size-sm;
+  width: 120px;
+  text-align: center;
   transition: border-color $transition-fast, box-shadow $transition-fast;
 
   &:focus {
@@ -104,41 +265,52 @@
     border-color: $primary-purple;
     box-shadow: 0 0 0 3px rgba($primary-purple, 0.15);
   }
+
+  &:disabled {
+    background-color: $bg-secondary;
+    border-color: $color-border;
+    color: $color-text-muted;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 
-.time-input:disabled {
-  background: $bg-secondary;
-  color: $color-text-muted;
-  cursor: not-allowed;
-  opacity: 0.6;
+.time-separator {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
 }
 
-.closed-cell {
-  text-align: center;
+/* Simple Standard Checkbox styling */
+.close-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: $primary-purple;
 }
 
-.checkbox-label {
-  display: inline-flex;
+/* Warning Banner Styles */
+.validation-warning {
+  background: rgba($danger-red, 0.06);
+  border: 1px solid rgba($danger-red, 0.2);
+  color: $danger-red;
+  padding: 12px 18px;
+  border-radius: $border-radius-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  display: flex;
   align-items: center;
   gap: 10px;
-  cursor: pointer;
-  font-weight: $font-weight-medium;
-  color: $color-text;
-  font-size: $font-size-sm;
-  transition: color $transition-fast;
-
-  &:hover {
-    color: $primary-purple;
-  }
-
-  input[type='checkbox'] {
-    width: 18px;
-    height: 18px;
-    accent-color: $primary-purple;
-    cursor: pointer;
-  }
+  margin-top: 16px;
+  animation: slideDown 0.2s ease-out;
 }
 
+@keyframes slideDown {
+  from { transform: translateY(-5px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Buttons */
 .btn {
   border: none;
   border-radius: $border-radius-full;
@@ -151,22 +323,18 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  text-decoration: none;
 }
 
-.btn-primary {
-  background: $primary-gradient;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba($primary-purple-dark, 0.2);
+.btn-edit {
+  background: $bg-secondary;
+  color: $color-text;
+  border: 1px solid $color-border;
+  padding: 10px 20px;
 
   &:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
-  }
-
-  &:disabled {
-    background: $color-border;
-    box-shadow: none;
-    cursor: not-allowed;
+    background: $bg-tertiary;
+    border-color: $color-text-secondary;
   }
 }
 
@@ -175,28 +343,97 @@
   color: $color-text;
   border: 1px solid $color-border;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: $bg-tertiary;
     border-color: $color-text-secondary;
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
-@media (max-width: 850px) {
+.btn-save {
+  background: $primary-gradient;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba($primary-purple-dark, 0.2);
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+
+  &:disabled {
+    background: $color-border;
+    box-shadow: none;
+    cursor: not-allowed;
+    color: $color-text-muted;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+@media (max-width: 768px) {
   .hours-section {
     padding: 20px;
   }
-  .section-header {
+
+  .card-header {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
   }
-  .hours-table-wrapper {
-    font-size: $font-size-xs;
+
+  .btn-edit {
+    width: 100%;
   }
-  .hours-table th,
-  .hours-table td {
-    padding: 12px;
+
+  .table-header {
+    display: none; /* Hide table headers on mobile */
   }
-  .time-input {
-    max-width: 100%;
+
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .col-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    &:before {
+      content: "Is Closed";
+      font-weight: $font-weight-bold;
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+    }
+  }
+
+  .time-inputs-wrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .time-input-field {
+    flex: 1;
+    width: auto;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 12px;
+
+    .btn {
+      width: 100%;
+    }
   }
 }

@@ -1,59 +1,100 @@
 <section class="hours-section">
-  <div class="section-header">
-    <h2>Working Hours</h2>
-    <button class="btn btn-primary" type="button" (click)="saveChanges()" [disabled]="saving || loading">
-      {{ saving ? 'Saving...' : 'Save Hours' }}
-    </button>
-  </div>
-
+  <!-- Loading State -->
   <div *ngIf="loading" class="hours-loading">
+    <div class="spinner"></div>
     <p>Loading working hours...</p>
   </div>
 
+  <!-- Error State -->
   <div *ngIf="!loading && error" class="hours-error">
     <p>{{ error }}</p>
     <button class="btn btn-secondary" (click)="loadWorkingHours()" type="button">Try Again</button>
   </div>
 
-  <form [formGroup]="hoursForm" *ngIf="!loading && !error" class="hours-form">
-    <div class="hours-table-wrapper">
-      <table class="hours-table">
-        <thead>
-          <tr>
-            <th>Day</th>
-            <th>Open Time</th>
-            <th>Close Time</th>
-            <th>Closed</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let hour of workingHoursArray.controls; let i = index" [formGroupName]="i">
-            <td class="day-cell">{{ dayLabels[i] }}</td>
-            <td>
-              <input
-                type="time"
-                formControlName="openTime"
-                [disabled]="hour.get('isClosed')?.value"
-                class="time-input"
-              />
-            </td>
-            <td>
-              <input
-                type="time"
-                formControlName="closeTime"
-                [disabled]="hour.get('isClosed')?.value"
-                class="time-input"
-              />
-            </td>
-            <td class="closed-cell">
-              <label class="checkbox-label">
-                <input type="checkbox" formControlName="isClosed" (change)="toggleClosed(i)" />
-                <span>Closed</span>
-              </label>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div *ngIf="!loading && !error">
+    <!-- State 1: Working Hours Not Set Placeholder Box -->
+    <div *ngIf="!isEditing && !hasHoursSet" class="unconfigured-box" (click)="startEditing()">
+      <div class="box-icon">📅</div>
+      <h3>Set Working Hours</h3>
+      <p>Working hours are not configured for this salon yet. Click here to configure them now.</p>
     </div>
-  </form>
+
+    <!-- State 2: Read-Only Working Hours Summary -->
+    <div *ngIf="!isEditing && hasHoursSet" class="readonly-card">
+      <div class="card-header">
+        <div class="header-text">
+          <h3>Working Hours</h3>
+          <p class="muted">Weekly opening and closing times for this salon location.</p>
+        </div>
+        <button class="btn btn-edit" type="button" (click)="startEditing()">
+          ✏️ Edit Hours
+        </button>
+      </div>
+
+      <div class="summary-list">
+        <div *ngFor="let hour of workingHoursArray.controls; let i = index" class="summary-row" [class.row-closed]="hour.get('isClosed')?.value">
+          <span class="day-label">{{ dayLabels[i] }}</span>
+          <div class="time-badge" [class.badge-closed]="hour.get('isClosed')?.value">
+            <span *ngIf="!hour.get('isClosed')?.value">
+              {{ formatTimeTo12Hour(hour.get('openTime')?.value) }} - {{ formatTimeTo12Hour(hour.get('closeTime')?.value) }}
+            </span>
+            <span *ngIf="hour.get('isClosed')?.value">
+              Closed
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- State 3: Working Hours Edit Box -->
+    <div *ngIf="isEditing" class="edit-box-container">
+      <div class="edit-header">
+        <h3>Configure Working Hours</h3>
+        <p class="muted">Specify active business timings. Check 'Closed' to mark days off.</p>
+      </div>
+
+      <form [formGroup]="hoursForm" class="hours-form">
+        <div class="edit-table">
+          <div class="table-header">
+            <div class="col-day">Day</div>
+            <div class="col-time">Timing (From - To)</div>
+            <div class="col-status">Is Closed</div>
+          </div>
+
+          <div class="table-body" formArrayName="workingHours">
+            <div *ngFor="let hour of workingHoursArray.controls; let i = index" [formGroupName]="i" class="table-row" [class.is-closed]="hour.get('isClosed')?.value">
+              <div class="col-day day-name">
+                {{ dayLabels[i] }}
+              </div>
+              <div class="col-time">
+                <div class="time-inputs-wrapper">
+                  <input type="time" formControlName="openTime" class="time-input-field" />
+                  <span class="time-separator">to</span>
+                  <input type="time" formControlName="closeTime" class="time-input-field" />
+                </div>
+              </div>
+              <div class="col-status">
+                <input type="checkbox" formControlName="isClosed" (change)="onClosedChange(i)" class="close-checkbox" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Validation Error Message -->
+        <div *ngIf="isFormInvalid()" class="validation-warning">
+          ⚠️ Both From and To timings must be specified for all open days.
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button class="btn btn-secondary" type="button" (click)="cancelEditing()" [disabled]="saving">
+            Cancel
+          </button>
+          <button class="btn btn-save" type="button" (click)="saveChanges()" [disabled]="saving || isFormInvalid()">
+            {{ saving ? 'Saving...' : 'Save Hours' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </section>

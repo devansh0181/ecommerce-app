@@ -35,8 +35,8 @@
               {{ currentUser.firstName[0] }}{{ currentUser.lastName[0] }}
             </button>
             <div class="user-dropdown">
-              <button type="button" class="dropdown-item" (click)="navigateTo('/profile')">Profile</button>
-              <button type="button" class="dropdown-item" (click)="navigateTo('/settings')">Settings</button>
+              <button type="button" class="dropdown-item" (click)="navigateTo(isBarber ? '/barber/profile' : '/customer/profile')">Profile</button>
+              <button type="button" class="dropdown-item" *ngIf="isBarber" (click)="navigateTo('/barber/settings')">Settings</button>
               <button type="button" class="dropdown-item logout-btn" (click)="logout()">Logout</button>
             </div>
           </div>

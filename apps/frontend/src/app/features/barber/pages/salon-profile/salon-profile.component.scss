@@ -10,15 +10,19 @@
 }
 
 .profile-header {
-  display: grid;
-  gap: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
   padding-bottom: 24px;
   border-bottom: 1px solid $color-border;
+  flex-wrap: wrap;
 }
 
 .header-text {
   display: grid;
   gap: 4px;
+  flex: 1;
 }
 
 .eyebrow {
@@ -79,97 +83,217 @@ h1 {
   align-items: center;
 }
 
-.profile-grid {
-  display: grid;
-  gap: 32px;
-  grid-template-columns: 1fr 320px;
+/* Empty State Card */
+.empty-state-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 24px;
+  background: $bg-primary;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-2xl;
+  box-shadow: $shadow-sm;
+  text-align: center;
 }
 
-.main-content {
-  display: grid;
-  gap: 32px;
+.empty-state-content {
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
 
-.side-content {
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.empty-state-content h2 {
+  margin: 0;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $color-dark;
+}
+
+.empty-state-content p {
+  margin: 0;
+  color: $color-text-secondary;
+  font-size: $font-size-base;
+  line-height: 1.6;
+}
+
+/* Salons Grid */
+.salons-grid {
   display: grid;
   gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 }
 
-.status-card {
+.salon-card {
   background: $bg-primary;
   border: 1px solid $color-border;
   border-radius: $border-radius-2xl;
   padding: 24px;
   box-shadow: $shadow-sm;
-  display: grid;
-  gap: 20px;
-}
-
-.status-card__header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  gap: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-md;
+    border-color: $primary-purple;
+  }
 }
 
-.status-card__header h3 {
+.salon-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.salon-title {
   margin: 0;
-  font-size: $font-size-lg;
-  font-weight: $font-weight-semibold;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
   color: $color-dark;
 }
 
-.status-badge {
+.rating-badge {
+  background: rgba($danger-orange, 0.1);
+  color: darken($danger-orange, 15%);
+  padding: 4px 8px;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+}
+
+.salon-desc {
+  margin: 0;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 42px;
+}
+
+.salon-detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.detail-icon {
+  font-size: 16px;
+}
+
+.detail-text {
+  line-height: 1.4;
+}
+
+.salon-status-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
   padding: 4px 12px;
   border-radius: 999px;
   font-size: $font-size-xs;
   font-weight: $font-weight-bold;
-  background: rgba($danger-red, 0.1);
-  color: $danger-red;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-.status-badge.open {
+.badge-success {
   background: rgba($success-green, 0.1);
   color: $success-green;
 }
 
-.status-card__body {
-  display: grid;
-  gap: 12px;
-}
-
-.status-desc {
-  margin: 0;
-  font-size: $font-size-base;
+.badge-secondary {
+  background: rgba($color-text-muted, 0.1);
   color: $color-text-secondary;
-  line-height: 1.5;
 }
 
-.update-time {
-  display: flex;
-  justify-content: space-between;
-  font-size: $font-size-xs;
-  color: $color-text-muted;
+.badge-info {
+  background: rgba($primary-purple, 0.1);
+  color: $primary-purple;
 }
 
-.update-time .label {
-  font-weight: $font-weight-medium;
+.badge-warning {
+  background: rgba($danger-orange, 0.1);
+  color: darken($danger-orange, 15%);
 }
 
-.status-card__actions {
+.salon-card__actions {
+  margin-top: auto;
   padding-top: 16px;
   border-top: 1px solid $color-border;
 }
 
-.btn-status {
+.btn-manage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  border: none;
-  border-radius: $border-radius-full;
-  padding: 12px;
-  font-weight: $font-weight-semibold;
-  cursor: pointer;
+  background: transparent;
+  border: 1px solid $color-border;
+  color: $color-text;
   font-size: $font-size-sm;
-  transition: all $transition-fast;
+  font-weight: $font-weight-semibold;
+  padding: 10px 16px;
+  border-radius: $border-radius-full;
+  transition: all 0.2s ease;
+
+  .arrow {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background: rgba($primary-purple, 0.05);
+    border-color: $primary-purple;
+    color: $primary-purple;
+
+    .arrow {
+      transform: translateX(4px);
+    }
+  }
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: $primary-gradient;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba($primary-purple-dark, 0.2);
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-secondary {
   background: $bg-secondary;
   color: $color-text;
   border: 1px solid $color-border;
@@ -179,48 +303,17 @@ h1 {
   }
 }
 
-.btn-open {
-  background: $primary-gradient;
-  color: #fff;
-  border: none;
-  box-shadow: 0 4px 12px rgba($primary-purple-dark, 0.2);
+.btn-lg {
+  padding: 14px 32px;
+  font-size: $font-size-base;
+}
 
-  &:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: stretch;
   }
-}
-
-.profile-tip {
-  padding: 20px;
-  border-radius: $border-radius-xl;
-  background: rgba($primary-purple, 0.05);
-  border-left: 4px solid $primary-purple;
-  color: $color-text-secondary;
-  font-size: $font-size-sm;
-  line-height: 1.6;
-}
-
-.btn {
-  border: none;
-  border-radius: 999px;
-  padding: 12px 18px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.btn-secondary {
-  background: $bg-secondary;
-  color: $color-text;
-  border: 1px solid $color-border;
-}
-
-@media (max-width: 992px) {
-  .profile-grid {
+  .salons-grid {
     grid-template-columns: 1fr;
-  }
-
-  .side-content {
-    order: -1;
   }
 }
