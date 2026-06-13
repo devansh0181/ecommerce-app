@@ -2,31 +2,11 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
   {
-    path: 'customer/salons/:id',
+    path: 'customer/**',
     renderMode: RenderMode.Client,
   },
   {
-    path: 'customer/bookings/:id',
-    renderMode: RenderMode.Client,
-  },
-  {
-    path: 'barber/bookings/detail/:id',
-    renderMode: RenderMode.Client,
-  },
-  {
-    path: 'barber/bookings/:salonId',
-    renderMode: RenderMode.Client,
-  },
-  {
-    path: 'barber/queue/:salonId',
-    renderMode: RenderMode.Client,
-  },
-  {
-    path: 'barber/profile/:id',
-    renderMode: RenderMode.Client,
-  },
-  {
-    path: 'barber/services/:salonId',
+    path: 'barber/**',
     renderMode: RenderMode.Client,
   },
   {
