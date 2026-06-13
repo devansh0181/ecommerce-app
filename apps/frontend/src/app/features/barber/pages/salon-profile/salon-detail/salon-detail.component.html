@@ -75,6 +75,24 @@
       <div class="profile-tip">
         <p><strong>Tip:</strong> Keep your working hours updated so clients can book appointments accurately according to your schedule.</p>
       </div>
+
+      <!-- Danger Zone -->
+      <div class="danger-zone-card">
+        <div class="danger-zone-card__header">
+          <h3>Danger Zone</h3>
+          <span class="warning-badge">DESTRUCTIVE</span>
+        </div>
+        <div class="danger-zone-card__body">
+          <p class="danger-desc">
+            Once you delete this salon, all bookings, services, and working hours will be permanently removed.
+          </p>
+        </div>
+        <div class="danger-zone-card__actions">
+          <button type="button" class="btn-delete" (click)="deleteSalon()" [disabled]="loading">
+            Delete Salon
+          </button>
+        </div>
+      </div>
     </aside>
   </div>
 </div>

@@ -12,6 +12,7 @@ import { User } from '../../entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 import { JwtPayload } from './strategies/jwt.strategy';
 
 @Injectable()
@@ -132,6 +133,31 @@ export class AuthService {
     // Remove password from response
     const { password, ...result } = user;
     return result;
+  }
+
+  /**
+   * Update user profile
+   */
+  async updateProfile(userId: string, updateDto: UpdateProfileDto): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const { firstName, lastName, phone, password } = updateDto;
+
+    if (firstName !== undefined) user.firstName = firstName;
+    if (lastName !== undefined) user.lastName = lastName;
+    if (phone !== undefined) user.phone = phone;
+
+    if (password) {
+      user.password = await bcrypt.hash(password, 10);
+    }
+
+    return this.userRepository.save(user);
   }
 
   /**

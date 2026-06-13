@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Salon } from '../../../../../core/models';
 import { SalonService } from '../../../../../core/services/salon.service';
 import { ToastService } from '../../../../../shared/services/toast.service';
@@ -24,6 +24,7 @@ export class SalonDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private salonService: SalonService,
     private toast: ToastService,
     private cdr: ChangeDetectorRef
@@ -104,6 +105,32 @@ export class SalonDetailComponent implements OnInit {
         this.statusTogglePending = false;
         this.cdr.markForCheck();
       }
+    });
+  }
+
+  deleteSalon(): void {
+    if (!this.salon) return;
+
+    const confirmDelete = confirm(
+      `Are you sure you want to delete "${this.salon.name}"? This action is permanent and will delete all services, working hours, and bookings.`
+    );
+    if (!confirmDelete) return;
+
+    this.loading = true;
+    this.cdr.markForCheck();
+
+    this.salonService.deleteSalon(this.salon.id).subscribe({
+      next: () => {
+        this.toast.success('Salon deleted successfully.');
+        this.router.navigate(['/barber/profile']);
+      },
+      error: (err: any) => {
+        console.error('Error deleting salon:', err);
+        const errorMsg = err?.error?.message || 'Failed to delete salon. Please try again.';
+        this.toast.error(errorMsg);
+        this.loading = false;
+        this.cdr.markForCheck();
+      },
     });
   }
 }

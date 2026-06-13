@@ -2,6 +2,7 @@ import {
   Controller,
   Post,
   Get,
+  Put,
   Body,
   Query,
   UseGuards,
@@ -12,6 +13,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { User } from '../../entities/user.entity';
@@ -59,6 +61,22 @@ export class AuthController {
   async getProfile(@CurrentUser() user: User): Promise<Partial<User>> {
     // Password is already excluded in service
     return this.authService.getProfile(user.id);
+  }
+
+  /**
+   * PUT /api/auth/profile
+   * Update current authenticated user profile
+   * Requires JWT token in Authorization header
+   */
+  @Put('profile')
+  @UseGuards(JwtAuthGuard)
+  async updateProfile(
+    @CurrentUser() user: User,
+    @Body() updateDto: UpdateProfileDto
+  ): Promise<Partial<User>> {
+    const updatedUser = await this.authService.updateProfile(user.id, updateDto);
+    const { password, ...result } = updatedUser;
+    return result;
   }
 
   /**

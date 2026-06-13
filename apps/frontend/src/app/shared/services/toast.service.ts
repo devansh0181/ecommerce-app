@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 export interface Toast {
   id: string;
@@ -13,8 +13,8 @@ export interface Toast {
   providedIn: 'root',
 })
 export class ToastService {
-  private toastSubject = new Subject<Toast>();
-  toasts$ = this.toastSubject.asObservable();
+  private toastsSubject = new BehaviorSubject<Toast[]>([]);
+  toasts$ = this.toastsSubject.asObservable();
   private toasts: Toast[] = [];
 
   constructor(private ngZone: NgZone) {}
@@ -36,7 +36,10 @@ export class ToastService {
   }
 
   remove(id: string): void {
-    this.toasts = this.toasts.filter((t) => t.id !== id);
+    this.ngZone.run(() => {
+      this.toasts = this.toasts.filter((t) => t.id !== id);
+      this.toastsSubject.next([...this.toasts]);
+    });
   }
 
   getToasts(): Toast[] {
@@ -49,7 +52,7 @@ export class ToastService {
 
     this.ngZone.run(() => {
       this.toasts.push(newToast);
-      this.toastSubject.next(newToast);
+      this.toastsSubject.next([...this.toasts]);
 
       if (toast.duration) {
         setTimeout(() => {

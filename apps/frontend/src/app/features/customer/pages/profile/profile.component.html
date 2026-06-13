@@ -1,0 +1,161 @@
+<div class="profile-container" *ngIf="currentUser && !loading">
+  <!-- Header Banner Section -->
+  <div class="profile-header-card">
+    <div class="profile-avatar-wrapper">
+      <div class="profile-avatar-gradient">
+        {{ getUserInitials() }}
+      </div>
+    </div>
+    <div class="profile-header-info">
+      <span class="role-badge">CUSTOMER PROFILE</span>
+      <h1>{{ currentUser.firstName }} {{ currentUser.lastName }}</h1>
+      <p class="email-text">{{ currentUser.email }}</p>
+      <div class="member-since">
+        <span class="calendar-icon">📅</span>
+        <span>Member since {{ getMemberSince() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-grid">
+    <!-- Sidebar Statistics Card -->
+    <aside class="profile-sidebar">
+      <div class="stats-card">
+        <h3>Booking Summary</h3>
+        <div class="stats-list">
+          <div class="stat-item">
+            <div class="stat-icon total-icon">📊</div>
+            <div class="stat-details">
+              <span class="stat-value">{{ totalBookings }}</span>
+              <span class="stat-label">Total Appointments</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon active-icon">⚡</div>
+            <div class="stat-details">
+              <span class="stat-value">{{ activeBookings }}</span>
+              <span class="stat-label">Active / Pending</span>
+            </div>
+          </div>
+        </div>
+        <div class="stats-footer">
+          <p>Need to manage your appointments?</p>
+          <a href="/customer/bookings" class="bookings-link">View Booking History →</a>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-header">
+          <span class="tip-icon">💡</span>
+          <h4>Profile Tip</h4>
+        </div>
+        <p>Keeping your contact details like phone number up to date ensures barbers can easily reach you regarding your queue spot.</p>
+      </div>
+    </aside>
+
+    <!-- Main Form Details Card -->
+    <main class="profile-form-area">
+      <div class="form-card">
+        <div class="form-card-header">
+          <h2>Account Details</h2>
+          <p>Update your personal information and change your account password.</p>
+        </div>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input
+                id="firstName"
+                type="text"
+                formControlName="firstName"
+                placeholder="Enter your first name"
+                class="form-input"
+                [class.error-input]="firstName?.invalid && firstName?.touched"
+              />
+              <span class="error-msg" *ngIf="firstName?.invalid && firstName?.touched">
+                First name is required.
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input
+                id="lastName"
+                type="text"
+                formControlName="lastName"
+                placeholder="Enter your last name"
+                class="form-input"
+                [class.error-input]="lastName?.invalid && lastName?.touched"
+              />
+              <span class="error-msg" *ngIf="lastName?.invalid && lastName?.touched">
+                Last name is required.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input
+                id="email"
+                type="email"
+                [value]="currentUser.email"
+                disabled
+                class="form-input disabled-input"
+              />
+              <span class="input-helper-text">Email address cannot be changed.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input
+                id="phone"
+                type="tel"
+                formControlName="phone"
+                placeholder="e.g. +1 555-0199"
+                class="form-input"
+              />
+            </div>
+          </div>
+
+          <div class="form-separator"></div>
+
+          <div class="form-group password-group">
+            <label for="password">Change Password</label>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="Leave blank to keep current password"
+              class="form-input"
+              [class.error-input]="password?.invalid && password?.touched"
+            />
+            <span class="error-msg" *ngIf="password?.invalid && password?.touched">
+              Password must be at least 6 characters long.
+            </span>
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="submit"
+              class="btn-save"
+              [disabled]="profileForm.invalid || profileForm.pristine || saving"
+            >
+              <span *ngIf="!saving">Save Changes</span>
+              <span *ngIf="saving" class="saving-spinner-text">
+                <span class="btn-spinner"></span> Saving...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Loading State View -->
+<div class="profile-loading-overlay" *ngIf="loading">
+  <div class="loading-spinner"></div>
+  <p>Loading profile details...</p>
+</div>

@@ -57,6 +57,17 @@ export class AuthService {
     });
   }
 
+  updateProfile(data: { firstName: string; lastName: string; phone?: string; password?: string }) {
+    return this.http.put<User>(`${this.apiUrl}/profile`, data).pipe(
+      tap((updatedUser) => {
+        const token = this.getToken();
+        if (token) {
+          this.setUser(updatedUser, token);
+        }
+      })
+    );
+  }
+
   logout(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('currentUser');

@@ -356,3 +356,86 @@ input:disabled + .switch-slider {
     order: -1;
   }
 }
+
+/* Danger Zone Styling */
+.danger-zone-card {
+  background: $bg-primary;
+  border: 1px solid rgba($danger-red, 0.25);
+  border-radius: $border-radius-2xl;
+  padding: 24px;
+  box-shadow: $shadow-sm;
+  display: grid;
+  gap: 16px;
+  transition: all $transition-fast;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba($danger-red, 0.05);
+    border-color: rgba($danger-red, 0.4);
+  }
+}
+
+.danger-zone-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  h3 {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $danger-red;
+  }
+
+  .warning-badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: $font-weight-bold;
+    background: rgba($danger-red, 0.1);
+    color: $danger-red;
+    letter-spacing: 0.05em;
+  }
+}
+
+.danger-zone-card__body {
+  display: grid;
+  gap: 8px;
+}
+
+.danger-desc {
+  margin: 0;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.5;
+}
+
+.danger-zone-card__actions {
+  padding-top: 16px;
+  border-top: 1px solid rgba($danger-red, 0.1);
+}
+
+.btn-delete {
+  border: 1px solid $danger-red;
+  background: transparent;
+  color: $danger-red;
+  border-radius: 999px;
+  padding: 10px 24px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: all $transition-fast;
+  display: inline-block;
+  text-align: center;
+
+  &:hover:not(:disabled) {
+    background: $danger-red;
+    color: $white;
+    box-shadow: 0 4px 12px rgba($danger-red, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
