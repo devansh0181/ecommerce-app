@@ -3,15 +3,7 @@
     <div>
       <h1>Good day — Barber</h1>
       <p class="muted">Overview of today's salon activity</p>
-      <p class="salon-summary">Salon status is currently <strong>{{ salon?.isOpen ? 'Open' : 'Closed' }}</strong>.</p>
     </div>
-
-    <app-salon-status-toggle
-      [isOpen]="salon?.isOpen ?? false"
-      [lastUpdated]="salonLastUpdated"
-      [disabled]="statusTogglePending"
-      (toggle)="handleStatusToggle()"
-    ></app-salon-status-toggle>
   </header>
 
   <nav class="dashboard-actions" *ngIf="!loading">

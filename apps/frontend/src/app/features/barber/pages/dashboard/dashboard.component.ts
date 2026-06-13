@@ -9,12 +9,11 @@ import { ToastService } from '../../../../shared/services/toast.service';
 import { MetricsCardComponent } from '../../components/metrics-card/metrics-card.component';
 import { ScheduleTimelineComponent } from '../../components/schedule-timeline/schedule-timeline.component';
 import { ActivityFeedComponent } from '../../components/activity-feed/activity-feed.component';
-import { SalonStatusToggleComponent } from '../../components/salon-status-toggle/salon-status-toggle.component';
 
 @Component({
   selector: 'app-barber-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, MetricsCardComponent, ScheduleTimelineComponent, ActivityFeedComponent, SalonStatusToggleComponent],
+  imports: [CommonModule, RouterModule, MetricsCardComponent, ScheduleTimelineComponent, ActivityFeedComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
@@ -27,7 +26,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   completedToday = 0;
   todaysBookings = 0;
   averageRating: number | null = null;
-  statusTogglePending = false;
   scheduleItems: Array<{ time: string; customer: string; service: string }> = [];
   activities: Array<{ type: string; message: string; time: string }> = [];
 
@@ -79,34 +77,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-  handleStatusToggle(): void {
-    if (!this.salonId || this.statusTogglePending) {
-      return;
-    }
 
-    this.statusTogglePending = true;
-    this.salonService.toggleSalonStatus(this.salonId).subscribe(
-      (salon) => {
-        this.salon = salon;
-        this.averageRating = salon.rating ?? null;
-        this.statusTogglePending = false;
-        this.toast.success(`Salon is now ${salon.isOpen ? 'Open' : 'Closed'}.`);
-        this.cdr.markForCheck();
-      },
-      () => {
-        this.statusTogglePending = false;
-        this.toast.error('Failed to update salon status. Please try again.');
-        this.cdr.markForCheck();
-      }
-    );
-  }
-
-  get salonLastUpdated(): string | null {
-    if (!this.salon?.updatedAt) {
-      return null;
-    }
-    return new Date(this.salon.updatedAt).toLocaleString();
-  }
 
   private loadSalonData(salonId: string): void {
     this.bookingService.getSalonBookings(salonId).subscribe(
