@@ -14,6 +14,8 @@ export class BookingRequestCardComponent {
   @Input() disabled = false;
   @Output() accept = new EventEmitter<Booking>();
   @Output() reject = new EventEmitter<Booking>();
+  @Output() start = new EventEmitter<Booking>();
+  @Output() complete = new EventEmitter<Booking>();
 
   get customerName(): string {
     const first = this.booking?.customer?.firstName || '';
@@ -53,6 +55,18 @@ export class BookingRequestCardComponent {
   onReject(): void {
     if (this.booking) {
       this.reject.emit(this.booking);
+    }
+  }
+
+  onStart(): void {
+    if (this.booking) {
+      this.start.emit(this.booking);
+    }
+  }
+
+  onComplete(): void {
+    if (this.booking) {
+      this.complete.emit(this.booking);
     }
   }
 }

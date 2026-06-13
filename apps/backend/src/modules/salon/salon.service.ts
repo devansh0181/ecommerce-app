@@ -143,12 +143,47 @@ export class SalonService {
   /**
    * Get salons by owner ID (for barber dashboard)
    */
-  async findByOwner(ownerId: string): Promise<Salon[]> {
-    return await this.salonRepository.find({
+  async findByOwner(ownerId: string): Promise<any[]> {
+    const salons = await this.salonRepository.find({
       where: { ownerId },
       relations: ['workingHours', 'services'],
       order: { createdAt: 'DESC' },
     });
+
+    return await Promise.all(
+      salons.map(async (salon) => {
+        const pendingRequestsCount = await this.salonRepository.manager
+          .createQueryBuilder()
+          .select('booking.id')
+          .from('bookings', 'booking')
+          .where('booking.salonId = :salonId', { salonId: salon.id })
+          .andWhere('booking.status = :status', { status: 'PENDING' })
+          .getCount();
+
+        const acceptedRequestsCount = await this.salonRepository.manager
+          .createQueryBuilder()
+          .select('booking.id')
+          .from('bookings', 'booking')
+          .where('booking.salonId = :salonId', { salonId: salon.id })
+          .andWhere('booking.status = :status', { status: 'ACCEPTED' })
+          .getCount();
+
+        const inProgressRequestsCount = await this.salonRepository.manager
+          .createQueryBuilder()
+          .select('booking.id')
+          .from('bookings', 'booking')
+          .where('booking.salonId = :salonId', { salonId: salon.id })
+          .andWhere('booking.status = :status', { status: 'IN_PROGRESS' })
+          .getCount();
+
+        return {
+          ...salon,
+          pendingRequestsCount,
+          acceptedRequestsCount,
+          inProgressRequestsCount,
+        };
+      }),
+    );
   }
 
   /**

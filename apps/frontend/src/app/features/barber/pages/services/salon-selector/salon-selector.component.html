@@ -55,6 +55,15 @@
         <span class="badge" [class.badge-success]="salon.services && salon.services.length > 0" [class.badge-danger]="!salon.services || !salon.services.length">
           {{ (salon.services && salon.services.length > 0) ? 'Live' : 'Setup Required' }}
         </span>
+        <span class="badge badge-pending-request animate-pulse" *ngIf="salon.pendingRequestsCount && salon.pendingRequestsCount > 0">
+          📩 {{ salon.pendingRequestsCount }} Pending Request{{ salon.pendingRequestsCount > 1 ? 's' : '' }}
+        </span>
+        <span class="badge badge-accepted-request" *ngIf="salon.acceptedRequestsCount && salon.acceptedRequestsCount > 0">
+          📅 {{ salon.acceptedRequestsCount }} Accepted Request{{ salon.acceptedRequestsCount > 1 ? 's' : '' }}
+        </span>
+        <span class="badge badge-running-request animate-pulse" *ngIf="salon.inProgressRequestsCount && salon.inProgressRequestsCount > 0">
+          ⚡ {{ salon.inProgressRequestsCount }} Running Request{{ salon.inProgressRequestsCount > 1 ? 's' : '' }}
+        </span>
       </div>
 
       <div class="salon-card__actions">

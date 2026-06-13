@@ -233,6 +233,24 @@ h1 {
   color: $danger-orange;
 }
 
+.badge-pending-request {
+  background: rgba($danger-red, 0.08);
+  color: $danger-red;
+  border: 1px dashed rgba($danger-red, 0.25);
+}
+
+.badge-accepted-request {
+  background: rgba($info-blue, 0.08);
+  color: $info-blue;
+  border: 1px dashed rgba($info-blue, 0.25);
+}
+
+.badge-running-request {
+  background: rgba($warning-yellow, 0.08);
+  color: $warning-yellow;
+  border: 1px dashed rgba($warning-yellow, 0.25);
+}
+
 .salon-card__actions {
   margin-top: auto;
   padding-top: 16px;

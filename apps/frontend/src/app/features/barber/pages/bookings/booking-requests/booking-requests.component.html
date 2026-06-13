@@ -56,6 +56,8 @@
       [disabled]="actionPendingId === booking.id"
       (accept)="openAcceptDialog(booking)"
       (reject)="openRejectDialog(booking)"
+      (start)="startBooking(booking)"
+      (complete)="completeBooking(booking)"
     ></app-booking-request-card>
   </div>
 </section>

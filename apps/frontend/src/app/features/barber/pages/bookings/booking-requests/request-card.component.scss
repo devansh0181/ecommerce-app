@@ -158,3 +158,40 @@
   background: #ef4444;
   color: #ffffff;
 }
+
+.btn-start {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #ffffff;
+}
+
+.btn-complete {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  flex: 1;
+}
+
+.status-done-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 0.85rem;
+  background: rgba(16, 185, 129, 0.08);
+  color: #059669;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.status-rejected-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 0.85rem;
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 0.9rem;
+}

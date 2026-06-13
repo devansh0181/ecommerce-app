@@ -21,6 +21,9 @@ export interface Salon {
   };
   services?: Service[];
   workingHours?: WorkingHours[];
+  pendingRequestsCount?: number;
+  acceptedRequestsCount?: number;
+  inProgressRequestsCount?: number;
 }
 
 export interface WorkingHours {

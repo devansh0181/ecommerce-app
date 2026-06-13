@@ -22,13 +22,15 @@ export class BookingRequestsComponent implements OnInit {
   actionPendingId: string | null = null;
   error: string | null = null;
   bookings: Booking[] = [];
-  selectedStatus: 'ALL' | 'PENDING' | 'ACCEPTED' | 'REJECTED' = 'PENDING';
+  selectedStatus: 'ALL' | 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'IN_PROGRESS' | 'COMPLETED' = 'PENDING';
   salonId: string | null = null;
 
   statusTabs = [
     { label: 'All', value: 'ALL' },
     { label: 'Pending', value: 'PENDING' },
     { label: 'Accepted', value: 'ACCEPTED' },
+    { label: 'In Progress', value: 'IN_PROGRESS' },
+    { label: 'Completed', value: 'COMPLETED' },
     { label: 'Rejected', value: 'REJECTED' },
   ] as const;
 
@@ -57,7 +59,7 @@ export class BookingRequestsComponent implements OnInit {
     return this.bookings;
   }
 
-  switchTab(status: 'ALL' | 'PENDING' | 'ACCEPTED' | 'REJECTED'): void {
+  switchTab(status: 'ALL' | 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'IN_PROGRESS' | 'COMPLETED'): void {
     this.selectedStatus = status;
     if (this.salonId) {
       this.loadRequests(this.salonId);
@@ -166,6 +168,48 @@ export class BookingRequestsComponent implements OnInit {
       },
       error: () => {
         this.toast.error('Failed to reject the booking request. Please try again.');
+        this.actionPendingId = null;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  startBooking(booking: Booking): void {
+    this.actionPendingId = booking.id;
+    this.cdr.markForCheck();
+
+    this.bookingService.startBooking(booking.id).subscribe({
+      next: () => {
+        this.toast.success('Service started successfully.');
+        this.actionPendingId = null;
+        this.cdr.markForCheck();
+        if (this.salonId) {
+          this.loadRequests(this.salonId);
+        }
+      },
+      error: () => {
+        this.toast.error('Could not start the service. Please try again.');
+        this.actionPendingId = null;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  completeBooking(booking: Booking): void {
+    this.actionPendingId = booking.id;
+    this.cdr.markForCheck();
+
+    this.bookingService.completeBooking(booking.id).subscribe({
+      next: () => {
+        this.toast.success('Service completed successfully! Customer has been notified.');
+        this.actionPendingId = null;
+        this.cdr.markForCheck();
+        if (this.salonId) {
+          this.loadRequests(this.salonId);
+        }
+      },
+      error: () => {
+        this.toast.error('Could not complete the service. Please try again.');
         this.actionPendingId = null;
         this.cdr.markForCheck();
       }

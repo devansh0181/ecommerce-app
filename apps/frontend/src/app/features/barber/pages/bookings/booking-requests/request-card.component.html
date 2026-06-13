@@ -26,21 +26,66 @@
   </div>
 
   <div class="request-card__footer">
-    <button
-      type="button"
-      class="btn btn-accept"
-      [disabled]="disabled || booking?.status !== 'PENDING'"
-      (click)="onAccept()"
-    >
-      Accept
-    </button>
-    <button
-      type="button"
-      class="btn btn-reject"
-      [disabled]="disabled || booking?.status !== 'PENDING'"
-      (click)="onReject()"
-    >
-      Reject
-    </button>
+    <!-- PENDING: Accept / Reject -->
+    <ng-container *ngIf="booking?.status === 'PENDING'">
+      <button
+        type="button"
+        class="btn btn-accept"
+        [disabled]="disabled"
+        (click)="onAccept()"
+      >
+        ✓ Accept
+      </button>
+      <button
+        type="button"
+        class="btn btn-reject"
+        [disabled]="disabled"
+        (click)="onReject()"
+      >
+        ✗ Reject
+      </button>
+    </ng-container>
+
+    <!-- ACCEPTED: Start Service / Reject -->
+    <ng-container *ngIf="booking?.status === 'ACCEPTED'">
+      <button
+        type="button"
+        class="btn btn-start"
+        [disabled]="disabled"
+        (click)="onStart()"
+      >
+        ▶ Start Service
+      </button>
+      <button
+        type="button"
+        class="btn btn-reject"
+        [disabled]="disabled"
+        (click)="onReject()"
+      >
+        ✗ Cancel
+      </button>
+    </ng-container>
+
+    <!-- IN_PROGRESS: Complete Service -->
+    <ng-container *ngIf="booking?.status === 'IN_PROGRESS'">
+      <button
+        type="button"
+        class="btn btn-complete"
+        [disabled]="disabled"
+        (click)="onComplete()"
+      >
+        ✔ Complete Service
+      </button>
+    </ng-container>
+
+    <!-- COMPLETED: Read-only -->
+    <ng-container *ngIf="booking?.status === 'COMPLETED'">
+      <span class="status-done-label">✅ Service Completed</span>
+    </ng-container>
+
+    <!-- REJECTED: Read-only -->
+    <ng-container *ngIf="booking?.status === 'REJECTED'">
+      <span class="status-rejected-label">❌ Request Rejected</span>
+    </ng-container>
   </div>
 </article>
