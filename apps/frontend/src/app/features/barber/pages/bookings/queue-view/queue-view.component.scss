@@ -1,3 +1,30 @@
+.navigation-bar {
+  padding-bottom: 0.5rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  .arrow {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    color: #2563eb;
+
+    .arrow {
+      transform: translateX(-4px);
+    }
+  }
+}
+
 .queue-view-page {
   display: grid;
   gap: 1.5rem;

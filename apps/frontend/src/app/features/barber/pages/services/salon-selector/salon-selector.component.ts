@@ -19,7 +19,7 @@ export class SalonSelectorComponent implements OnInit, OnDestroy {
   error: string | null = null;
   salons: Salon[] = [];
 
-  isBookingMode = false;
+  mode: 'bookings' | 'queue' | 'services' = 'services';
   eyebrow = 'Services Catalog';
   title = 'Select a Salon';
   subtitle = 'Please select one of your salons below to view, manage, or add services.';
@@ -56,13 +56,20 @@ export class SalonSelectorComponent implements OnInit, OnDestroy {
 
   private evaluateMode(): void {
     const currentUrl = this.router.url;
-    this.isBookingMode = currentUrl.includes('bookings');
-    if (this.isBookingMode) {
+    if (currentUrl.includes('bookings')) {
+      this.mode = 'bookings';
       this.eyebrow = 'Booking Requests';
       this.title = 'Select a Salon';
       this.subtitle = 'Please select one of your salons below to view its booking requests.';
       this.buttonText = 'View Requests';
+    } else if (currentUrl.includes('queue')) {
+      this.mode = 'queue';
+      this.eyebrow = 'Queue Management';
+      this.title = 'Select a Salon';
+      this.subtitle = 'Please select one of your salons below to manage its queue.';
+      this.buttonText = 'View Queue';
     } else {
+      this.mode = 'services';
       this.eyebrow = 'Services Catalog';
       this.title = 'Select a Salon';
       this.subtitle = 'Please select one of your salons below to view, manage, or add services.';
@@ -92,8 +99,10 @@ export class SalonSelectorComponent implements OnInit, OnDestroy {
   }
 
   selectSalon(salonId: string): void {
-    if (this.isBookingMode) {
+    if (this.mode === 'bookings') {
       this.router.navigate(['/barber/bookings', salonId]);
+    } else if (this.mode === 'queue') {
+      this.router.navigate(['/barber/queue', salonId]);
     } else {
       this.router.navigate(['/barber/services', salonId]);
     }

@@ -18,6 +18,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client,
   },
   {
+    path: 'barber/queue/:salonId',
+    renderMode: RenderMode.Client,
+  },
+  {
     path: 'barber/profile/:id',
     renderMode: RenderMode.Client,
   },

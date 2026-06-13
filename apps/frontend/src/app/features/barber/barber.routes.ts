@@ -34,7 +34,16 @@ export const BARBER_ROUTES: Routes = [
       },
       {
         path: 'queue',
-        loadComponent: () => import('./pages/bookings/queue-view/queue-view.component').then((m) => m.QueueViewComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./pages/services/salon-selector/salon-selector.component').then((m) => m.SalonSelectorComponent),
+          },
+          {
+            path: ':salonId',
+            loadComponent: () => import('./pages/bookings/queue-view/queue-view.component').then((m) => m.QueueViewComponent),
+          },
+        ],
       },
       {
         path: 'services',
