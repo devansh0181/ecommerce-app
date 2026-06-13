@@ -1,0 +1,116 @@
+<section class="customer-home-page">
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <h1>Welcome back, {{ userName }}! ✨</h1>
+    <p>Ready for your next styling session? Find top-rated salons, view availability, and schedule your appointment instantly.</p>
+  </header>
+
+  <!-- Quick Actions -->
+  <nav class="quick-actions">
+    <a routerLink="/customer/salons" class="action-card">
+      <span class="icon-wrapper">🏪</span>
+      <div class="card-text">
+        <h3>Browse Salons</h3>
+        <p>Explore nearby salons and services</p>
+      </div>
+    </a>
+    <a routerLink="/customer/bookings" class="action-card">
+      <span class="icon-wrapper">📅</span>
+      <div class="card-text">
+        <h3>My Appointments</h3>
+        <p>Manage your active or past visits</p>
+      </div>
+    </a>
+  </nav>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid" *ngIf="!loading">
+    <div class="stat-card">
+      <span class="stat-icon">📅</span>
+      <div class="stat-details">
+        <span class="stat-value">{{ upcomingCount }}</span>
+        <span class="stat-label">Upcoming Sessions</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon">✅</span>
+      <div class="stat-details">
+        <span class="stat-value">{{ completedCount }}</span>
+        <span class="stat-label">Total Completed Visits</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming Session Spotlight -->
+  <div class="spotlight-section" *ngIf="!loading && upcomingBooking">
+    <h2 class="section-title">Your Next Appointment</h2>
+    <div class="spotlight-card">
+      <div class="spotlight-info">
+        <span class="spotlight-badge">{{ upcomingBooking.status }}</span>
+        <h3>{{ upcomingBooking.salon?.name }}</h3>
+        
+        <div class="spotlight-details">
+          <div class="detail-item">
+            <span class="icon">⏰</span>
+            <span>{{ upcomingBooking.preferredTime | date:'medium' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="icon">📍</span>
+            <span>{{ upcomingBooking.salon?.address }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="icon">✂️</span>
+            <span>{{ upcomingBookingServiceNames }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="spotlight-actions">
+        <a [routerLink]="['/customer/bookings', upcomingBooking.id]" class="btn-view">View Details</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommended Salons Section -->
+  <div class="recommendations-section">
+    <h2 class="section-title">Explore Salons</h2>
+    
+    <div *ngIf="loading" class="skeleton-grid">
+      <div class="skeleton-card" *ngFor="let placeholder of [1, 2, 3]"></div>
+    </div>
+
+    <div *ngIf="!loading && salons.length === 0" class="empty-state">
+      <p>No salons resolved at the moment. Please try again later.</p>
+    </div>
+
+    <div *ngIf="!loading && salons.length > 0" class="salons-grid">
+      <div *ngFor="let salon of salons" class="salon-card">
+        <div class="salon-header">
+          <h3>{{ salon.name }}</h3>
+          <span class="rating-badge">★ {{ salon.rating | number:'1.1-1' }}</span>
+        </div>
+        
+        <p class="salon-description">{{ salon.description || 'Professional grooming and style services.' }}</p>
+        
+        <div class="salon-meta">
+          <div class="meta-item">
+            <span>📍</span>
+            <span>{{ salon.address }}</span>
+          </div>
+          <div class="meta-item" *ngIf="salon.phone">
+            <span>📞</span>
+            <span>{{ salon.phone }}</span>
+          </div>
+        </div>
+        
+        <div class="salon-actions">
+          <span class="status-badge" [class.open]="salon.isOpen" [class.closed]="!salon.isOpen">
+            {{ salon.isOpen ? 'Open' : 'Closed' }}
+          </span>
+          <button class="btn-book" type="button" (click)="bookSalon(salon)">
+            Book Appointment <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

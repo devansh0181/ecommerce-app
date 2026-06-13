@@ -5,7 +5,7 @@ import { of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { Salon } from '../../../../../core/models';
 import { SalonService } from '../../../../../core/services/salon.service';
-import { SalonCardComponent } from '../../..//components/salon-card/salon-card.component';
+import { SalonCardComponent } from '../../../components/salon-card/salon-card.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -27,6 +27,7 @@ export class SalonListComponent implements OnInit, OnDestroy {
   page = 1;
   limit = 12;
   total = 0;
+  skeletonItems = [1, 2, 3, 4, 5, 6];
 
   private loadSubscription?: Subscription;
 
