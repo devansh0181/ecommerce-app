@@ -227,6 +227,11 @@ h1 {
   color: $color-text-secondary;
 }
 
+.badge-danger {
+  background: rgba($danger-orange, 0.1);
+  color: $danger-orange;
+}
+
 .salon-card__actions {
   margin-top: auto;
   padding-top: 16px;

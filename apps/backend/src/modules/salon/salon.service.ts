@@ -76,6 +76,29 @@ export class SalonService {
       queryBuilder.andWhere('salon.rating >= :minRating', { minRating });
     }
 
+    // Only return salons that have at least one active service
+    queryBuilder.andWhere((qb) => {
+      const subQuery = qb
+        .subQuery()
+        .select('1')
+        .from('services', 'service')
+        .where('service.salonId = salon.id')
+        .andWhere('service.isActive = :serviceActive', { serviceActive: true })
+        .getQuery();
+      return `EXISTS ${subQuery}`;
+    });
+
+    // Only return salons that have at least one working hours setup
+    queryBuilder.andWhere((qb) => {
+      const subQuery = qb
+        .subQuery()
+        .select('1')
+        .from('working_hours', 'working_hour')
+        .where('working_hour.salonId = salon.id')
+        .getQuery();
+      return `EXISTS ${subQuery}`;
+    });
+
     // Apply pagination
     const skip = (page - 1) * limit;
     queryBuilder.skip(skip).take(limit);

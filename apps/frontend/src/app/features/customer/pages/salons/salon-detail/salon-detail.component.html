@@ -8,7 +8,9 @@
         <h1>{{ salon.name }}</h1>
         <p class="address">{{ salon.address }}</p>
         <div class="actions">
-          <button (click)="openBookingDialog()">Book Now</button>
+          <button [disabled]="!services || !services.length" (click)="openBookingDialog()">
+            {{ (!services || !services.length) ? 'No Services Available' : 'Book Now' }}
+          </button>
         </div>
       </div>
     </div>
@@ -18,7 +20,7 @@
       <p>{{ salon.description }}</p>
 
       <h3>Working Hours</h3>
-      <div class="working-hours">
+      <div class="working-hours" *ngIf="salon.workingHours && salon.workingHours.length">
         <div class="hour-row" *ngFor="let hour of salon.workingHours">
           <span class="day">{{ formatDayOfWeek(hour.dayOfWeek) }}:</span>
           <span class="time">
@@ -26,14 +28,16 @@
           </span>
         </div>
       </div>
+      <p class="empty-state" *ngIf="!salon.workingHours || !salon.workingHours.length">No working hours set yet.</p>
 
       <h3>Services</h3>
-      <div class="services">
+      <div class="services" *ngIf="services && services.length">
         <div class="service" *ngFor="let s of services">
           <div class="name">{{ s.name }}</div>
           <div class="meta">{{ s.durationMinutes }} min • ${{ s.price }}</div>
         </div>
       </div>
+      <p class="empty-state" *ngIf="!services || !services.length">No services offered yet.</p>
     </div>
   </div>
 

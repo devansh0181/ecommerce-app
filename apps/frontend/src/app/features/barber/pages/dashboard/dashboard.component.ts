@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   completedToday = 0;
   todaysBookings = 0;
   averageRating: number | null = null;
+  unconfiguredSalons: Salon[] = [];
   scheduleItems: Array<{ time: string; customer: string; service: string }> = [];
   activities: Array<{ type: string; message: string; time: string }> = [];
 
@@ -58,7 +59,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.salonService.getMySalons().subscribe(
       (salons) => {
-        const first = salons && salons.length ? salons[0] : null;
+        const list = salons || [];
+        this.unconfiguredSalons = list.filter(
+          (s) => !s.services?.length || !s.workingHours?.length
+        );
+
+        const first = list.length ? list[0] : null;
         if (first) {
           this.salon = first;
           this.salonId = first.id;

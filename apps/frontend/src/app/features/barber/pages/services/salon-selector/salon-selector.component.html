@@ -52,6 +52,9 @@
         <span class="badge" [class.badge-success]="salon.isOpen" [class.badge-secondary]="!salon.isOpen">
           {{ salon.isOpen ? 'Open' : 'Closed' }}
         </span>
+        <span class="badge" [class.badge-success]="salon.services && salon.services.length > 0" [class.badge-danger]="!salon.services || !salon.services.length">
+          {{ (salon.services && salon.services.length > 0) ? 'Live' : 'Setup Required' }}
+        </span>
       </div>
 
       <div class="salon-card__actions">

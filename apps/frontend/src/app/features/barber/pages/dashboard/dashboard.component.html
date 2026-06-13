@@ -6,6 +6,31 @@
     </div>
   </header>
 
+  <!-- Setup Wizard Notice -->
+  <div class="setup-notice-container" *ngIf="unconfiguredSalons && unconfiguredSalons.length > 0">
+    <div class="setup-notice" *ngFor="let s of unconfiguredSalons">
+      <div class="setup-notice__header">
+        <span class="icon">🔧</span>
+        <div>
+          <h3>"{{ s.name }}" is in Draft Mode (Setup Required)</h3>
+          <p>Customers cannot find or book appointments at this salon until you complete the required configuration below.</p>
+        </div>
+      </div>
+      <ul class="setup-checklist">
+        <li [class.completed]="s.services && s.services.length > 0">
+          <span class="check-box">{{ (s.services && s.services.length > 0) ? '✓' : '○' }}</span>
+          <span>Add at least one service with custom pricing (required to go live)</span>
+          <a *ngIf="!s.services || !s.services.length" [routerLink]="['/barber/services', s.id]" class="setup-link">Add Service →</a>
+        </li>
+        <li [class.completed]="s.workingHours && s.workingHours.length > 0">
+          <span class="check-box">{{ (s.workingHours && s.workingHours.length > 0) ? '✓' : '○' }}</span>
+          <span>Set up your weekly working hours</span>
+          <a *ngIf="!s.workingHours || !s.workingHours.length" [routerLink]="['/barber/profile', s.id]" class="setup-link">Set Hours →</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <nav class="dashboard-actions" *ngIf="!loading">
     <a class="action-button" *ngFor="let action of actionItems" [routerLink]="action.route">
       <span class="action-icon">{{ action.icon }}</span>

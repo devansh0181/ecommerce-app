@@ -7,3 +7,17 @@
 .service { padding:8px; border:1px solid #eee; border-radius:8px; }
 
 .loading { padding:24px; text-align:center; }
+
+button:disabled {
+  background: #d1d5db !important;
+  color: #9ca3af !important;
+  cursor: not-allowed;
+  border-color: #d1d5db !important;
+}
+
+.empty-state {
+  color: #6b7280;
+  font-style: italic;
+  font-size: 0.9rem;
+  margin: 8px 0;
+}
