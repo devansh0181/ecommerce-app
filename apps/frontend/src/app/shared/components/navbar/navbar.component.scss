@@ -2,12 +2,14 @@
 @use '../../../styles/mixins' as *;
 
 .navbar {
-  background: $bg-primary;
-  border-bottom: 1px solid $color-border;
+  background: rgba($bg-primary, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
   position: sticky;
   top: 0;
   z-index: $z-fixed;
-  box-shadow: $shadow-sm;
+  box-shadow: 0 4px 20px -10px rgba(15, 23, 42, 0.05);
 
   .navbar-container {
     max-width: $container-2xl;
@@ -161,10 +163,10 @@
         top: calc(100% + #{$spacing-sm});
         right: 0;
         background: $bg-primary;
-        border: 1px solid $color-border;
+        border: 1px solid rgba(15, 23, 42, 0.08);
         border-radius: $border-radius-lg;
         min-width: 180px;
-        box-shadow: $shadow-lg;
+        box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.15);
         opacity: 0;
         visibility: hidden;
         transform: translateY(8px);

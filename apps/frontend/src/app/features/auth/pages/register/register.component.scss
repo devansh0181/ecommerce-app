@@ -238,15 +238,21 @@
     border: 1px solid $color-border;
     border-radius: $border-radius-md;
     cursor: pointer;
-    transition: border-color $transition-fast, background-color $transition-fast;
+    transition: all 0.2s ease;
 
     input {
       accent-color: $primary-purple;
     }
 
+    &:hover {
+      border-color: rgba($primary-purple, 0.5);
+      background: rgba($primary-purple, 0.02);
+    }
+
     &:has(input:checked) {
       border-color: $primary-purple;
       background: rgba($primary-purple, 0.04);
+      box-shadow: 0 0 0 2px rgba($primary-purple, 0.06);
     }
   }
 

@@ -1,6 +1,8 @@
 // ============================================
 // Global Styles
 // ============================================
+@use 'variables' as *;
+@use 'mixins' as *;
 
 * {
   margin: 0;
@@ -168,12 +170,12 @@ html {
 // Selection
 ::selection {
   background-color: $primary-purple;
-  color: $white;
+  color: #ffffff;
 }
 
 ::-moz-selection {
   background-color: $primary-purple;
-  color: $white;
+  color: #ffffff;
 }
 
 // Utility Classes

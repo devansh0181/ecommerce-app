@@ -2,10 +2,11 @@
 @use '../../../styles/mixins' as *;
 
 .footer {
-  background: $color-dark;
-  color: #fff;
+  background: $bg-dark;
+  color: rgba(255, 255, 255, 0.95);
   padding: $spacing-3xl $spacing-lg;
   margin-top: $spacing-3xl;
+  border-top: 1px solid rgba(15, 23, 42, 0.05);
 
   .footer-container {
     max-width: $container-2xl;
