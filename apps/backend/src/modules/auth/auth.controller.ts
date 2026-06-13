@@ -14,6 +14,8 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { User } from '../../entities/user.entity';
@@ -91,5 +93,29 @@ export class AuthController {
     return {
       message: 'Logged out successfully. Please remove token from client.',
     };
+  }
+
+  /**
+   * POST /api/auth/forgot-password
+   * Request reset password token
+   */
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  async forgotPassword(
+    @Body() forgotDto: ForgotPasswordDto
+  ): Promise<{ message: string; resetToken?: string }> {
+    return this.authService.forgotPassword(forgotDto);
+  }
+
+  /**
+   * POST /api/auth/reset-password
+   * Reset password using token
+   */
+  @Post('reset-password')
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(
+    @Body() resetDto: ResetPasswordDto
+  ): Promise<{ message: string }> {
+    return this.authService.resetPassword(resetDto);
   }
 }

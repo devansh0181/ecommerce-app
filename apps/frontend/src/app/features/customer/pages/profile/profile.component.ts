@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       if (user) {
         this.initForm(user);
       }
-      this.cdr.markForCheck();
+      this.cdr.detectChanges();
     });
 
     // Load statistics from bookings
@@ -53,12 +53,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
           (b) => b.status === 'PENDING' || b.status === 'ACCEPTED' || b.status === 'IN_PROGRESS'
         ).length;
         this.loading = false;
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('Error loading bookings statistics:', err);
         this.loading = false;
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       }
     });
   }
@@ -95,7 +95,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     this.saving = true;
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
 
     const formValue = this.profileForm.value;
     const payload: any = {
@@ -115,13 +115,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
         // Clear password input
         this.profileForm.patchValue({ password: '' });
         this.profileForm.markAsPristine();
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         this.saving = false;
         const errMsg = err?.error?.message || 'Failed to update profile. Please try again.';
         this.toastService.error(errMsg, 'Update Failed');
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +33,8 @@ export class BookingDialogComponent {
   constructor(
     private bookingService: BookingService,
     private toastService: ToastService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   bookingTimer: any;
@@ -93,6 +94,7 @@ export class BookingDialogComponent {
         this.bookingId = booking.id || '';
         this.step = 4;
         this.error = null;
+        this.cdr.detectChanges();
 
         // Automatically redirect to my bookings after 4 seconds
         this.bookingTimer = setTimeout(() => {
@@ -105,6 +107,7 @@ export class BookingDialogComponent {
         const errorMessage = err?.error?.message || 'Failed to create booking. Please try again.';
         this.error = errorMessage;
         this.toastService.error(errorMessage);
+        this.cdr.detectChanges();
       },
     });
   }

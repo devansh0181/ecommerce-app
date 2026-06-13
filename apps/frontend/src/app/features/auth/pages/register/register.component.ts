@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -40,7 +40,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private cdr: ChangeDetectorRef
   ) {
     this.initForm();
   }
@@ -185,11 +186,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.emailAvailabilityMessage = 'This email is already registered';
             this.setEmailTakenError();
           }
+          this.cdr.detectChanges();
         },
         error: () => {
           this.emailChecking = false;
           this.emailAvailable = null;
           this.emailAvailabilityMessage = 'Unable to verify email availability right now';
+          this.cdr.detectChanges();
         },
       });
   }
@@ -229,12 +232,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
         next: () => {
           this.loading = false;
           this.toastService.success('Account created successfully!', 'Welcome');
+          this.cdr.detectChanges();
           this.router.navigate(['/customer']);
         },
         error: (err: any) => {
           this.loading = false;
           this.errorMessage = err?.error?.message || 'Registration failed. Please try again.';
           this.toastService.error(this.errorMessage, 'Registration Failed');
+          this.cdr.detectChanges();
         },
       });
   }

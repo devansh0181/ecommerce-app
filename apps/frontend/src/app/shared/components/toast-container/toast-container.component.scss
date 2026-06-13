@@ -33,7 +33,7 @@
   padding: $spacing-md + 2px $spacing-lg;
   border-radius: $border-radius-lg;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: $spacing-md;
   width: 100%;
   overflow: hidden;
@@ -54,6 +54,7 @@
     align-items: center;
     justify-content: center;
     border-radius: $border-radius-md;
+    margin-top: 2px;
     @include transition;
   }
 
@@ -72,14 +73,8 @@
       font-size: $font-size-xs + 1px;
       line-height: $line-height-sm;
       color: $color-text-secondary;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 280px;
-
-      @media (max-width: #{$breakpoint-md - 1px}) {
-        max-width: 220px;
-      }
+      white-space: normal;
+      word-break: break-word;
     }
   }
 

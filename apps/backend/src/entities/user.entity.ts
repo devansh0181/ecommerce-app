@@ -28,6 +28,12 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   phone: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  resetPasswordToken: string | null;
+
+  @Column({ type: 'timestamp', nullable: true })
+  resetPasswordExpires: Date | null;
+
   // Relations
   @OneToMany(() => Salon, (salon) => salon.user)
   salons: Salon[];

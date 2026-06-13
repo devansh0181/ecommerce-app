@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormatPricePipe } from '../../../../../shared/pipes/format-price.pipe';
 import { FormatDurationPipe } from '../../../../../shared/pipes/format-duration.pipe';
@@ -20,6 +20,8 @@ export class BookingSummaryComponent {
   @Output() cancel = new EventEmitter<void>();
 
   loading = false;
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   getTotalPrice(): number {
     return this.selected.reduce((sum, item) => sum + item.service.price * item.quantity, 0);
@@ -46,6 +48,7 @@ export class BookingSummaryComponent {
   onConfirm() {
     this.loading = true;
     this.confirm.emit();
+    this.cdr.detectChanges();
   }
 
   onCancel() {
@@ -54,5 +57,6 @@ export class BookingSummaryComponent {
 
   setLoading(val: boolean) {
     this.loading = val;
+    this.cdr.detectChanges();
   }
 }

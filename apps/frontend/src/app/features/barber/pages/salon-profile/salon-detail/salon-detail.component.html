@@ -30,7 +30,7 @@
 
   <div class="profile-grid">
     <div class="main-content">
-      <app-salon-info-section [salon]="salon" (updated)="onSalonInfoUpdated($event)"></app-salon-info-section>
+      <app-salon-info-section [salon]="salon" (updated)="onSalonInfoUpdated($event)" (delete)="deleteSalon()"></app-salon-info-section>
       <app-working-hours-section [salonId]="salon.id" (updated)="onWorkingHoursUpdated()"></app-working-hours-section>
     </div>
 

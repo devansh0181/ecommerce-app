@@ -1,29 +1,29 @@
 import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { ToastService } from '@shared/services/toast.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-forgot-password',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss'],
 })
-export class LoginComponent implements OnDestroy {
-  loginForm!: FormGroup;
+export class ForgotPasswordComponent implements OnDestroy {
+  forgotForm!: FormGroup;
   loading = false;
-  showPassword = false;
+  success = false;
   errorMessage = '';
+  devToken = '';
   private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router,
     private toastService: ToastService,
     private cdr: ChangeDetectorRef
   ) {
@@ -36,55 +36,43 @@ export class LoginComponent implements OnDestroy {
   }
 
   private initForm(): void {
-    this.loginForm = this.fb.group({
+    this.forgotForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: [false],
     });
   }
 
   get email() {
-    return this.loginForm.get('email');
-  }
-
-  get password() {
-    return this.loginForm.get('password');
-  }
-
-  togglePasswordVisibility(): void {
-    this.showPassword = !this.showPassword;
+    return this.forgotForm.get('email');
   }
 
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      this.errorMessage = 'Please fill in all fields correctly';
+    if (this.forgotForm.invalid) {
+      this.errorMessage = 'Please enter a valid email address';
       return;
     }
 
     this.loading = true;
     this.errorMessage = '';
-
-    const { email, password } = this.loginForm.value;
+    this.success = false;
+    this.devToken = '';
 
     this.authService
-      .login({ email, password })
+      .forgotPassword(this.forgotForm.value.email)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => {
+        next: (response) => {
           this.loading = false;
-          this.toastService.success('Login successful!', 'Welcome');
-          this.cdr.detectChanges();
-
-          if (this.authService.isCustomer()) {
-            this.router.navigate(['/customer']);
-          } else if (this.authService.isBarber()) {
-            this.router.navigate(['/barber']);
+          this.success = true;
+          this.toastService.success('Reset link generated successfully.', 'Link Sent');
+          if (response.resetToken) {
+            this.devToken = response.resetToken;
           }
+          this.cdr.detectChanges();
         },
         error: (err: any) => {
           this.loading = false;
-          this.errorMessage = err?.error?.message || 'Invalid email or password';
-          this.toastService.error(this.errorMessage, 'Login Failed');
+          this.errorMessage = err?.error?.message || 'Something went wrong. Please try again.';
+          this.toastService.error(this.errorMessage, 'Request Failed');
           this.cdr.detectChanges();
         },
       });
@@ -97,17 +85,6 @@ export class LoginComponent implements OnDestroy {
     }
     if (control?.hasError('email')) {
       return 'Please enter a valid email';
-    }
-    return '';
-  }
-
-  getPasswordError(): string {
-    const control = this.password;
-    if (control?.hasError('required')) {
-      return 'Password is required';
-    }
-    if (control?.hasError('minlength')) {
-      return 'Password must be at least 6 characters';
     }
     return '';
   }

@@ -23,7 +23,7 @@ export class ToastContainerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.toastService.toasts$.pipe(takeUntil(this.destroy$)).subscribe((toasts) => {
       this.toasts = toasts;
-      this.cdr.markForCheck();
+      this.cdr.detectChanges();
     });
   }
 

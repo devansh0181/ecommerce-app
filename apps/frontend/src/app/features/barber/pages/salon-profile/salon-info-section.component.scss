@@ -114,10 +114,33 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   padding-top: 20px;
   margin-top: 8px;
   border-top: 1px solid $color-border;
+
+  .right-actions {
+    display: flex;
+    gap: 12px;
+  }
+}
+
+.btn-danger-outline {
+  background: transparent;
+  color: $danger-red;
+  border: 1px solid $danger-red;
+
+  &:hover:not(:disabled) {
+    background: $danger-red;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba($danger-red, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .btn {
@@ -173,7 +196,16 @@
     padding: 20px;
   }
   .form-actions {
-    justify-content: stretch;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+    
+    .right-actions {
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
     .btn {
       width: 100%;
     }

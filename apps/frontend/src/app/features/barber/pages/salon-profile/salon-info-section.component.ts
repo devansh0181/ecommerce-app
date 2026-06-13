@@ -15,6 +15,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
 export class SalonInfoSectionComponent implements OnInit {
   @Input() salon!: Salon;
   @Output() updated = new EventEmitter<Salon>();
+  @Output() delete = new EventEmitter<void>();
 
   infoForm: FormGroup;
   saving = false;
@@ -95,5 +96,9 @@ export class SalonInfoSectionComponent implements OnInit {
         this.cdr.markForCheck();
       }
     );
+  }
+
+  onDelete(): void {
+    this.delete.emit();
   }
 }
