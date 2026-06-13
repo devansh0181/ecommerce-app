@@ -1,0 +1,244 @@
+<div class="analytics-container">
+  <!-- Top Control Bar -->
+  <header class="analytics-header">
+    <div class="header-title-wrapper">
+      <p class="eyebrow">Insights & Performance</p>
+      <h1>Analytics & Reports</h1>
+    </div>
+
+    <div class="header-controls">
+      <!-- Salon Selector -->
+      <div class="control-group">
+        <label for="salon-select">Location</label>
+        <select id="salon-select" [(ngModel)]="selectedSalonId" (change)="onFilterChange()" class="select-input">
+          <option value="all">All Salon</option>
+          <option *ngFor="let salon of salons" [value]="salon.id">{{ salon.name }}</option>
+        </select>
+      </div>
+
+      <!-- Date Range Selector -->
+      <div class="control-group">
+        <label for="range-select">Timeframe</label>
+        <select id="range-select" [(ngModel)]="dateRange" (change)="onFilterChange()" class="select-input">
+          <option value="last_7_days">Last 7 Days</option>
+          <option value="last_30_days">Last 30 Days</option>
+          <option value="this_month">This Month</option>
+          <option value="ytd">Year to Date</option>
+        </select>
+      </div>
+
+      <!-- Export Button -->
+      <button type="button" class="btn btn-primary btn-export" (click)="exportCSV()" [disabled]="loading">
+        <span>📥</span> Export CSV
+      </button>
+    </div>
+  </header>
+
+  <!-- Loading Overlay -->
+  <div class="analytics-loading" *ngIf="loading">
+    <div class="loading-spinner"></div>
+    <p>Calculating performance statistics...</p>
+  </div>
+
+  <ng-container *ngIf="!loading">
+    <!-- Summary Cards -->
+    <section class="summary-grid">
+      <!-- Total Bookings -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-icon bookings-icon">📅</span>
+          <span class="trend-badge positive">{{ bookingsTrend }}</span>
+        </div>
+        <div class="metric-body">
+          <h2 class="metric-value">{{ totalBookingsCount }}</h2>
+          <p class="metric-label">Total Appointments</p>
+        </div>
+      </div>
+
+      <!-- Total Revenue -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-icon revenue-icon">💰</span>
+          <span class="trend-badge positive">{{ revenueTrend }}</span>
+        </div>
+        <div class="metric-body">
+          <h2 class="metric-value">{{ totalRevenue | currency:'USD':'symbol':'1.2-2' }}</h2>
+          <p class="metric-label">Total Gross Revenue</p>
+        </div>
+      </div>
+
+      <!-- Average Ticket Value -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-icon average-icon">🏷️</span>
+          <span class="trend-badge positive">{{ avgValueTrend }}</span>
+        </div>
+        <div class="metric-body">
+          <h2 class="metric-value">{{ averageBookingValue | currency:'USD':'symbol':'1.2-2' }}</h2>
+          <p class="metric-label">Average Ticket Value</p>
+        </div>
+      </div>
+
+      <!-- Peak Hour -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-icon peak-icon">⚡</span>
+          <span class="trend-badge info">Active</span>
+        </div>
+        <div class="metric-body">
+          <h2 class="metric-value">{{ peakHour }}</h2>
+          <p class="metric-label">Peak Scheduling Hour</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Charts Grid -->
+    <section class="charts-grid">
+      <!-- Bookings Trend Line Chart -->
+      <div class="chart-card line-chart-card">
+        <div class="chart-header">
+          <h3>Appointments Trend</h3>
+          <p class="chart-subtitle">Booking counts per day over the selected timeframe</p>
+        </div>
+
+        <div class="chart-body">
+          <!-- Line SVG Chart -->
+          <div class="svg-container">
+            <svg viewBox="0 0 500 180" width="100%" height="100%" class="chart-svg">
+              <defs>
+                <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#6366f1" stop-opacity="0.25" />
+                  <stop offset="100%" stop-color="#6366f1" stop-opacity="0.0" />
+                </linearGradient>
+              </defs>
+
+              <!-- Gridlines -->
+              <line x1="15" y1="15" x2="485" y2="15" class="chart-gridline" />
+              <line x1="15" y1="60" x2="485" y2="60" class="chart-gridline" />
+              <line x1="15" y1="105" x2="485" y2="105" class="chart-gridline" />
+              <line x1="15" y1="150" x2="485" y2="150" class="chart-gridline" />
+
+              <!-- Area Fill -->
+              <path [attr.d]="bookingsAreaPath" fill="url(#lineGrad)" />
+
+              <!-- Line Path -->
+              <path [attr.d]="bookingsPath" fill="none" stroke="#6366f1" stroke-width="3.5" stroke-linecap="round" />
+
+              <!-- Interactive Dots -->
+              <circle *ngFor="let point of bookingsChartPoints" [attr.cx]="point.x" [attr.cy]="point.y" r="4.5"
+                class="chart-dot" (mouseenter)="showBookingTooltip(point)" (mouseleave)="hideBookingTooltip()" />
+            </svg>
+
+            <!-- Line Tooltip -->
+            <div class="chart-tooltip" *ngIf="hoveredBookingPoint" [style.left.px]="hoveredBookingPoint.x"
+              [style.top.px]="hoveredBookingPoint.y! - 50">
+              <div class="tooltip-label">{{ hoveredBookingPoint.label }}</div>
+              <div class="tooltip-value">{{ hoveredBookingPoint.value }} Bookings</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Popularity Donut Chart -->
+      <div class="chart-card donut-chart-card">
+        <div class="chart-header">
+          <h3>Services Distribution</h3>
+          <p class="chart-subtitle">Category popularity share based on appointments</p>
+        </div>
+
+        <div class="chart-body donut-body">
+          <div class="donut-visualizer">
+            <svg viewBox="0 0 120 120" width="130" height="130">
+              <circle cx="60" cy="60" r="50" fill="transparent" stroke="rgba(15, 23, 42, 0.05)" stroke-width="14" />
+              <circle *ngFor="let slice of donutSlices" cx="60" cy="60" r="50" fill="transparent"
+                [attr.stroke]="slice.color" stroke-width="14" [attr.stroke-dasharray]="slice.dashArray"
+                [attr.stroke-dashoffset]="slice.dashOffset" transform="rotate(-90 60 60)" class="donut-segment" />
+            </svg>
+            <div class="donut-center">
+              <span class="donut-number">{{ totalBookingsCount }}</span>
+              <span class="donut-text">Total</span>
+            </div>
+          </div>
+
+          <div class="donut-legend">
+            <div class="legend-item" *ngFor="let slice of donutSlices">
+              <span class="legend-color" [style.background-color]="slice.color"></span>
+              <div class="legend-info">
+                <span class="legend-name">{{ slice.name }}</span>
+                <span class="legend-value">{{ slice.percentage | number:'1.0-0' }}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenue Trends Bar Chart -->
+      <div class="chart-card bar-chart-card">
+        <div class="chart-header">
+          <h3>Revenue Stream</h3>
+          <p class="chart-subtitle">Daily gross revenue variations over the timeframe</p>
+        </div>
+
+        <div class="chart-body">
+          <!-- Bar SVG Chart -->
+          <div class="svg-container">
+            <svg viewBox="0 0 500 180" width="100%" height="100%" class="chart-svg">
+              <!-- Gridlines -->
+              <line x1="15" y1="15" x2="485" y2="15" class="chart-gridline" />
+              <line x1="15" y1="60" x2="485" y2="60" class="chart-gridline" />
+              <line x1="15" y1="105" x2="485" y2="105" class="chart-gridline" />
+              <line x1="15" y1="150" x2="485" y2="150" class="chart-gridline" />
+
+              <!-- Bar Rectangles -->
+              <g *ngFor="let p of revenueChartPoints; let i = index">
+                <!-- Calculated X spacing -->
+                <rect [attr.x]="15 + (i / (revenueChartPoints.length || 1)) * 460" [attr.y]="150 - p.y!"
+                  [attr.width]="450 / (revenueChartPoints.length || 1) * 0.7" [attr.height]="p.y!" rx="3"
+                  class="chart-bar" (mouseenter)="showRevenueTooltip(p)" (mouseleave)="hideRevenueTooltip()" />
+              </g>
+            </svg>
+
+            <!-- Bar Tooltip -->
+            <div class="chart-tooltip" *ngIf="hoveredRevenuePoint" [style.left.%]="50" [style.bottom.px]="60"
+              style="transform: translateX(-50%);">
+              <div class="tooltip-label">{{ hoveredRevenuePoint.label }}</div>
+              <div class="tooltip-value">{{ hoveredRevenuePoint.value | currency:'USD':'symbol':'1.2-2' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Services Ranking Card -->
+      <div class="chart-card top-services-card">
+        <div class="chart-header">
+          <h3>Top Offerings</h3>
+          <p class="chart-subtitle">Your services ranked by total performance value</p>
+        </div>
+
+        <div class="chart-body">
+          <div class="table-container">
+            <table class="services-table">
+              <thead>
+                <tr>
+                  <th>Service Offering</th>
+                  <th class="text-right">Appointments</th>
+                  <th class="text-right">Total Income</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of topServices">
+                  <td class="service-name-cell">
+                    <span class="bullet"></span>
+                    {{ s.name }}
+                  </td>
+                  <td class="text-right">{{ s.count }} bookings</td>
+                  <td class="text-right font-semibold">{{ s.revenue | currency:'USD':'symbol':'1.2-2' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</div>

@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   actionItems = [
     { label: 'View all requests', route: '/barber/bookings', icon: '📩', description: 'Review recent booking requests' },
     { label: 'View queue', route: '/barber/queue', icon: '🧾', description: 'Monitor customers waiting now' },
+    { label: 'View analytics', route: '/barber/analytics', icon: '📊', description: 'Analyze revenue and trends' },
     { label: 'Add new service', route: '/barber/services', icon: '✂️', description: 'Update salon offerings quickly' },
     { label: 'Edit profile', route: '/barber/profile', icon: '⚙️', description: 'Adjust salon details and hours' },
   ];
